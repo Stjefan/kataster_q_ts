@@ -5,6 +5,7 @@
       <q-btn label="Undo" @click="undo" />
       <q-btn label="Redo" @click="redo" />
       <q-btn label="Archiv" @click="openArchive" />
+      <q-btn label="Archivieren" @click="makeSnapshot" />
     </div>
     <div class="row">
       <div class="col-6 q-pa-md">
@@ -55,6 +56,7 @@ import { Messung, messungFactory, emittentDetailsFactory } from '../models/v1'
 
 import { useRefHistory } from '@vueuse/core'
 import { useQuasar } from 'quasar';
+import EmittentArchiv from 'src/components/EmittentArchiv.vue';
 
 export default defineComponent({
   components: {
@@ -125,21 +127,47 @@ export default defineComponent({
     const imageSource: Ref<string> = ref('')
     const fileupload: Ref<any> = ref([])
 
-    function openArchive() {
+    function makeSnapshot() {
       $q.dialog({
-        dark: true,
-        title: 'Alert',
-        message: 'Some message'
-      }).onOk(() => {
-        // console.log('OK')
+        title: 'Aktuellen Stand archivieren',
+        message: 'Bemerkung zur Archivierung:',
+        prompt: {
+          model: '',
+          type: 'text' // optional
+        },
+        cancel: true,
+        persistent: true
+      }).onOk(data => {
+        console.log(data)
+        // console.log('>>>> OK, received', data)
       }).onCancel(() => {
-        // console.log('Cancel')
+        // console.log('>>>> Cancel')
       }).onDismiss(() => {
         // console.log('I am triggered on both OK and Cancel')
+      })
+    }
+
+
+    function openArchive() {
+      $q.dialog({
+        component: EmittentArchiv,
+
+        // props forwarded to your custom component
+        componentProps: {
+          text: 'something',
+          // ...more..props...
+        }
+      }).onOk(() => {
+        console.log('OK')
+      }).onCancel(() => {
+        console.log('Cancel')
+      }).onDismiss(() => {
+        console.log('Called on OK or Cancel')
       })
 
     }
     return {
+      makeSnapshot,
       openArchive,
       emittent,
       undo,

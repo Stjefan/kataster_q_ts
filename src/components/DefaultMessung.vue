@@ -1,5 +1,4 @@
 <template>
-  Hello
   <q-btn label="Messwerte auswerten" @click="evaluateMesswerte" />
   <q-btn label="Bericht erstellen" @click="createExcelReport" />
   <q-tabs v-model="tab">
@@ -46,7 +45,7 @@
 import { defineComponent, ref, onMounted, computed } from 'vue'
 import EditMessreihe from './EditMessreihe.vue'
 import DefaultAuswertung from './DefaultAuswertung.vue'
-import { messpunktAnAnlageFactory, Messposition, messpositionFactory, messpositionEditViewModelFactory, messwertereiheDiscriminatorFactory, messungFactory, auswertungFactory } from '../models/v1'
+import { messpunktAnAnlageFactory, Messposition, messpositionFactory, messpositionEditViewModelFactory, messwertereiheDiscriminatorFactory, messungFactory, auswertungFactory, ascendingFrequences } from '../models/v1'
 import DocumentOverview from './DocumentOverview.vue'
 export default defineComponent({
   components: { EditMessreihe, DefaultAuswertung, DocumentOverview },
@@ -75,6 +74,17 @@ export default defineComponent({
 
     function evaluateMesswerte() {
       messung.value!.auswertung = auswertungFactory.build()
+
+      const messwertereihe = messung.value?.messpositionen.get(1)?.messwertereihen[0].gesamtpegel
+
+      if (messwertereihe != null) {
+        const generator = ascendingFrequences(messwertereihe)
+        console.log(Array.from(generator))
+        // console.log(generator.next().value)
+        //console.log(generator.next().value)
+      }
+
+
     }
 
     function createExcelReport() {

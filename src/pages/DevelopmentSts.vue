@@ -1,7 +1,6 @@
 <template>
   <q-page padding>
     <!-- content -->
-    ??
     <suspense>
       <default-messung />
     </suspense>

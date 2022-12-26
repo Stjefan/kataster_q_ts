@@ -1,6 +1,8 @@
 
 import * as Factory from 'factory.ts';
 export interface Pegelreihe {
+  [state: string]: unknown
+
   hz31_5: number;
   hz63: number
   hz125: number
@@ -10,6 +12,64 @@ export interface Pegelreihe {
   hz2000: number
   hz4000: number
   hz8000: number
+  id: string
+
+}
+
+
+
+export function getField(arg: Pegelreihe, field: string) {
+  switch (field) {
+    case 'hz31_5':
+      return arg.hz31_5
+    case 'hz63': return arg.hz63
+    case 'hz125': return arg.hz125
+    case 'hz250': return arg.hz250
+    case 'hz500': return arg.hz500
+    default: throw new Error('Invalid argument')
+  }
+
+}
+
+export function setField(arg: Pegelreihe, field: string, value: number) {
+  switch (field) {
+    case 'hz31_5':
+      arg.hz31_5 = value
+      break
+    case 'hz125': arg.hz125 = value
+      break;
+
+    case 'hz250': arg.hz250 = value
+      break
+    case 'hz500': arg.hz500 = value
+      break
+    default: throw new Error('Invalid argument')
+  }
+
+}
+
+
+export const pegelfrequenzenFields = ['hz31_5', 'hz63', 'hz125', 'hz250', 'hz500']
+
+export function* ascendingFrequences(arg: Pegelreihe) {
+  yield arg.hz31_5;
+  yield arg.hz63;
+  yield arg.hz125;
+  yield arg.hz250;
+  yield arg.hz500;
+  yield arg.hz1000;
+  yield arg.hz2000;
+  yield arg.hz4000;
+  yield arg.hz8000;
+
+}
+
+
+export interface Koordinaten {
+  gk_rechts: number,
+  gk_hoch: number,
+  pixel_x: number,
+  pixel_y: number
   id: string
 }
 
@@ -71,6 +131,12 @@ export interface MesswertereiheDTO {
   additional: string
 }
 
+export interface EmittentSnapshot {
+  id: string,
+  datum: string,
+  kommentar: string
+}
+
 export interface Georeferenzierungspunkt {
   gk_rechts: number
   gk_hoch: number
@@ -101,8 +167,11 @@ export interface Georeferenzierung {
 export interface KarteDetails {
   url: string
   georeferenzierung?: Georeferenzierung
+  id: string
 
 }
+
+
 
 export interface AuswertungDTO {
   id: string
@@ -156,6 +225,7 @@ export interface Plant {
   children: Building[],
   header: string
   body: string
+  map: KarteDetails
 }
 
 export interface Building {
@@ -172,6 +242,7 @@ export interface Roof {
   children: Emittent[]
   header: string
   body: string
+  map: KarteDetails
 }
 
 export interface Emittent {
@@ -179,6 +250,7 @@ export interface Emittent {
   name: string
   header: string
   body: string
+  koordinaten: Koordinaten
 }
 
 export interface EmittentDetails {
@@ -219,6 +291,19 @@ export interface GeometrieEmittent {
   geo4: number
   id: string
 }
+
+export interface PointOnMap {
+  pixel_x: number
+  pixel_y: number
+  id: string
+}
+
+const pointOnMapFactory = Factory.Sync.makeFactory<PointOnMap>({
+  id: Factory.each((i) => `P${i}`),
+  pixel_x: Factory.each(() => Math.floor(Math.random() * 10000) / 100),
+  pixel_y: Factory.each(() => Math.floor(Math.random() * 10000) / 100),
+
+})
 
 const messwertereiheFactory = Factory.Sync.makeFactory<Pegelreihe>({
   id: Factory.each((i) => `${i}`),
@@ -285,8 +370,8 @@ const messungFactory = _messungFactory.transform(obj => {
 const georeferenzpunktFactory = Factory.Sync.makeFactory<Georeferenzierungspunkt>({
   gk_hoch: 1,
   gk_rechts: 2,
-  pixel_x: 3,
-  pixel_y: 4,
+  pixel_x: Factory.each((i) => Math.floor(Math.random() * 900)),
+  pixel_y: Factory.each((i) => Math.floor(Math.random() * 900)),
   id: Factory.each((i) => `${i}`),
 })
 
@@ -305,18 +390,28 @@ const georeferenzierungFactory = Factory.Sync.makeFactory<Georeferenzierung>({
 
 
 
+const koordinatenFactory = Factory.Sync.makeFactory<Koordinaten>({
+  gk_hoch: 1,
+  gk_rechts: 2,
+  pixel_x: Factory.each((i) => Math.floor(Math.random() * 900)),
+  pixel_y: Factory.each((i) => Math.floor(Math.random() * 900)),
+  id: Factory.each((i) => `${i}`),
+})
+
 const plantFactory = Factory.Sync.makeFactory<Plant>({
   id: Factory.each((i) => `P${i}`),
   name: Factory.each((i) => `${i}`),
-  children: Factory.each(() => [buildingFactory.build(), buildingFactory.build()]),
+  children: Factory.each(() => buildingFactory.buildList(Math.max(1, Math.floor(Math.random() * 4)))),
   header: 'werk',
-  body: 'werk'
+  body: 'werk',
+  map: Factory.each((i) => karteDetailsFactory.build())
+
 })
 
 const buildingFactory = Factory.Sync.makeFactory<Building>({
   id: Factory.each((i) => `B${i}`),
   name: Factory.each((i) => `${i}`),
-  children: Factory.each(() => [roofFactory.build(), roofFactory.build()]),
+  children: Factory.each(() => roofFactory.buildList(Math.max(1, Math.floor(Math.random() * 4)))),
   header: 'gebaeude',
   body: 'gebaeude'
 })
@@ -324,16 +419,18 @@ const buildingFactory = Factory.Sync.makeFactory<Building>({
 const roofFactory = Factory.Sync.makeFactory<Roof>({
   id: Factory.each((i) => `R${i}`),
   name: Factory.each((i) => `${i}`),
-  children: Factory.each(() => [emittentFactory.build(), emittentFactory.build()]),
+  children: Factory.each(() => emittentFactory.buildList(Math.max(1, Math.floor(Math.random() * 4)))),
   header: 'dach',
-  body: 'dach'
+  body: 'dach',
+  map: Factory.each((i) => karteDetailsFactory.build())
 })
 
 const emittentFactory = Factory.Sync.makeFactory<Emittent>({
   id: Factory.each((i) => `E${i}`),
   name: Factory.each((i) => `${i}`),
   header: 'emittent',
-  body: 'emittent'
+  body: 'emittent',
+  koordinaten: Factory.each(() => koordinatenFactory.build())
 })
 
 
@@ -370,6 +467,19 @@ const messpunktAnAnlageFactory = Factory.Sync.makeFactory<MesspunktAnAnlage>({
 
 })
 
+export const snapshotFactory = Factory.Sync.makeFactory<EmittentSnapshot>({
+  id: Factory.each((i) => `S${i}`),
+  datum: '2022-12-03',
+  kommentar: 'abcdewf'
+
+})
+
+export const karteDetailsFactory = Factory.Sync.makeFactory<KarteDetails>({
+  url: Factory.each((i) => `https://placeimg.com/${(Math.floor(Math.random() * 5) + 3) * 100}/${(Math.floor(Math.random() * 5) + 3) * 100}/nature?t=` + Math.random()),
+  georeferenzierung: Factory.each(() => georeferenzierungFactory.build()),
+  id: Factory.each((i) => `K${i}`),
+
+})
 export const geometrieEmittentFactory = Factory.Sync.makeFactory<GeometrieEmittent>({
   geo1: 1,
   geo2: 2,
@@ -455,7 +565,8 @@ export {
   buildingFactory,
   roofFactory,
   emittentFactory,
-  messpunktAnAnlageFactory
+  messpunktAnAnlageFactory,
+  pointOnMapFactory
 }
 
 

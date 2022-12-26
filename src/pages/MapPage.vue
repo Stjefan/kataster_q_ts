@@ -135,7 +135,7 @@ export default defineComponent({
       },
     ];
 
-    function showClickPosition(arg: PointerEvent) {
+    function showClickPosition(arg: MouseEvent) {
       console.log('Show click position');
       positionPixelLastClick.value.x = arg.offsetX;
       positionPixelLastClick.value.y = arg.offsetY;

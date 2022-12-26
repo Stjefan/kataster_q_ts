@@ -1,8 +1,17 @@
 <template>
   <q-page padding>
     <!-- content -->
-    <q-btn label="Neues Werk  " @click="init" />
-    <plant-overview :uebersichtTreeNodes="treeNodes" @createChild="create" />
+    <div class="row">
+      <div class="col-3">
+        <q-btn label="Neues Werk  " @click="init" />
+        <plant-overview :uebersichtTreeNodes="treeNodes" @createChild="create" />
+      </div>
+      <div class="col-8">
+
+        <map-view />
+      </div>
+    </div>
+
   </q-page>
 </template>
 
@@ -13,9 +22,10 @@ import { computed, defineComponent, ref, Ref } from 'vue'
 import PlantOverview from '../components/PlantOverview.vue'
 
 import { useKatasterStore } from '../stores/kataster-store'
+import MapView from 'src/components/MapView.vue'
 export default defineComponent({
   // name: 'PageName'
-  components: { PlantOverview },
+  components: { PlantOverview, MapView },
   setup() {
     const store = useKatasterStore()
     const treeNodes = computed(() => store.plants)
@@ -31,7 +41,7 @@ export default defineComponent({
       switch (_args.body) {
         case 'werk':
           console.log('werk');
-          _args.children.push(buildingFactory.build())
+          (_args as Plant).children.push(buildingFactory.build())
           break;
         case 'dach':
           console.log('dach');
