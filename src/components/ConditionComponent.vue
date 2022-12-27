@@ -18,12 +18,11 @@
 
 <script lang="ts">
 import { api } from 'src/boot/axios';
-import { ref, computed, defineEmits } from 'vue';
+import { ref, computed } from 'vue';
 export default {
   // name: 'ComponentName',
   props: ['options'],
   setup(props: any, context: any) {
-    const emit = defineEmits(['run-query']);
 
     const selected: any = ref(props.options[0]);
     const stringOptions = [

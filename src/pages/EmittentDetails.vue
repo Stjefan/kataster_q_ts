@@ -52,7 +52,7 @@
 import { defineComponent, Ref, ref } from 'vue'
 
 import EditMessung from '../components/EditMessung.vue'
-import { Messung, messungFactory, emittentDetailsFactory } from '../models/v1'
+import { Messung, messungFactory, emittentDetailsFactory, verfuegbareMessverfahren, kamin_messverfahren, ein_punkt_messverfahren, vier_punkt_messverfahren, fuenf_punkt_messverfahren } from '../models/v1'
 
 import { useRefHistory } from '@vueuse/core'
 import { useQuasar } from 'quasar';
@@ -83,30 +83,31 @@ export default defineComponent({
         options: {
           model: 'opt1',
           // inline: true
+          items: verfuegbareMessverfahren.map(i => ({ label: i, value: i }))
+          /*
           items: [
             { label: '1 Anlage', value: 'opt1', color: 'secondary' },
             { label: '3 Anlagen', value: 'opt3' },
             { label: '4 Anlagen', value: 'opt4' },
             { label: '5 Anlagen', value: 'opt5' }
           ]
+          */
         }
       }).onOk(async (data) => {
         console.log(data);
-        switch (data) {
-          case 'opt1':
-            emittent.value.messungen.push((await messungFactory.build({ 'type': '1P' }))!)
-            break;
-          case 'opt3':
-            emittent.value.messungen.push((await messungFactory.build({ 'type': '3P' }))!)
-            break;
-          case 'opt4':
-            emittent.value.messungen.push((await messungFactory.build({ 'type': '4P' }))!)
-            break;
-          case 'opt5':
-            emittent.value.messungen.push((await messungFactory.build({ 'type': '5P' }))!)
-            break;
-        }
+        if (ein_punkt_messverfahren.includes(data)) {
+          emittent.value.messungen.push((await messungFactory.build({ 'type': '1P' }))!)
 
+        } else if (kamin_messverfahren.includes(data)) {
+          emittent.value.messungen.push((await messungFactory.build({ 'type': '4P' }))!)
+
+        } else if (vier_punkt_messverfahren.includes(data)) {
+          emittent.value.messungen.push((await messungFactory.build({ 'type': '4P' }))!)
+
+        } else if (fuenf_punkt_messverfahren.includes(data)) {
+          emittent.value.messungen.push((await messungFactory.build({ 'type': '5P' }))!)
+
+        }
 
       })
 

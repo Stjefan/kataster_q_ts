@@ -4,7 +4,8 @@
     <q-btn label="Neues Messgerät anlegen" @click="create" />
     <q-select v-model="selectedMessgeraet" :options="messgeraete" option-label="name" />
     <div v-if="selectedMessgeraet">
-      <messgeraet-details v-model:name="selectedMessgeraet.name" @remove="remove" />
+      <messgeraet-details v-model:name="selectedMessgeraet.name" @remove="remove"
+        v-model:offsetLines="selectedMessgeraet.offsetLines" />
     </div>
   </q-page>
 </template>

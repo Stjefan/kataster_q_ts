@@ -1,8 +1,10 @@
 <template>
-  <div class="row">
+  <div>Neuen Bericht erstellen</div>
+  <div class="row justify-evenly">
     <q-btn label="Bericht erstellen" />
-    <q-select v-model="selectedVorlage" :options="vorlagen" option-label="name" label="Vorlage" />
+    <q-select v-model="selectedVorlage" :options="vorlagen" option-label="name" label="Vorlage" class="col-3" />
   </div>
+  <div>Vorhandene Berichte</div>
   <q-select v-model="selectedBericht" :options="berichte" option-label="name" label="Berichte" />
 </template>
 

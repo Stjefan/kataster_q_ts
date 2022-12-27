@@ -1,5 +1,6 @@
 
 import * as Factory from 'factory.ts';
+import { random } from 'lodash';
 export interface Pegelreihe {
   [state: string]: unknown
 
@@ -16,7 +17,10 @@ export interface Pegelreihe {
 
 }
 
-
+export interface Korrekturwert {
+  lw: number
+  bemerkung: string
+}
 
 export function getField(arg: Pegelreihe, field: string) {
   switch (field) {
@@ -36,6 +40,8 @@ export function setField(arg: Pegelreihe, field: string, value: number) {
     case 'hz31_5':
       arg.hz31_5 = value
       break
+    case 'hz63': arg.hz63 = value
+      break;
     case 'hz125': arg.hz125 = value
       break;
 
@@ -43,7 +49,7 @@ export function setField(arg: Pegelreihe, field: string, value: number) {
       break
     case 'hz500': arg.hz500 = value
       break
-    default: throw new Error('Invalid argument')
+    default: throw new Error(`Invalid argument: ${field}`)
   }
 
 }
@@ -51,6 +57,25 @@ export function setField(arg: Pegelreihe, field: string, value: number) {
 
 export const pegelfrequenzenFields = ['hz31_5', 'hz63', 'hz125', 'hz250', 'hz500']
 
+export const ein_punkt_messverfahren = ['Quadermessung an 1 reflektierenden Ebene',
+  'Quadermessung an 2 reflektierenden Ebenen',
+  'Quadermessung an 3 reflektierenden Ebenen',
+  'Kugelmessung (default)',
+  'Innerhalb einer eckigen Fläche',
+  'Innerhalb einer rahmen Fläche',
+  'Innerhalb einer Kreisfläche',
+  'Innerhalb einer Kreisringfläche',
+  'Außerhalb einer eckigen Fläche',
+  'Außerhalb einer rahmen Fläche',
+  'Außerhalb einer Kreisfläche',
+  'Außerhalb einer Kreisringfläche',
+  'Innenpegel',]
+
+export const kamin_messverfahren = ['Kaminmessung (eckig)', 'Kaminmessung (rund)']
+export const vier_punkt_messverfahren = ['Kühler an Kante']
+export const fuenf_punkt_messverfahren = ['runder Kühler']
+export const drei_punkt_messverfahren = ['Kühlturmmessung']
+export const verfuegbareMessverfahren = ein_punkt_messverfahren.concat(kamin_messverfahren).concat(vier_punkt_messverfahren).concat(fuenf_punkt_messverfahren).concat(drei_punkt_messverfahren)
 export function* ascendingFrequences(arg: Pegelreihe) {
   yield arg.hz31_5;
   yield arg.hz63;
@@ -86,6 +111,8 @@ export interface Vorlage {
 export interface Messgeraet {
   name: string,
   id: string
+  offsetLines: number
+  seriennummer: string
 }
 
 export interface Auswertungspegelreihe {
@@ -117,6 +144,21 @@ export interface MesspunktAnAnlage {
 }
 
 
+export interface ExcelFieldImport {
+  name: string
+  col: number
+  row: number
+  maps_to: string
+  id: string
+
+}
+
+export interface ExcelFieldExport {
+  name: string
+  col: number
+  row: number
+  maps_from: string
+}
 
 
 export interface MesswertreiheDiscriminator {
@@ -216,6 +258,8 @@ export interface Messung {
   auswertung?: AuswertungDefault
 
   type: string
+
+  messverfahren: string
 
 }
 
@@ -327,10 +371,11 @@ const messpositionFactory = Factory.Sync.makeFactory<Messposition>({
 
 const _messungFactory = Factory.Async.makeFactoryWithRequired<Messung, 'type'>({
   id: Factory.Async.each((i) => `${i}`),
-  datum: 'Abc',
+  datum: Factory.Async.each(() => new Date().toISOString()),
   messpositionen: Factory.Async.each(() => new Map<number, MesspositionEditViewModel>()),
   geometrie_messung: Factory.Async.each(() => geometrieMessungFactory.build()),
-  geometrie_emittent: Factory.Async.each(() => geometrieEmittentFactory.build())
+  geometrie_emittent: Factory.Async.each(() => geometrieEmittentFactory.build()),
+  messverfahren: ''
 });
 
 
@@ -341,21 +386,28 @@ const messungFactory = _messungFactory.transform(obj => {
 
     case '1P':
       obj.messpositionen.set(1, messpositionEditViewModelFactory.build())
+      obj.messverfahren = ein_punkt_messverfahren[random(0, ein_punkt_messverfahren.length - 1)]
       return obj
+    /*
     case '2P':
       obj.messpositionen.set(1, messpositionEditViewModelFactory.build())
       obj.messpositionen.set(2, messpositionEditViewModelFactory.build())
+
       return obj
+            */
     case '3P':
       obj.messpositionen.set(1, messpositionEditViewModelFactory.build())
       obj.messpositionen.set(2, messpositionEditViewModelFactory.build())
       obj.messpositionen.set(3, messpositionEditViewModelFactory.build())
+      obj.messverfahren = drei_punkt_messverfahren[random(0, drei_punkt_messverfahren.length - 1)]
       return obj
+
     case '4P':
       obj.messpositionen.set(1, messpositionEditViewModelFactory.build())
       obj.messpositionen.set(2, messpositionEditViewModelFactory.build())
       obj.messpositionen.set(3, messpositionEditViewModelFactory.build())
       obj.messpositionen.set(4, messpositionEditViewModelFactory.build())
+      obj.messverfahren = vier_punkt_messverfahren[random(0, vier_punkt_messverfahren.length - 1)]
       return obj
     case '5P':
       obj.messpositionen.set(1, messpositionEditViewModelFactory.build())
@@ -363,6 +415,7 @@ const messungFactory = _messungFactory.transform(obj => {
       obj.messpositionen.set(3, messpositionEditViewModelFactory.build())
       obj.messpositionen.set(4, messpositionEditViewModelFactory.build())
       obj.messpositionen.set(5, messpositionEditViewModelFactory.build())
+      obj.messverfahren = fuenf_punkt_messverfahren[random(0, fuenf_punkt_messverfahren.length - 1)]
       return obj
   }
 })
@@ -388,6 +441,12 @@ const georeferenzierungFactory = Factory.Sync.makeFactory<Georeferenzierung>({
 
 
 
+const excelFieldImportFactory = Factory.Sync.makeFactoryWithRequired<ExcelFieldImport, 'maps_to'>({
+  id: Factory.each((i) => `${i}`),
+  row: Factory.each((i) => i),
+  col: Factory.each((i) => i),
+  name: 'Hz31.5'
+})
 
 
 const koordinatenFactory = Factory.Sync.makeFactory<Koordinaten>({
@@ -533,19 +592,23 @@ const auswertungFactory = Factory.Sync.makeFactory<AuswertungDefault>({
 })
 
 const projectFactory = Factory.Sync.makeFactory<Projekt>({
-  name: 'blub',
+  name: Factory.each((i) => `Projekt ${i}`),
   id: Factory.each((i) => `M${i}`)
 })
 
 const messgeraetFactory = Factory.Sync.makeFactory<Messgeraet>({
-  name: 'blub',
-  id: Factory.each((i) => `M${i}`)
+  name: Factory.each((i) => `Messgerät ${i}`),
+  id: Factory.each((i) => `M${i}`),
+  offsetLines: 3,
+  seriennummer: 'NOR118_5989863'
 })
 
 const vorlageFactory = Factory.Sync.makeFactory<Vorlage>({
-  name: 'blub',
-  id: Factory.each((i) => `M${i}`)
+  name: Factory.each((i) => `Vorlage ${i}`),
+  id: Factory.each((i) => `V${i}`)
 })
+
+
 export {
   projectFactory,
   vorlageFactory,
@@ -566,7 +629,8 @@ export {
   roofFactory,
   emittentFactory,
   messpunktAnAnlageFactory,
-  pointOnMapFactory
+  pointOnMapFactory,
+  excelFieldImportFactory
 }
 
 

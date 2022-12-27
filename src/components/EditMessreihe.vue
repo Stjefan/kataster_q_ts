@@ -16,10 +16,10 @@
     <template v-slot:body-cell-hz31_5="props">
       <q-td>
         <tr>
-          <q-input type="number" v-model="props.row.gesamtpegel.hz31_5" />
+          <q-input type="number" v-model.number="props.row.gesamtpegel.hz31_5" />
         </tr>
         <tr>
-          <q-input type="number" v-model="props.row.fremdpegel.hz31_5" v-if="props.row.fremdpegelVorhanden" />
+          <q-input type="number" v-model.number="props.row.fremdpegel.hz31_5" v-if="props.row.fremdpegelVorhanden" />
         </tr>
       </q-td>
     </template>

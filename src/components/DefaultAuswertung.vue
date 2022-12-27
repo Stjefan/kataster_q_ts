@@ -1,7 +1,11 @@
 <template>
-  <div>My component</div>
+  <div>Korrekturen</div>
+  <div>Winkelfehler</div>
+  <div>Mittelungspegel</div>
   <q-table :rows="mittelungspegel" :hide-bottom="true" />
+  <div>Anlagenpegel</div>
   <q-table :rows="anlagenpegel" :hide-bottom="true" />
+  <div>LwLin / LwA</div>
   <q-table :rows="ergebnispegel" :hide-bottom="true" />
   <chart-component :pegelreihen="ergebnispegel" />
 </template>
