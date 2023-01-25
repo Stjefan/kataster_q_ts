@@ -7,9 +7,14 @@
         ... use q-card-section for it?
       -->
       <q-table :rows="rows" :columns="cols">
-        <template v-slot:body-cell-rollback>
+        <template v-slot:body-cell-rollback="props">
           <q-td>
-            <q-btn label="Daten laden" />
+            <q-btn label="Daten laden" @click="ladeVersion(props.row)" />
+          </q-td>
+        </template>
+        <template v-slot:body-cell-delete>
+          <q-td>
+            <q-btn label="Version löschen" />
           </q-td>
         </template>
       </q-table>
@@ -26,6 +31,8 @@
 <script>
 import { useDialogPluginComponent } from 'quasar'
 import { snapshotFactory } from 'src/models/v1'
+import { useKatasterStore } from 'src/stores/kataster-store'
+import { computed } from 'vue'
 export default {
   props: {
     // ...your custom props
@@ -38,7 +45,15 @@ export default {
   ],
 
   setup() {
-    const rows = [snapshotFactory.build(), snapshotFactory.build()]
+    const store = useKatasterStore()
+    if (store.emittentSource != null) {
+      store.readRevisions(store.emittentSource)
+    }
+    function ladeVersion(target) {
+      store.showReversion(target.data)
+      // console.log(target.data)
+    }
+    const rows = computed(() => store.currentArchive)
     const cols = [
       {
         name: 'bemerkung',
@@ -49,10 +64,16 @@ export default {
         name: 'datum',
         label: 'Datum',
         //style: 'width: 50px',
-        field: 'datum',
+        field: 'created_at',
       },
       {
         name: 'rollback',
+        label: '',
+        //style: 'width: 50px',
+        field: 'id',
+      },
+      {
+        name: 'delete',
         label: '',
         //style: 'width: 50px',
         field: 'id',
@@ -87,7 +108,8 @@ export default {
 
       // we can passthrough onDialogCancel directly
       onCancelClick: onDialogCancel,
-      cols
+      cols,
+      ladeVersion
     }
   }
 }

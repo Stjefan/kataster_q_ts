@@ -2,17 +2,17 @@
   <q-tree ref="uebersichtTree" node-key="id" :nodes="uebersichtTreeNodes" label-key="name" children-key="children"
     v-model:selected="selectedKey">
     <template v-slot:header-emittent="props">
-      <div>
+      <div style="width: 200px">
         {{ props.node.name }}
         <q-menu touch-position context-menu>
           <q-list style="min-width: 100px">
             <q-item clickable v-close-popup @click="remove(props.node)">
               <q-item-section>Löschen</q-item-section>
             </q-item>
-            <q-item clickable v-close-popup @click="doRouterPush(props.node.id)">
+            <q-item clickable v-close-popup @click="editEmittentDialog(props.node)">
               <q-item-section>Bearbeiten</q-item-section>
             </q-item>
-            <q-item clickable v-close-popup @click="editEmittentDialog(props.node)">
+            <q-item clickable v-close-popup @click="markOnMap(props.node)">
               <q-item-section>Auf Karte markieren</q-item-section>
             </q-item>
           </q-list>
@@ -20,7 +20,7 @@
       </div>
     </template>
     <template v-slot:header-dach="props">
-      <div>
+      <div style="width: 200px">
         {{ props.node.name }}
         <q-menu touch-position context-menu>
           <q-list style="min-width: 100px">
@@ -44,7 +44,7 @@
       </div>
     </template>
     <template v-slot:header-gebaeude="props">
-      <div>
+      <div style="width: 200px">
         {{ props.node.name }}
         <q-menu touch-position context-menu>
           <q-list style="min-width: 100px">
@@ -62,7 +62,7 @@
       </div>
     </template>
     <template v-slot:header-werk="props">
-      <div>
+      <div style="width: 200px">
         {{ props.node.name }}
         <q-menu touch-position context-menu>
           <q-list style="min-width: 100px">
@@ -90,11 +90,23 @@
 
 <script lang="ts">
 import { api } from 'src/boot/axios'
-import { Building, buildingFactory, Emittent, emittentFactory, Plant, pointOnMapFactory, Roof, roofFactory } from 'src/models/v1'
+import { Building, buildingFactory, Emittent, emittentFactory, karteDetailsFactory, Plant, pointOnMapFactory, rectOnMapFactory, Roof, roofFactory } from 'src/models/v1'
 import { defineComponent, ref } from 'vue'
+import { gk_2_px, get_gk_2_px_matrix } from 'src/utility/georeferenzieren'
 import * as _ from 'lodash'
 import { useKatasterStore } from 'src/stores/kataster-store'
 import { useQuasar } from 'quasar';
+
+function getMessageText(node: Roof | Building | Plant) {
+  switch (node.body) {
+    case 'werk':
+      return `Werk ${node.name} bearbeiten`
+    case 'dach':
+      return `Dach ${node.name} bearbeiten`
+    case 'gebaeude':
+      return `Gebäude ${node.name} bearbeiten`
+  }
+}
 export default defineComponent({
   // name: 'ComponentName'
   props: ['uebersichtTreeNodes'],
@@ -106,62 +118,40 @@ export default defineComponent({
     const selectedKey = ref('')
     // const myNodes = ref([])
     function createEntityDialog(_args: Plant | Building | Roof) {
-      $q.dialog({
-        title: 'Anlegen',
-        message: `${_args.header} ${_args.name} bearbeiten`,
-        cancel: true,
-        persistent: true,
-        options: {
-          model: 'opt1',
-          // inline: true
-          items: [
-            { label: '1 Anlage', value: 'opt1', color: 'secondary' },
-            { label: '3 Anlagen', value: 'opt3' },
-            { label: '4 Anlagen', value: 'opt4' },
-            { label: '5 Anlagen', value: 'opt5' }
-          ]
-        }
-      }).onOk(async (data) => {
-        console.log(data);
-        switch (_args.body) {
-          case 'werk':
-            (_args as Plant).children.push(buildingFactory.build())
-            break
-          case 'gebaeude':
-            (_args as Building).children.push(roofFactory.build())
-            break
-          case 'dach':
-            (_args as Roof).children.push(emittentFactory.build())
-            break
-        }
-
-
-
-      })
+      emit('create-child-dialog', _args)
     }
 
-    function editEmittentDialog(_args: unknown) {
+    async function editEmittentDialog(_args: Emittent) {
       console.log('This is a filler...', _args)
+      await store.setEmittentDetailsFromEmittent(_args)
+      console.log('Store should have done its work')
     }
 
     function editEntityDialog(_args: Plant | Building | Roof) {
       $q.dialog({
         title: 'Editiere',
-        message: `${_args.header} ${_args.name} bearbeiten`,
+        message: getMessageText(_args),
         cancel: true,
         persistent: true,
-        options: {
-          model: 'opt1',
-          // inline: true
-          items: [
-            { label: '1 Anlage', value: 'opt1', color: 'secondary' },
-            { label: '3 Anlagen', value: 'opt3' },
-            { label: '4 Anlagen', value: 'opt4' },
-            { label: '5 Anlagen', value: 'opt5' }
-          ]
-        }
+        prompt: {
+          model: '',
+          type: 'text' // optional
+        },
       }).onOk(async (data) => {
         console.log(data);
+        _args.name = data
+        switch (_args.body) {
+          case 'werk':
+            store.updatePlantBackend(_args as Plant)
+            break;
+          case 'dach':
+            throw Error('Not implemented')
+            break;
+          case 'gebaeude':
+            store.updateBuildingBackend(_args as Building)
+            break;
+
+        }
 
 
 
@@ -173,38 +163,73 @@ export default defineComponent({
       console.log('This is a filler...', _args)
     }
 
-    function editMap(_args: unknown) {
+    function editMap(_args: Plant | Roof) {
       console.log('This is a filler...', _args)
+      if (_args.map != null) {
+        store.$patch({
+          karte2edit: _args.map,
+          karte2editZuordnung: _args,
+        })
+      } else {
+        store.$patch({
+          karte2edit: karteDetailsFactory.build(),
+          karte2editZuordnung: _args
+        })
+      }
     }
 
     function showMap(_args: Plant | Roof) {
       console.log('This is a filler...', _args)
       store.$patch({
-        karteMainPage: _args.map
+        karteMainPage: _args.map,
+        karteMainPageZuordnung: _args
+
       })
       switch (_args.body) {
         case 'dach':
-          console.log()
-          store.$patch({
-            pointsOnMap: (_args as Roof).children.map(i => pointOnMapFactory.build({ pixel_x: i.koordinaten.pixel_x, pixel_y: i.koordinaten.pixel_y }))
-          })
+
+          if (_args.map.georeferenzierung) {
+            const mygk2pxMatrix = get_gk_2_px_matrix(_args.map.georeferenzierung)
+
+            store.$patch({
+              pointsOnMap: (_args as Roof).children.filter(i => i.koordinaten != null).map(i => {
+                const p = gk_2_px(i.koordinaten, mygk2pxMatrix)
+                return pointOnMapFactory.build({ pixel_x: p.px_x, pixel_y: p.px_y })
+              })
+            })
+            console.log(store.pointsOnMap)
+          }
+
+
           break;
         case 'werk':
           console.log((_args as Plant).children.map(i => i.children.map(ii => ii.map)))
+          const roofs = _.flatMap((_args as Plant).children, i => i.children)
+          store.$patch({
+            rectsOnMap: roofs.filter(i => i.map != null).map(i => rectOnMapFactory.build())
+          })
           break;
 
       }
 
     }
 
+    function markOnMap(target: Emittent) {
+      console.log(target)
+    }
+
     function remove(target: Plant | Building | Roof | Emittent) {
 
-      console.log('This is a filler...', target)
+
+
+      emit('remove-node', target)
 
       if (target.body == 'werk') {
         const parentPlant = props.uebersichtTreeNodes.findIndex((i: Plant) => i.id === target.id)
 
         console.log(parentPlant)
+
+
 
 
 
@@ -284,7 +309,8 @@ export default defineComponent({
       createEntityDialog,
       editMap,
       showMap,
-      remove
+      remove,
+      markOnMap
     }
   }
 })

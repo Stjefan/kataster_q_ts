@@ -36,9 +36,21 @@ export function berechneMittelungspegel(arg: MesspositionEditViewModel) {
   if (fremdpegelreihen.length > 0) {
     const mittelungspegel_fremd = energetische_summe(fremdpegelreihen)
     console.log('berechneMittelungspegel', mittelungspegel_gesamt, mittelungspegel_fremd)
+    return {
+      gesamtpegel: mittelungspegel_gesamt,
+      fremdpegel: mittelungspegel_fremd
+    }
   } else {
     console.log('berechneMittelungspegel', mittelungspegel_gesamt)
+    return {
+      gesamtpegel: mittelungspegel_gesamt,
+      fremdpegel: null
+    }
   }
+
+  console.log('mittelungspegel_gesamt', mittelungspegel_gesamt)
+
+
 
 
 
@@ -80,7 +92,7 @@ export function berechneLwlin(args: [Anlagenpegelreihe & Pegelreihe]) {
     summierteEnergie += getField(auswertungspegelreihe, f)
   }
   auswertungspegelreihe.summiert = summierteEnergie / pegelfrequenzenFields.length
-  console.log('berechneAnlagenpegel', auswertungspegelreihe)
+  console.log('berechnelwlin', auswertungspegelreihe)
   return auswertungspegelreihe
 
 }
@@ -89,26 +101,29 @@ export function berechneLwlin(args: [Anlagenpegelreihe & Pegelreihe]) {
 
 export function berechneAnlagenpegel(args: MesspositionEditViewModel) {
   const messpunkte_an_anlage = []
+
   for (const arg of args.messwertereihen) {
     const anlagenpegel = anlagenpegelFactory.build()
+
     for (const f of pegelfrequenzenFields) {
       if (arg.fremdpegelVorhanden) {
-        setField(anlagenpegel, f, getField(arg.gesamtpegel, f) + getField(arg.fremdpegel, f))
+        setField(anlagenpegel, f, 10 * Math.log10(10 ** (0.1 * getField(arg.gesamtpegel, f)) - 10 ** (0.1 * getField(arg.fremdpegel, f))))
       } else {
         setField(anlagenpegel, f, getField(arg.gesamtpegel, f))
       }
     }
     messpunkte_an_anlage.push(anlagenpegel)
+    console.log('anlagenpegel an messpunkten', anlagenpegel)
   }
-  const gemittelter_anlagenpegel = anlagenpegelFactory.build()
 
-  for (const f of pegelfrequenzenFields) {
 
-    setField(gemittelter_anlagenpegel, f, messpunkte_an_anlage.reduce((i, j) => i + getField(j, f), 0))
-  }
-  console.log('berechneAnlagenpegel', gemittelter_anlagenpegel)
+  const gemittelter_anlagenpegel = energetische_summe(messpunkte_an_anlage) // anlagenpegelFactory.build()
 
-  return gemittelter_anlagenpegel
+  const a_quer = { ...gemittelter_anlagenpegel, korrektur: 3 } as Anlagenpegelreihe & Pegelreihe
+
+  console.log('gemittelter anlagenpegel', a_quer)
+
+  return a_quer
 }
 
 function berechneMessflaechenschalldruckpegel() {
@@ -141,7 +156,7 @@ function berechneMessflaechenkorrektur(
       return berechneKorrekturKaminEckig(emittent_geometrie, messung_geometrie);
     case 'Kugelmessung (default)':
       return berechneKorrekturKugel(emittent_geometrie, messung_geometrie);
-    case 'Innerhalb eines Rahmens':
+    case 'Innerhalb einer rahmen Fläche':
       return berechneKorrekturInnerhalbRahmen(
         emittent_geometrie,
         messung_geometrie
@@ -162,6 +177,16 @@ function berechneMessflaechenkorrektur(
         emittent_geometrie,
         messung_geometrie
       );
+    case 'Innerhalb einer Kreisfläche':
+      return berechneKorrekturInnerhalbKreis(emittent_geometrie, messung_geometrie)
+    case 'Kühlturmmessung':
+      return berechneKorrekturKuehlturm(emittent_geometrie, messung_geometrie)
+    case 'Kühler an Fläche':
+      return berechneKorrekturKuehlerFlaeche(emittent_geometrie, messung_geometrie)
+    case 'Kühler an Kante':
+      return berechneKorrekturKuehlerKante(emittent_geometrie, messung_geometrie)
+    case 'Innenpegel':
+      throw new Error(`${messverfahren} not implemented`);
     default:
       throw new Error(`Unknown messverfahren: ${messverfahren}`);
       return berechneKorrekturQuader2(emittent_geometrie, messung_geometrie);
@@ -200,6 +225,7 @@ export function berechneKorrekturQuader2(
   const lw_before_logarithm = 2 * (2 * a * c + 2 * a * b + b * c);
   // Winkelfehler-Berechnung nach 'F. Probst: Bestimmung des Schallleistungspegels von Industrieschallquellen [...]', Projekt 10716
   const oberflächeReferenzquader = lw_before_logarithm;
+  console.log('oberflächeReferenzquader', oberflächeReferenzquader)
   const messabstand = messung_geometrie.geoxy;
   const winkelfehler =
     1.2805 * Math.log10(Math.pow(oberflächeReferenzquader / messabstand, 2)) -

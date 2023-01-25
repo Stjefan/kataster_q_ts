@@ -130,19 +130,19 @@ export interface DreiPunktMessung {
    * @type {Messposition}
    * @memberof DreiPunktMessung
    */
-  messposition1: Messposition;
+  messposition_1: Messposition;
   /**
    *
    * @type {Messposition}
    * @memberof DreiPunktMessung
    */
-  messposition2: Messposition;
+  messposition_2: Messposition;
   /**
    *
    * @type {Messposition}
    * @memberof DreiPunktMessung
    */
-  messposition3: Messposition;
+  messposition_3: Messposition;
   /**
    *
    * @type {number}
@@ -166,13 +166,13 @@ export interface DreiPunktMessung {
    * @type {GeometrieEmittent}
    * @memberof DreiPunktMessung
    */
-  emittentGeometrie: GeometrieEmittent;
+  emittent_geometrie: GeometrieEmittent;
   /**
    *
    * @type {GeometrieMessung}
    * @memberof DreiPunktMessung
    */
-  messungGeometrie: GeometrieMessung;
+  messung_geometrie: GeometrieMessung;
 }
 
 
@@ -188,13 +188,13 @@ export interface EinPunktAuswertung {
    * @type {Pegelreihe}
    * @memberof EinPunktAuswertung
    */
-  anlagenpegel1: Pegelreihe;
+  anlagenpegel_1: Pegelreihe;
   /**
    *
    * @type {number}
    * @memberof EinPunktAuswertung
    */
-  korrekturwert1?: number;
+  korrekturwert_1?: number;
   /**
    *
    * @type {PegelreiheAuswertung}
@@ -207,6 +207,7 @@ export interface EinPunktAuswertung {
    * @memberof EinPunktAuswertung
    */
   lwa: PegelreiheAuswertung;
+  id: number
 }
 
 /**
@@ -238,7 +239,7 @@ export interface EinPunktMessung {
    * @type {Messposition}
    * @memberof EinPunktMessung
    */
-  messposition1: Messposition;
+  messposition_1: Messposition;
   /**
    *
    * @type {number}
@@ -262,13 +263,13 @@ export interface EinPunktMessung {
    * @type {GeometrieEmittent}
    * @memberof EinPunktMessung
    */
-  emittentGeometrie: GeometrieEmittent;
+  emittent_geometrie: GeometrieEmittent;
   /**
    *
    * @type {GeometrieMessung}
    * @memberof EinPunktMessung
    */
-  messungGeometrie: GeometrieMessung;
+  messung_geometrie: GeometrieMessung;
 }
 
 /**
@@ -382,31 +383,31 @@ export interface EmittentDetail {
    * @type {Array<EinPunktMessung>}
    * @memberof EmittentDetail
    */
-  einPunktMessungen: Array<EinPunktMessung>;
+  ein_punkt_messungen: Array<EinPunktMessung>;
   /**
    *
    * @type {Array<KaminMessung>}
    * @memberof EmittentDetail
    */
-  kaminMessungen: Array<KaminMessung>;
+  kamin_messungen: Array<KaminMessung>;
   /**
    *
    * @type {Array<DreiPunktMessung>}
    * @memberof EmittentDetail
    */
-  dreiPunktMessungen: Array<DreiPunktMessung>;
+  drei_punkt_messungen: Array<DreiPunktMessung>;
   /**
    *
    * @type {Array<VierPunktMessung>}
    * @memberof EmittentDetail
    */
-  vierPunktMessungen: Array<VierPunktMessung>;
+  vier_punkt_messungen: Array<VierPunktMessung>;
   /**
    *
    * @type {Array<FuenfPunktMessung>}
    * @memberof EmittentDetail
    */
-  fuenfPunktMessungen: Array<FuenfPunktMessung>;
+  fuenf_punkt_messungen: Array<FuenfPunktMessung>;
   /**
    *
    * @type {string}
@@ -436,7 +437,9 @@ export interface EmittentDetail {
    * @type {boolean}
    * @memberof EmittentDetail
    */
-  liegtAnFassade?: boolean;
+  liegt_an_fassade?: boolean;
+  in_betrieb?: boolean;
+  fuer_messung_vormerken?: boolean;
   /**
    *
    * @type {string}
@@ -454,13 +457,14 @@ export interface EmittentDetail {
    * @type {Array<Document>}
    * @memberof EmittentDetail
    */
-  documentSet: Array<Document>;
+  document_set: Array<Document>;
   /**
    *
    * @type {string}
    * @memberof EmittentDetail
    */
   image?: string;
+  bemerkung?: string,
 }
 
 /**
@@ -572,31 +576,31 @@ export interface FuenfPunktMessung {
    * @type {Messposition}
    * @memberof FuenfPunktMessung
    */
-  messposition1: Messposition;
+  messposition_1: Messposition;
   /**
    *
    * @type {Messposition}
    * @memberof FuenfPunktMessung
    */
-  messposition2: Messposition;
+  messposition_2: Messposition;
   /**
    *
    * @type {Messposition}
    * @memberof FuenfPunktMessung
    */
-  messposition3: Messposition;
+  messposition_3: Messposition;
   /**
    *
    * @type {Messposition}
    * @memberof FuenfPunktMessung
    */
-  messposition4: Messposition;
+  messposition_4: Messposition;
   /**
    *
    * @type {Messposition}
    * @memberof FuenfPunktMessung
    */
-  messposition5: Messposition;
+  messposition_5: Messposition;
   /**
    *
    * @type {number}
@@ -620,13 +624,13 @@ export interface FuenfPunktMessung {
    * @type {GeometrieEmittent}
    * @memberof FuenfPunktMessung
    */
-  emittentGeometrie: GeometrieEmittent;
+  emittent_geometrie: GeometrieEmittent;
   /**
    *
    * @type {GeometrieMessung}
    * @memberof FuenfPunktMessung
    */
-  messungGeometrie: GeometrieMessung;
+  messung_geometrie: GeometrieMessung;
 }
 
 
@@ -647,25 +651,25 @@ export interface GeometrieEmittent {
    * @type {number}
    * @memberof GeometrieEmittent
    */
-  geo1?: number;
+  geo_1?: number;
   /**
    *
    * @type {number}
    * @memberof GeometrieEmittent
    */
-  geo2?: number;
+  geo_2?: number;
   /**
    *
    * @type {number}
    * @memberof GeometrieEmittent
    */
-  geo3?: number;
+  geo_3?: number;
   /**
    *
    * @type {number}
    * @memberof GeometrieEmittent
    */
-  geo4?: number;
+  geo_4?: number;
 }
 
 /**
@@ -685,25 +689,25 @@ export interface GeometrieMessung {
    * @type {number}
    * @memberof GeometrieMessung
    */
-  geoXy?: number;
+  geo_xy?: number;
   /**
    *
    * @type {number}
    * @memberof GeometrieMessung
    */
-  geoKOmega?: number;
+  geo_k_omega?: number;
   /**
    *
    * @type {number}
    * @memberof GeometrieMessung
    */
-  geoK2A?: number;
+  geo_k_2_a?: number;
   /**
    *
    * @type {number}
    * @memberof GeometrieMessung
    */
-  geoH?: number;
+  geo_h?: number;
 }
 
 /**
@@ -753,31 +757,32 @@ export interface Georeferenzierung {
    * @type {Array<Referenzierungspunkt>}
    * @memberof Georeferenzierung
    */
-  referenzierungspunktSet: Array<Referenzierungspunkt>;
+  referenzierungspunkt_set: Array<Referenzierungspunkt>;
   /**
    *
    * @type {Koordinaten}
    * @memberof Georeferenzierung
    */
-  upperLeft: Koordinaten;
+  upper_left: Koordinaten;
   /**
    *
    * @type {Koordinaten}
    * @memberof Georeferenzierung
    */
-  upperRight: Koordinaten;
+  upper_right: Koordinaten;
   /**
    *
    * @type {Koordinaten}
    * @memberof Georeferenzierung
    */
-  lowerRight: Koordinaten;
+  lower_right: Koordinaten;
   /**
    *
    * @type {Koordinaten}
    * @memberof Georeferenzierung
    */
-  lowerLeft: Koordinaten;
+  lower_left: Koordinaten;
+  id: number
 }
 
 
@@ -792,13 +797,13 @@ export interface Koordinaten {
    * @type {number}
    * @memberof Koordinaten
    */
-  gkRechts: number;
+  gk_rechts: number;
   /**
    *
    * @type {number}
    * @memberof Koordinaten
    */
-  gkHoch: number;
+  gk_hoch: number;
   /**
    *
    * @type {number}
@@ -818,13 +823,13 @@ export interface KoordinatenHoehe {
    * @type {number}
    * @memberof KoordinatenHoehe
    */
-  gkRechts: number;
+  gk_rechts: number;
   /**
    *
    * @type {number}
    * @memberof KoordinatenHoehe
    */
-  gkHoch: number;
+  gk_hoch: number;
   /**
    *
    * @type {number}
@@ -858,7 +863,7 @@ export interface Pegelreihe {
    * @type {number}
    * @memberof Pegelreihe
    */
-  hz315?: number;
+  hz31_5?: number;
   /**
    *
    * @type {number}
@@ -926,7 +931,7 @@ export interface PegelreiheAuswertung {
    * @type {number}
    * @memberof PegelreiheAuswertung
    */
-  hz315?: number;
+  hz31_5?: number;
   /**
    *
    * @type {number}
@@ -989,7 +994,7 @@ export interface Messposition {
    * @type {Array<MesspositionPegelreiheSerializerV2>}
    * @memberof Messposition
    */
-  messpositionpegelreiheSet: Array<MesspositionPegelreiheSerializerV2>;
+  messpositionpegelreihe_set: Array<MesspositionPegelreiheSerializerV2>;
   /**
    *
    * @type {number}
@@ -1022,13 +1027,13 @@ export interface MesspositionPegelreiheSerializerV2 {
    * @type {Metainfo}
    * @memberof MesspositionPegelreiheSerializerV2
    */
-  metainfoFremdpegel?: Metainfo;
+  metainfo_fremdpegel?: Metainfo;
   /**
    *
    * @type {Metainfo}
    * @memberof MesspositionPegelreiheSerializerV2
    */
-  metainfoGesamtpegel: Metainfo;
+  metainfo_gesamtpegel: Metainfo;
   /**
    *
    * @type {number}
@@ -1061,13 +1066,15 @@ export interface Metainfo {
    * @type {string}
    * @memberof Metainfo
    */
-  fileNo: string;
+  file_no: string;
   /**
    *
    * @type {string}
    * @memberof Metainfo
    */
-  overviewPath: string;
+  overview_path: string;
+
+  messgeraet: string | null
 }
 
 /**
@@ -1099,25 +1106,25 @@ export interface VierPunktMessung {
    * @type {Messposition}
    * @memberof VierPunktMessung
    */
-  messposition1: Messposition;
+  messposition_1: Messposition;
   /**
    *
    * @type {Messposition}
    * @memberof VierPunktMessung
    */
-  messposition2: Messposition;
+  messposition_2: Messposition;
   /**
    *
    * @type {Messposition}
    * @memberof VierPunktMessung
    */
-  messposition3: Messposition;
+  messposition_3: Messposition;
   /**
    *
    * @type {Messposition}
    * @memberof VierPunktMessung
    */
-  messposition4: Messposition;
+  messposition_4: Messposition;
   /**
    *
    * @type {number}
@@ -1141,13 +1148,13 @@ export interface VierPunktMessung {
    * @type {GeometrieEmittent}
    * @memberof VierPunktMessung
    */
-  emittentGeometrie: GeometrieEmittent;
+  emittent_geometrie: GeometrieEmittent;
   /**
    *
    * @type {GeometrieMessung}
    * @memberof VierPunktMessung
    */
-  messungGeometrie: GeometrieMessung;
+  messung_geometrie: GeometrieMessung;
 }
 
 /**
@@ -1289,13 +1296,13 @@ export interface KaminMessung {
    * @type {GeometrieEmittent}
    * @memberof KaminMessung
    */
-  emittentGeometrie: GeometrieEmittent;
+  emittent_geometrie: GeometrieEmittent;
   /**
    *
    * @type {GeometrieMessung}
    * @memberof KaminMessung
    */
-  messungGeometrie: GeometrieMessung;
+  messung_geometrie: GeometrieMessung;
 }
 
 
@@ -1354,13 +1361,13 @@ export interface Referenzierungspunkt {
    * @type {number}
    * @memberof Referenzierungspunkt
    */
-  pixelX?: number;
+  pixel_x?: number;
   /**
    *
    * @type {number}
    * @memberof Referenzierungspunkt
    */
-  pixelY?: number;
+  pixel_y?: number;
   /**
    *
    * @type {Koordinaten}
@@ -1373,4 +1380,67 @@ export interface Referenzierungspunkt {
    * @memberof Referenzierungspunkt
    */
   id?: number;
+}
+
+
+
+// Custom
+
+export interface Project {
+  id: number,
+  name: string,
+  beschreibung: null
+}
+
+
+export interface Werk {
+  id: number,
+  name: string,
+  map: null,
+  project: number | null
+}
+
+
+export interface Roof {
+  id: string,
+  name: string,
+  map: KarteApi,
+  building: number,
+}
+
+
+export interface KarteApi {
+  id: string
+  plant_set: number[],
+  roof_set: number[],
+  upload: string | null,
+  georeferenzierung: Georeferenzierung | null
+}
+
+export interface TreeNodeApi {
+  id: string,
+  name: string,
+  body: string,
+  header: string,
+  children: TreeNodeApi[]
+  map: KarteApi | null,
+  lage: KoordinatenHoehe | null
+}
+
+export interface MessgeraetApi {
+  id: number
+  name: string
+
+  hz31_5: number
+  hz63: number
+  hz125: number
+  hz250: number
+  hz500: number
+  hz1000: number
+  hz2000: number
+  hz4000: number
+  hz8000: number
+
+  format_datetime_filename: string
+  format_datetime_overview: string
 }

@@ -5,19 +5,26 @@
     <condition-component :options="options" v-for="(c, idx) in conditions" :key="idx" @remove="removeCondition(idx)"
       ref="conditionComponent" />
     <q-btn label="Filtern" @click="buildQuery" />
+    <q-table :rows="filteredEmittents" :columns="cols"></q-table>
+    <filter-ergebnis />
   </q-page>
 </template>
 
 <script lang="ts">
 import ConditionComponent from 'src/components/ConditionComponent.vue';
+import FilterErgebnis from 'src/components/FilterErgebnis.vue';
+import { useKatasterStore } from 'src/stores/kataster-store';
 import { defineComponent, ref } from 'vue'
+import { api } from 'src/boot/axios';
 export default defineComponent({
-  components: { ConditionComponent },
+  components: { ConditionComponent, FilterErgebnis },
   // name: 'PageName'
   setup() {
+    const store = useKatasterStore()
     function addCondition() {
       conditions.value.push(1);
     }
+    const filteredEmittents = ref([] as any[])
     function removeCondition(args: any) {
       console.log(args);
       conditions.value.splice(args, 1);
@@ -71,6 +78,15 @@ export default defineComponent({
           'Innenpegel',
         ],
       },
+      {
+        label: 'MultiFieldOrCondition',
+        field: 'zwei_punkt_messungen__typ',
+        multi_fields: ['ein_punkt_messungen__typ', 'zwei_punkt_messungen__typ'],
+        type: 'string_constrained',
+        constrainedOptions: ['Kaminmessung (eckig)', 'Kaminmessung (rund)'],
+
+      },
+
 
       {
         label: 'Messverfahren (Kamin)',
@@ -115,7 +131,7 @@ export default defineComponent({
 
       let mergedConditions = {
         filter: {
-          roof__building__plant__project__id: 1 // store.state.example.project.id,
+          roof__building__plant__project__id: store.project?.id,
         },
         exclude: {},
       };
@@ -129,9 +145,20 @@ export default defineComponent({
       console.log(mergedConditions);
       //runFilterV2(mergedConditions);
 
+      api.put('/filter/', mergedConditions).then(response => {
+        console.log(response)
+        filteredEmittents.value = response.data
+      })
+
     }
 
-    return { options, conditions, addCondition, removeCondition, buildQuery, conditionComponent }
+    const cols = [
+      { label: 'Name', field: 'name' },
+      { label: 'Rechtswert', field: (arg: any) => arg.lage?.gk_rechts },
+      { label: 'Hochwert', field: (arg: any) => arg.lage?.gk_hoch }
+    ]
+
+    return { filteredEmittents, options, conditions, addCondition, removeCondition, buildQuery, conditionComponent, cols }
 
   }
 })

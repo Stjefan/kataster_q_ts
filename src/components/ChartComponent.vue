@@ -16,7 +16,7 @@ export default {
     return {
       chartData: {
         labels: ['31.5 Hz', '63 Hz', '125 Hz', '250 Hz', '500 Hz', '1000 Hz', '2000 Hz', '4000 Hz', '8000 Hz', 'S'],
-        datasets: this.pegelreihen.map(i => ({ data: [i.hz31_5, i.hz63, i.hz125, i.hz250, i.hz500, i.hz1000, i.hz2000, i.hz4000, i.hz8000, i.summiert] }))//[{ data: [40, 20, 12] }, { data: [50, 10, 15] }]
+        datasets: this.pegelreihen.map((i, idx) => ({ label: idx == 0 ? 'LwLin' : 'LwA', backgroundColor: '#f87979', data: [i.hz31_5, i.hz63, i.hz125, i.hz250, i.hz500, i.hz1000, i.hz2000, i.hz4000, i.hz8000, i.summiert] }))//[{ data: [40, 20, 12] }, { data: [50, 10, 15] }]
       },
       chartOptions: {
         responsive: true

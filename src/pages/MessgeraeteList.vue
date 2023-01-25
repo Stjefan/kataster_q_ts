@@ -4,7 +4,7 @@
     <q-btn label="Neues Messgerät anlegen" @click="create" />
     <q-select v-model="selectedMessgeraet" :options="messgeraete" option-label="name" />
     <div v-if="selectedMessgeraet">
-      <messgeraet-details v-model:name="selectedMessgeraet.name" @remove="remove"
+      <messgeraet-details v-model:name="selectedMessgeraet.name" @remove="remove" @save="saveChanges"
         v-model:offsetLines="selectedMessgeraet.offsetLines" />
     </div>
   </q-page>
@@ -25,11 +25,17 @@ export default defineComponent({
     const messgeraete = computed(() => store.messgeraete)
     const selectedMessgeraet = ref(null as Messgeraet | null)
     function create() {
-      store.$patch((state) => {
-        state.messgeraete.push(messgeraetFactory.build())
-      })
+      store.createMessgeraetBackend(messgeraetFactory.build())
+    }
+
+    function saveChanges() {
+      if (selectedMessgeraet.value != null) {
+        store.updateMessgeraetBackend(selectedMessgeraet.value)
+
+      }
 
     }
+
 
     function remove() {
       const idx = 0
@@ -44,7 +50,8 @@ export default defineComponent({
       messgeraete,
       selectedMessgeraet,
       create,
-      remove
+      remove,
+      saveChanges
     }
 
 

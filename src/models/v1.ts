@@ -14,7 +14,13 @@ export interface Pegelreihe {
   hz4000: number
   hz8000: number
   id: string
+  idOnBackend: number | null
 
+}
+
+export interface OverviewFile {
+  id: number
+  upload: string
 }
 
 export interface Korrekturwert {
@@ -30,6 +36,10 @@ export function getField(arg: Pegelreihe, field: string) {
     case 'hz125': return arg.hz125
     case 'hz250': return arg.hz250
     case 'hz500': return arg.hz500
+    case 'hz1000': return arg.hz1000
+    case 'hz2000': return arg.hz2000
+    case 'hz4000': return arg.hz4000
+    case 'hz8000': return arg.hz8000
     default: throw new Error('Invalid argument')
   }
 
@@ -49,13 +59,21 @@ export function setField(arg: Pegelreihe, field: string, value: number) {
       break
     case 'hz500': arg.hz500 = value
       break
+    case 'hz1000': arg.hz1000 = value
+      break
+    case 'hz2000': arg.hz2000 = value
+      break
+    case 'hz4000': arg.hz4000 = value
+      break
+    case 'hz8000': arg.hz8000 = value
+      break
     default: throw new Error(`Invalid argument: ${field}`)
   }
 
 }
 
 
-export const pegelfrequenzenFields = ['hz31_5', 'hz63', 'hz125', 'hz250', 'hz500']
+export const pegelfrequenzenFields = ['hz31_5', 'hz63', 'hz125', 'hz250', 'hz500', 'hz1000', 'hz2000', 'hz4000', 'hz8000']
 
 export const ein_punkt_messverfahren = ['Quadermessung an 1 reflektierenden Ebene',
   'Quadermessung an 2 reflektierenden Ebenen',
@@ -73,7 +91,7 @@ export const ein_punkt_messverfahren = ['Quadermessung an 1 reflektierenden Eben
 
 export const kamin_messverfahren = ['Kaminmessung (eckig)', 'Kaminmessung (rund)']
 export const vier_punkt_messverfahren = ['Kühler an Kante']
-export const fuenf_punkt_messverfahren = ['runder Kühler']
+export const fuenf_punkt_messverfahren = ['Kühler an Fläche']
 export const drei_punkt_messverfahren = ['Kühlturmmessung']
 export const verfuegbareMessverfahren = ein_punkt_messverfahren.concat(kamin_messverfahren).concat(vier_punkt_messverfahren).concat(fuenf_punkt_messverfahren).concat(drei_punkt_messverfahren)
 export function* ascendingFrequences(arg: Pegelreihe) {
@@ -96,6 +114,7 @@ export interface Koordinaten {
   pixel_x: number,
   pixel_y: number
   id: string
+  idAtBackend: number | null
 }
 
 export interface Projekt {
@@ -105,7 +124,8 @@ export interface Projekt {
 
 export interface Vorlage {
   name: string,
-  id: string
+  id: string,
+  idAtBackend: number | null
 }
 
 export interface Messgeraet {
@@ -113,6 +133,7 @@ export interface Messgeraet {
   id: string
   offsetLines: number
   seriennummer: string
+  idAtBackend: number | null
 }
 
 export interface Auswertungspegelreihe {
@@ -125,10 +146,11 @@ export interface Anlagenpegelreihe {
 
 export interface AuswertungDefault {
   mittelungspegel: Pegelreihe[]
-  anlagenpegel: (Pegelreihe | Anlagenpegelreihe)[]
+  anlagenpegel: (Pegelreihe & Anlagenpegelreihe)[]
 
-  lwlin: Pegelreihe | Auswertungspegelreihe
-  lwa: Pegelreihe | Auswertungspegelreihe
+  lwlin: Pegelreihe & Auswertungspegelreihe
+  lwa: Pegelreihe & Auswertungspegelreihe,
+  id: string,
 }
 
 export interface MesspunktAnAnlage {
@@ -161,11 +183,6 @@ export interface ExcelFieldExport {
 }
 
 
-export interface MesswertreiheDiscriminator {
-  type: string
-  metainfo: Metainfo
-  vorhanden: boolean
-}
 
 export interface MesswertereiheDTO {
   hz31_5: number;
@@ -190,8 +207,14 @@ export interface Georeferenzierungspunkt {
 export interface Metainfo {
   name_messfile: string
   messdatum: string
-  messgeraet: Messgeraet | null
+  name_overviewfile: string
+  messgeraet: string | null | undefined
   id: string
+}
+
+export interface GK2PxMatrix {
+  translation: number[][]
+  matrix: number[][]
 }
 
 export interface Georeferenzierung {
@@ -204,12 +227,20 @@ export interface Georeferenzierung {
   x12: number
   id: string
 
+  upper_left: Koordinaten
+  upper_right: Koordinaten
+  lower_right: Koordinaten
+  lower_left: Koordinaten
+
 }
 
 export interface KarteDetails {
   url: string
   georeferenzierung?: Georeferenzierung
-  id: string
+  id: string | number
+
+  zuordnung?: string,
+  idAtBackend: number | null
 
 }
 
@@ -223,14 +254,14 @@ export interface AuswertungDTO {
   lwa: MesswertereiheDTO
   lwlin: MesswertereiheDTO
 }
-
+/*
 export interface Messposition {
   fremdpegel: Pegelreihe
   gesamtpegel: Pegelreihe
   fremdpegel_vorhanden: boolean
   id: string
 }
-
+*/
 
 export interface MesspositionDTO {
   fremdpegel: Pegelreihe
@@ -255,7 +286,7 @@ export interface Messung {
 
   messpositionen: Map<number, MesspositionEditViewModel>
 
-  auswertung?: AuswertungDefault
+  auswertung: AuswertungDefault | null
 
   type: string
 
@@ -270,6 +301,8 @@ export interface Plant {
   header: string
   body: string
   map: KarteDetails
+  project_id: number,
+  idAtBackend: number | null
 }
 
 export interface Building {
@@ -277,7 +310,9 @@ export interface Building {
   name: string,
   children: Roof[],
   header: string
-  body: string
+  body: string,
+  parent: string,
+  idAtBackend: number | null
 }
 
 export interface Roof {
@@ -287,6 +322,8 @@ export interface Roof {
   header: string
   body: string
   map: KarteDetails
+  parent: string,
+  idAtBackend: number | null
 }
 
 export interface Emittent {
@@ -295,9 +332,11 @@ export interface Emittent {
   header: string
   body: string
   koordinaten: Koordinaten
+  parent: string
 }
 
 export interface EmittentDetails {
+  id: string
   name: string
   gkrechts: number
   gkhoch: number
@@ -342,10 +381,21 @@ export interface PointOnMap {
   id: string
 }
 
+export interface RectOnMap {
+  points: string
+  id: string
+}
+
 const pointOnMapFactory = Factory.Sync.makeFactory<PointOnMap>({
   id: Factory.each((i) => `P${i}`),
   pixel_x: Factory.each(() => Math.floor(Math.random() * 10000) / 100),
   pixel_y: Factory.each(() => Math.floor(Math.random() * 10000) / 100),
+
+})
+
+const rectOnMapFactory = Factory.Sync.makeFactory<RectOnMap>({
+  id: Factory.each((i) => `P${i}`),
+  points: Factory.each(() => `${(Math.floor(Math.random() * 10000) / 100)}, ${(Math.floor(Math.random() * 10000) / 100)}, ${(Math.floor(Math.random() * 10000) / 100)}, ${(Math.floor(Math.random() * 10000) / 100)}, ${(Math.floor(Math.random() * 10000) / 100)}, ${(Math.floor(Math.random() * 10000) / 100)}`),
 
 })
 
@@ -362,20 +412,22 @@ const messwertereiheFactory = Factory.Sync.makeFactory<Pegelreihe>({
   hz8000: Factory.each(() => Math.floor(Math.random() * 10000) / 100),
 });
 
+/*
 const messpositionFactory = Factory.Sync.makeFactory<Messposition>({
   id: Factory.each((i) => `${i}`),
   fremdpegel: messwertereiheFactory.build(),
   gesamtpegel: messwertereiheFactory.build(),
-  fremdpegel_vorhanden: true,
+  fremdpegel_vorhanden: Factory.each((i) => false),
 });
-
+*/
 const _messungFactory = Factory.Async.makeFactoryWithRequired<Messung, 'type'>({
   id: Factory.Async.each((i) => `${i}`),
   datum: Factory.Async.each(() => new Date().toISOString()),
   messpositionen: Factory.Async.each(() => new Map<number, MesspositionEditViewModel>()),
   geometrie_messung: Factory.Async.each(() => geometrieMessungFactory.build()),
   geometrie_emittent: Factory.Async.each(() => geometrieEmittentFactory.build()),
-  messverfahren: ''
+  messverfahren: '',
+  auswertung: null,
 });
 
 
@@ -437,6 +489,10 @@ const georeferenzierungFactory = Factory.Sync.makeFactory<Georeferenzierung>({
   x11: 0,
   x12: 1,
   id: Factory.each((i) => `${i}`),
+  upper_left: Factory.each(() => koordinatenFactory.build()),
+  upper_right: Factory.each(() => koordinatenFactory.build()),
+  lower_right: Factory.each(() => koordinatenFactory.build()),
+  lower_left: Factory.each(() => koordinatenFactory.build()),
 })
 
 
@@ -455,36 +511,40 @@ const koordinatenFactory = Factory.Sync.makeFactory<Koordinaten>({
   pixel_x: Factory.each((i) => Math.floor(Math.random() * 900)),
   pixel_y: Factory.each((i) => Math.floor(Math.random() * 900)),
   id: Factory.each((i) => `${i}`),
+  idAtBackend: null
 })
 
-const plantFactory = Factory.Sync.makeFactory<Plant>({
+const plantFactory = Factory.Sync.makeFactoryWithRequired<Plant, 'project_id'>({
   id: Factory.each((i) => `P${i}`),
   name: Factory.each((i) => `${i}`),
-  children: Factory.each(() => buildingFactory.buildList(Math.max(1, Math.floor(Math.random() * 4)))),
+  children: Factory.each(() => buildingFactory.buildList(Math.max(1, Math.floor(Math.random() * 4)), { parent: 'P4' })),
   header: 'werk',
   body: 'werk',
-  map: Factory.each((i) => karteDetailsFactory.build())
+  map: Factory.each((i) => karteDetailsFactory.build()),
+  idAtBackend: null
 
 })
 
-const buildingFactory = Factory.Sync.makeFactory<Building>({
+const buildingFactory = Factory.Sync.makeFactoryWithRequired<Building, 'parent'>({
   id: Factory.each((i) => `B${i}`),
   name: Factory.each((i) => `${i}`),
-  children: Factory.each(() => roofFactory.buildList(Math.max(1, Math.floor(Math.random() * 4)))),
+  children: Factory.each(() => roofFactory.buildList(Math.max(1, Math.floor(Math.random() * 4)), { parent: 'B12' })),
   header: 'gebaeude',
-  body: 'gebaeude'
+  body: 'gebaeude',
+  idAtBackend: null
 })
 
-const roofFactory = Factory.Sync.makeFactory<Roof>({
+const roofFactory = Factory.Sync.makeFactoryWithRequired<Roof, 'parent'>({
   id: Factory.each((i) => `R${i}`),
   name: Factory.each((i) => `${i}`),
-  children: Factory.each(() => emittentFactory.buildList(Math.max(1, Math.floor(Math.random() * 4)))),
+  children: Factory.each(() => emittentFactory.buildList(Math.max(1, Math.floor(Math.random() * 4)), { parent: 'R54' })),
   header: 'dach',
   body: 'dach',
-  map: Factory.each((i) => karteDetailsFactory.build())
+  map: Factory.each((i) => karteDetailsFactory.build()),
+  idAtBackend: null
 })
 
-const emittentFactory = Factory.Sync.makeFactory<Emittent>({
+const emittentFactory = Factory.Sync.makeFactoryWithRequired<Emittent, 'parent'>({
   id: Factory.each((i) => `E${i}`),
   name: Factory.each((i) => `${i}`),
   header: 'emittent',
@@ -497,16 +557,12 @@ const metainfoFactory = Factory.Sync.makeFactory<Metainfo>({
   name_messfile: Factory.each((i) => `M${i}`),
   messgeraet: Factory.each((i) => null),
   messdatum: '2022-01-01',
-  id: Factory.each((i) => `E${i}`)
+  id: Factory.each((i) => `E${i}`),
+  name_overviewfile: 'xyz'
 
 })
 
-const messwertereiheDiscriminatorFactory = Factory.Sync.makeFactory({
-  id: Factory.each((i) => `M${i}`),
-  metainfo: metainfoFactory.build(),
-  vorhanden: true,
-  type: 'Gesamtpegel'
-}).combine(messwertereiheFactory)
+
 
 const anlagenpegelFactory: Factory.Sync.Factory<Anlagenpegelreihe & Pegelreihe> = Factory.Sync.makeFactory({
   korrektur: 3
@@ -518,9 +574,9 @@ const auswertungspegelFactory: Factory.Sync.Factory<Auswertungspegelreihe & Pege
 
 const messpunktAnAnlageFactory = Factory.Sync.makeFactory<MesspunktAnAnlage>({
   id: Factory.each((i) => `M${i}`),
-  metainfoFremdpegel: metainfoFactory.build(),
-  metainfoGesamtpegel: metainfoFactory.build(),
-  fremdpegelVorhanden: true,
+  metainfoFremdpegel: Factory.each(() => metainfoFactory.build()),
+  metainfoGesamtpegel: Factory.each(() => metainfoFactory.build()),
+  fremdpegelVorhanden: Factory.each(() => random() >= 0.5),
   fremdpegel: Factory.each((i) => messwertereiheFactory.build()),
   gesamtpegel: Factory.each((i) => messwertereiheFactory.build()),
 
@@ -537,6 +593,8 @@ export const karteDetailsFactory = Factory.Sync.makeFactory<KarteDetails>({
   url: Factory.each((i) => `https://placeimg.com/${(Math.floor(Math.random() * 5) + 3) * 100}/${(Math.floor(Math.random() * 5) + 3) * 100}/nature?t=` + Math.random()),
   georeferenzierung: Factory.each(() => georeferenzierungFactory.build()),
   id: Factory.each((i) => `K${i}`),
+  zuordnung: 'blub',
+  idAtBackend: null
 
 })
 export const geometrieEmittentFactory = Factory.Sync.makeFactory<GeometrieEmittent>({
@@ -556,6 +614,7 @@ export const geometrieMessungFactory = Factory.Sync.makeFactory<GeometrieMessung
 })
 
 export const emittentDetailsFactory = Factory.Sync.makeFactory<EmittentDetails>({
+  id: Factory.Sync.each((i) => `${i}`),
   name: Factory.Sync.each((i) => `E${i}`),
   picture: Factory.Sync.each(() => ''),
   bearbeiter: Factory.Sync.each(() => ''),
@@ -588,7 +647,8 @@ const auswertungFactory = Factory.Sync.makeFactory<AuswertungDefault>({
   lwa: Factory.each(() => auswertungspegelFactory.build()),
   lwlin: Factory.each(() => auswertungspegelFactory.build()),
   anlagenpegel: Factory.each(() => anlagenpegelFactory.buildList(2)),
-  mittelungspegel: Factory.each(() => messwertereiheFactory.buildList(2))
+  mittelungspegel: Factory.each(() => messwertereiheFactory.buildList(2)),
+  id: Factory.each((i) => `A${i}`)
 })
 
 const projectFactory = Factory.Sync.makeFactory<Projekt>({
@@ -600,12 +660,14 @@ const messgeraetFactory = Factory.Sync.makeFactory<Messgeraet>({
   name: Factory.each((i) => `Messgerät ${i}`),
   id: Factory.each((i) => `M${i}`),
   offsetLines: 3,
-  seriennummer: 'NOR118_5989863'
+  seriennummer: 'NOR118_5989863',
+  idAtBackend: null
 })
 
 const vorlageFactory = Factory.Sync.makeFactory<Vorlage>({
   name: Factory.each((i) => `Vorlage ${i}`),
-  id: Factory.each((i) => `V${i}`)
+  id: Factory.each((i) => `V${i}`),
+  idAtBackend: null
 })
 
 
@@ -618,9 +680,8 @@ export {
   anlagenpegelFactory,
   metainfoFactory,
   messpositionEditViewModelFactory,
-  messwertereiheDiscriminatorFactory,
   messwertereiheFactory,
-  messpositionFactory,
+  // messpositionFactory,
   messungFactory,
   georeferenzpunktFactory,
   georeferenzierungFactory,
@@ -630,6 +691,7 @@ export {
   emittentFactory,
   messpunktAnAnlageFactory,
   pointOnMapFactory,
+  rectOnMapFactory,
   excelFieldImportFactory
 }
 

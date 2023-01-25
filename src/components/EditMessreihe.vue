@@ -106,11 +106,13 @@
     <template v-slot:body-cell-messgeraet="props">
       <q-td>
         <tr>
-          <q-input v-model="props.row.metainfoGesamtpegel.name_messfile" />
+          <q-select v-model="props.row.metainfoGesamtpegel.messgeraet" :options="messgeraete" option-label="name" />
         </tr>
         <tr>
-          <q-input v-model="props.row.metainfoFremdpegel.name_messfile" v-if="props.row.fremdpegelVorhanden" />
+          <q-select v-model="props.row.metainfoFremdpegel.messgeraet" :options="messgeraete" option-label="name"
+            v-if="props.row.fremdpegelVorhanden" />
         </tr>
+
       </q-td>
     </template>
     <template v-slot:body-cell-messdatum="props">
@@ -124,14 +126,24 @@
 
       </q-td>
     </template>
+    <template v-slot:body-cell-overviewfile="props">
+      <q-td>
+        <tr>
+          <q-input v-model="props.row.metainfoGesamtpegel.overviewfile" />
+        </tr>
+        <tr>
+          <q-input v-model="props.row.metainfoFremdpegel.overviewfile" v-if="props.row.fremdpegelVorhanden" />
+        </tr>
+
+      </q-td>
+    </template>
     <template v-slot:body-cell-messfile="props">
       <q-td>
         <tr>
-          <q-select v-model="props.row.metainfoGesamtpegel.messgeraet" :options="messgeraete" option-label="name" />
+          <q-input v-model="props.row.metainfoGesamtpegel.name_messfile" />
         </tr>
         <tr>
-          <q-select v-model="props.row.metainfoFremdpegel.messgeraet" :options="messgeraete" option-label="name"
-            v-if="props.row.fremdpegelVorhanden" />
+          <q-input v-model="props.row.metainfoFremdpegel.name_messfile" v-if="props.row.fremdpegelVorhanden" />
         </tr>
 
       </q-td>
@@ -156,10 +168,11 @@
     <template v-slot:body-cell-einfuegen="props">
       <q-td>
         <tr>
-          <q-btn label="Einfügen" v-if="props.row.fremdpegelVorhanden" @click="pasteFromClipboard(props.row)" />
+          <q-btn label="Einfügen" @click="pasteFromClipboard('gesamtpegel', props.row.gesamtpegel)" />
         </tr>
         <tr>
-          <q-btn label="Einfügen" v-if="props.row.fremdpegelVorhanden" @click="pasteFromClipboard(props.row)" />
+          <q-btn label="Einfügen" v-if="props.row.fremdpegelVorhanden"
+            @click="pasteFromClipboard('fremdpegel', props.row.fremdpegel)" />
         </tr>
       </q-td>
     </template>
@@ -168,6 +181,7 @@
 </template>
 
 <script lang="ts">
+import { Pegelreihe } from 'src/models/v1';
 import { defineComponent, ref, defineEmits, computed } from 'vue';
 import { useKatasterStore } from '../stores/kataster-store'
 
@@ -177,7 +191,7 @@ export default defineComponent({
   setup(props, { emit }) {
     const store = useKatasterStore()
     const messgeraete = computed(() => store.messgeraete)
-    defineEmits(['addMesswertereihe', 'pasteWerte']);
+
     /*
     const messwertereihen = computed(() => {
       const result = [];
@@ -199,7 +213,12 @@ export default defineComponent({
       return result;
     });
     */
-    function pasteFromClipboard(args: any) {
+    function pasteFromClipboard(args: string, sender: Pegelreihe) {
+      console.log(args, sender)
+      emit('paste-request', {
+        args: args,
+        sender: sender
+      })
       /*
       console.log("args", args);
       navigator.clipboard.readText().then((clipText) => {
@@ -294,6 +313,11 @@ export default defineComponent({
       {
         name: 'messgeraet',
         label: 'Messgerät',
+        field: 'type',
+      },
+      {
+        name: 'overviewfile',
+        label: 'Overview',
         field: 'type',
       },
       {

@@ -2,6 +2,7 @@
   <q-page padding>
     <!-- content -->
     <q-btn label="Neue Vorlage hinzufügen" @click="create" />
+    <q-btn label="Änderungen speichern" @click="saveChanges" />
     <q-select v-model="selectedVorlage" :options="vorlagen" option-label="name" />
     <div v-if="selectedVorlage">
       <vorlage-details v-model:name="selectedVorlage.name" />
@@ -30,12 +31,15 @@ export default defineComponent({
     const selectedVorlage = ref(null as Vorlage | null)
     return {
       create() {
-        store.$patch((state) => {
-          state.vorlagen.push(vorlageFactory.build())
 
-        })
+        store.createExcelTemplateBackend(vorlageFactory.build())
 
 
+      },
+      saveChanges() {
+        if (selectedVorlage.value != null) {
+          store.updateExcelTemplateBackend(selectedVorlage.value)
+        }
       },
       selectedVorlage,
       vorlagen,

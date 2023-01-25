@@ -8,11 +8,55 @@ import {
   atan2,
   sin,
   cos,
-  divide
+  divide,
+  MathType
 } from 'mathjs';
-import { Georeferenzierungspunkt } from 'src/models/v1';
+import { Georeferenzierung, Georeferenzierungspunkt, GK2PxMatrix } from 'src/models/v1';
+
+
+interface PointGK {
+  gk_rechts: number, gk_hoch: number
+}
+
+interface PointPx { px_x: number, px_y: number }
+
+export function px_2_gk(args: PointPx, georef: Georeferenzierung) {
+
+  const r = add(multiply([[georef.x01, georef.x02], [georef.x11, georef.x12]], [[args.px_x], [args.px_y]]), [[georef.x00], [georef.x10]])
+  console.log(r)
+
+  return {
+    gk_rechts: r[0][0],
+    gk_hoch: r[1][0]
+  } as PointGK
+}
+
+export function get_gk_2_px_matrix(georef: Georeferenzierung) {
+  const args = { gk_rechts: 10, gk_hoch: 20 }
+  const step1 = add([[args.gk_rechts], [args.gk_hoch]], [[-georef.x00], [-georef.x10]])
+
+  const step2 = inv([[georef.x01, georef.x02], [georef.x11, georef.x12]])
+
+  return { translation: step1, matrix: step2 } as GK2PxMatrix
+
+}
+
+export function gk_2_px(args: { gk_rechts: number, gk_hoch: number }, inverter: GK2PxMatrix) {
+  const step1 = add([[args.gk_rechts], [args.gk_hoch]], inverter.translation)
+
+  const step2 = multiply(inverter.matrix, step1)
+
+  return {
+    px_x: step2[0][0],
+    px_y: step2[1][0]
+  } as PointPx
+
+}
 
 export function georeferenzieren(pointsOnMap: Georeferenzierungspunkt[], image: HTMLElement) {
+  if (pointsOnMap.length <= 2) {
+    throw new Error('You need at least 3 points')
+  }
   console.log('create a matrix');
   const myLeastsquareArr = [];
   const myGkHochArr = [];
@@ -89,10 +133,13 @@ export function georeferenzieren(pointsOnMap: Georeferenzierungspunkt[], image: 
   };
   console.log(georef_data_backend)
 
-  return pixel_2_gk;
+  return georef_data_backend;
 }
 
-function compute2PointGeoref(pointsOnMap: Georeferenzierungspunkt[]) {
+export function compute2PointGeoref(pointsOnMap: Georeferenzierungspunkt[], image: HTMLElement) {
+  if (pointsOnMap.length != 2) {
+    throw new Error('You need exactly 2 points')
+  }
   const p_x_a = pointsOnMap[0].pixel_x;
   const p_y_a = pointsOnMap[0].pixel_y;
 
@@ -161,4 +208,40 @@ function compute2PointGeoref(pointsOnMap: Georeferenzierungspunkt[]) {
   console.log(
     add(multiply(scaling_rotation, [[1048], [420]]), translation)
   );
+
+  const pixel_2_gk = current_px_2_gk_transform
+  const a = image.clientHeight;
+  const b = image.clientWidth;
+
+  const upper_left_arr = multiply(pixel_2_gk, [[1], [0], [0]]);
+  const upper_right_arr = multiply(pixel_2_gk, [[1], [0], [a]]);
+  const lower_right_arr = multiply(pixel_2_gk, [[1], [b], [a]]);
+  const lower_left_arr = multiply(pixel_2_gk, [[1], [b], [0]]);
+
+  const georef_data_backend = {
+    x00: pixel_2_gk[0][0],
+    x01: pixel_2_gk[0][1],
+    x02: pixel_2_gk[0][2],
+    x10: pixel_2_gk[1][0],
+    x11: pixel_2_gk[1][1],
+    x12: pixel_2_gk[1][2],
+    upper_left: {
+      gk_rechts: upper_left_arr[0][0],
+      gk_hoch: upper_left_arr[1][0],
+    },
+    upper_right: {
+      gk_rechts: upper_right_arr[0][0],
+      gk_hoch: upper_right_arr[1][0],
+    },
+    lower_right: {
+      gk_rechts: lower_right_arr[0][0],
+      gk_hoch: lower_right_arr[1][0],
+    },
+    lower_left: {
+      gk_rechts: lower_left_arr[0][0],
+      gk_hoch: lower_left_arr[1][0],
+    },
+  };
+
+  return georef_data_backend
 }

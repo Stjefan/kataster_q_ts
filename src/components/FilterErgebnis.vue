@@ -1,5 +1,6 @@
 <template>
   <div>My component</div>
+  <div>Hier stehen Filterfunktionen</div>
 </template>
 
 <script lang="ts">

@@ -4,11 +4,14 @@
     <div class="row">
       <div class="col-3">
         <q-btn label="Neues Werk  " @click="init" />
-        <plant-overview :uebersichtTreeNodes="treeNodes" @createChild="create" />
+        <q-btn label="Aktualisieren" @click="refresh" />
+        {{ treeNodesExpanded }}
+        <plant-overview :uebersichtTreeNodes="treeNodes" @createChildDialog="createEntityDialog" @removeNode="remove"
+          v-model:expanded="treeNodesExpanded" />
       </div>
       <div class="col-8">
 
-        <map-view />
+        <map-view @addEmittent="handleAddEmittent" />
       </div>
     </div>
 
@@ -16,49 +19,141 @@
 </template>
 
 <script lang="ts">
-import { Building, Plant, Roof, plantFactory, roofFactory, buildingFactory, emittentFactory } from '../models/v1'
+import { Building, Plant, Roof, plantFactory, roofFactory, buildingFactory, emittentFactory, Emittent, Koordinaten } from '../models/v1'
 
 import { computed, defineComponent, ref, Ref } from 'vue'
 import PlantOverview from '../components/PlantOverview.vue'
 
 import { useKatasterStore } from '../stores/kataster-store'
 import MapView from 'src/components/MapView.vue'
+import { useQuasar } from 'quasar'
+import { getIdFromString } from 'src/mappings/mapper'
 export default defineComponent({
   // name: 'PageName'
   components: { PlantOverview, MapView },
   setup() {
-    const store = useKatasterStore()
-    const treeNodes = computed(() => store.plants)
-    function init() {
-      store.$patch((state) => {
-        state.plants.push(plantFactory.build())
-      })
-      // treeNodes.value.push(plantFactory.build())
 
+    const $q = useQuasar()
+    const store = useKatasterStore()
+    if (store.project == null) throw new Error('Invalid arguments')
+    const treeNodes = computed(() => store.plants)
+
+    const treeNodesExpanded = computed({
+      get: () => store.expandedTreeNodes, set: (val) => store.$patch({ expandedTreeNodes: val })
+    })
+
+    async function refresh() {
+      await store.init()
+      treeNodesExpanded.value = []
     }
-    function create(_args: Plant | Building | Roof) {
+    function init() {
+      /*
+      store.$patch((state) => {
+        state.plants.push(plantFactory.build({ project_id: 1 }))
+      })
+      */
+      // store.createPlantBackend(plantFactory.build({ project_id: 6 }))
+      // treeNodes.value.push(plantFactory.build())
+      $q.dialog({
+        title: 'Bezeichnung eingeben',
+        message: 'Name',
+        prompt: {
+          model: '',
+          type: 'text' // optional
+        },
+        cancel: true,
+        persistent: true
+      }).onOk((data: string) => {
+        // console.log('>>>> OK, received', data)
+        console.log(data)
+        store.createPlantBackend(plantFactory.build({ name: data, project_id: getIdFromString(store.project?.id) }))
+      }).onCancel(() => {
+        // console.log('>>>> Cancel')
+      }).onDismiss(() => {
+        // console.log('I am triggered on both OK and Cancel')
+      })
+    }
+    function create(_args: any) {
+
       console.log(_args)
-      switch (_args.body) {
+
+      switch (_args.target.body) {
         case 'werk':
           console.log('werk');
-          (_args as Plant).children.push(buildingFactory.build())
+          store.createBuildingBackend(buildingFactory.build({ parent: `${_args.target.id}`, name: _args.data.name }), parseInt(_args.target.id))
+
           break;
         case 'dach':
           console.log('dach');
-          (_args as Roof).children.push(emittentFactory.build())
+          store.createEmittentBackend(emittentFactory.build({ parent: `${_args.target.id}`, name: _args.data.name, koordinaten: _args.data.koordinaten }), parseInt(_args.target.id))
+
+          // (_args as Roof).children.push(emittentFactory.build({ parent: _args.id }))
           break;
         case 'gebaeude':
           console.log('gebaeude');
-          (_args as Building).children.push(roofFactory.build())
+          store.createRoofBackend(roofFactory.build({ parent: `${_args.target.id}`, name: _args.data.name }), parseInt(_args.target.id))
           break;
 
+      }
+
+    }
+
+    function createEntityDialog(parent: any, furtherArgs: any) {
+      $q.dialog({
+        title: 'Bezeichnung eingeben',
+        message: 'Name',
+        prompt: {
+          model: '',
+          type: 'text' // optional
+        },
+        cancel: true,
+        persistent: true
+      }).onOk((data) => {
+        console.log(data);
+        const k = furtherArgs as Koordinaten
+        const p = parent as Roof
+        if (p.map?.georeferenzierung != null) {
+          console.log('I ve a georefernezierung')
+        }
+
+        create({ target: parent, data: { name: data, ...furtherArgs } })
+
+
+      })
+    }
+
+
+
+    function handleAddEmittent(args: unknown) {
+      console.log(args)
+      createEntityDialog(store.karteMainPageZuordnung, args)
+    }
+
+    function remove(node: Plant | Roof | Building | Emittent) {
+      switch (node.body) {
+        case 'werk':
+          store.removePlantBackend(node as Plant)
+          break
+        case 'dach':
+          store.removeRoofBackend(node as Roof)
+          break;
+        case 'emittent':
+          store.removeEmittentBackend(node as Emittent)
+          break;
+        case 'gebaeude':
+          store.removeBuildingBackend(node as Building)
       }
 
     }
     return {
       init,
       create,
-      treeNodes
+      remove,
+      treeNodes,
+      refresh,
+      treeNodesExpanded,
+      handleAddEmittent,
+      createEntityDialog
     }
   }
 })
