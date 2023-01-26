@@ -19,7 +19,9 @@ export default defineComponent({
   props: { 'auswertung': { type: Object as PropType<AuswertungDefault> } },
   // name: 'ComponentName'
   setup(props) {
-    const mittelungspegel = computed(() => props.auswertung?.mittelungspegel)
+    const mittelungspegel_gesamt = computed(() => props.auswertung?.mittelungspegel_gesamt != null ? props.auswertung?.mittelungspegel_gesamt : [])
+    const mittelungspegel_fremd = computed(() => props.auswertung?.mittelungspegel_fremd != null ? props.auswertung?.mittelungspegel_fremd : [])
+    const mittelungspegel = computed(() => mittelungspegel_gesamt.value.concat(mittelungspegel_fremd.value))
     const anlagenpegel = computed(() => props.auswertung?.anlagenpegel)
 
     const ergebnispegel = computed(() => [props.auswertung?.lwlin, props.auswertung?.lwa])

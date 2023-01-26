@@ -32,7 +32,7 @@ export function px_2_gk(args: PointPx, georef: Georeferenzierung) {
 }
 
 export function get_gk_2_px_matrix(georef: Georeferenzierung) {
-  const args = { gk_rechts: 10, gk_hoch: 20 }
+  const args = { gk_rechts: 0, gk_hoch: 0 }
   const step1 = add([[args.gk_rechts], [args.gk_hoch]], [[-georef.x00], [-georef.x10]])
 
   const step2 = inv([[georef.x01, georef.x02], [georef.x11, georef.x12]])

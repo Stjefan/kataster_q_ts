@@ -2,10 +2,9 @@
   <q-page padding>
     <!-- content -->
     <div class="row">
-      <div class="col-3">
+      <div class="col-3" style="height: 300px">
         <q-btn label="Neues Werk  " @click="init" />
-        <q-btn label="Aktualisieren" @click="refresh" />
-        {{ treeNodesExpanded }}
+        <q-btn icon="autorenew" @click="refresh" />
         <plant-overview :uebersichtTreeNodes="treeNodes" @createChildDialog="createEntityDialog" @removeNode="remove"
           v-model:expanded="treeNodesExpanded" />
       </div>

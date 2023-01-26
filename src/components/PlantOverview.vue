@@ -180,11 +180,7 @@ export default defineComponent({
 
     function showMap(_args: Plant | Roof) {
       console.log('This is a filler...', _args)
-      store.$patch({
-        karteMainPage: _args.map,
-        karteMainPageZuordnung: _args
-
-      })
+      store.showMap(_args)
       switch (_args.body) {
         case 'dach':
 
@@ -194,7 +190,7 @@ export default defineComponent({
             store.$patch({
               pointsOnMap: (_args as Roof).children.filter(i => i.koordinaten != null).map(i => {
                 const p = gk_2_px(i.koordinaten, mygk2pxMatrix)
-                return pointOnMapFactory.build({ pixel_x: p.px_x, pixel_y: p.px_y })
+                return pointOnMapFactory.build({ pixel_x: p.px_x, pixel_y: p.px_y, idCorrespondingEmittent: parseInt(i.id) })
               })
             })
             console.log(store.pointsOnMap)

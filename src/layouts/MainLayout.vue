@@ -16,13 +16,13 @@
 
     <q-page-container>
       <q-tabs no-caps>
-        <q-route-tab :to="{ name: 'mapper' }" exact label="Mapper" />
+        <!--<q-route-tab :to="{ name: 'mapper' }" exact label="Mapper" />-->
 
-        <q-route-tab :to="{ name: 'login' }" exact label="Login" />
+        <!--<q-route-tab :to="{ name: 'login' }" exact label="Login" />-->
         <q-route-tab :to="{ name: 'projects' }" exact label="Projekte" />
-
+        <!--
         <q-route-tab :to="{ name: 'sts' }" exact label="STS" />
-
+-->
         <q-route-tab :to="{ name: 'uebersicht' }" exact label="Übersicht" />
 
 
@@ -35,8 +35,9 @@
         <q-route-tab to="map" exact label="Karte" :disable="store.karte2edit == null" />
 
         <q-route-tab to="emittent" exact label="Emittent" :disable="store.emittent == null" />
+        <!--
         <q-tab @click="blabla" label="Auth" />
-
+-->
       </q-tabs>
       <router-view />
     </q-page-container>

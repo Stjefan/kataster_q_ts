@@ -71,6 +71,16 @@ export const useKatasterStore = defineStore('kataster', {
       this.emittent = null
       this.emittentSource = null
       this.expandedTreeNodes = []
+      this.karteMainPage = null
+      this.karte2editZuordnung = null
+      console.log('Projekt wurde gewechselt')
+
+    },
+    showMap(_args: Plant | Roof) {
+      this.karteMainPage = _args.map
+      this.karteMainPageZuordnung = _args
+      this.rectsOnMap = []
+      this.pointsOnMap = []
 
     },
     async init() {
@@ -83,7 +93,7 @@ export const useKatasterStore = defineStore('kataster', {
       const r1 = await api.get('/projects/')
       console.log(r1)
       this.projects = r1.data.results.map((i: ProjectApi) => mapper.map<ProjectApi, Projekt>(i, 'ProjectApi', 'Project'))
-      this.project = this.projects.length == 0 ? null : this.projects[5]
+      this.project = this.projects.length == 0 ? null : this.projects[1]
       /*
       const r2 = await api.get('/werk')
       console.log(r2)

@@ -1,5 +1,7 @@
 <template>
+  <!--
   <q-select v-model="messung" :options="messungen" option-label="type" />
+  -->
   <q-btn label="Messwerte auswerten" @click="evaluateMesswerte" />
   <q-btn label="Bericht erstellen" @click="createExcelReport" />
   <div>Bezeichnung Messverfahren {{ messung?.messverfahren }}</div>
@@ -222,24 +224,34 @@ export default defineComponent({
 
       const m = messung.value?.messpositionen.get(1)
       if (m != null) {
-        berechneMittelungspegel(m)
-        const a = berechneAnlagenpegel(m)
+        // berechneMittelungspegel(m)
+
 
         if (messung.value) {
           const korrektur = berechneMessflaechenkorrektur(messung.value?.geometrie_emittent, messung.value?.geometrie_messung, messung.value?.messverfahren)
           console.log('korrektur', korrektur)
-
+          const m_quer = berechneMittelungspegel(m)
+          console.log('m_quer', m_quer)
+          const a = berechneAnlagenpegel(m, korrektur.lw1)
+          a.korrektur = korrektur.lw1
 
           const lwlin = berechneLwlin([a])
           console.log('lwlin', lwlin)
           const lwa = transformZ2A(lwlin)
           console.log('lwa', lwa)
 
-          messung.value!.auswertung = auswertungFactory.build()
+          messung.value.auswertung = auswertungFactory.build()
+
+          messung.value.auswertung.anlagenpegel = [a]
+
+          messung.value.auswertung.mittelungspegel_gesamt = [m_quer.gesamtpegel]
+          messung.value.auswertung.mittelungspegel_fremd = m_quer.fremdpegel != null ? [m_quer.fremdpegel] : []
 
 
-          messung.value!.auswertung.lwlin = lwlin
-          messung.value!.auswertung.lwa = lwa
+
+
+          messung.value.auswertung.lwlin = lwlin
+          messung.value.auswertung.lwa = lwa
 
         }
 

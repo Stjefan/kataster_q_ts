@@ -5,7 +5,12 @@
     <condition-component :options="options" v-for="(c, idx) in conditions" :key="idx" @remove="removeCondition(idx)"
       ref="conditionComponent" />
     <q-btn label="Filtern" @click="buildQuery" />
-    <q-table :rows="filteredEmittents" :columns="cols"></q-table>
+    <q-table :rows="filteredEmittents" :columns="cols">
+      <template v-slot:body-cell-edit="props">
+        <q-td>
+          <q-btn label="Bearbeiten" @click="handleEdit(props.row)" />
+        </q-td>
+      </template></q-table>
     <filter-ergebnis />
   </q-page>
 </template>
@@ -155,10 +160,17 @@ export default defineComponent({
     const cols = [
       { label: 'Name', field: 'name' },
       { label: 'Rechtswert', field: (arg: any) => arg.lage?.gk_rechts },
-      { label: 'Hochwert', field: (arg: any) => arg.lage?.gk_hoch }
+      { label: 'Hochwert', field: (arg: any) => arg.lage?.gk_hoch },
+      { label: '', name: 'edit' }
     ]
 
-    return { filteredEmittents, options, conditions, addCondition, removeCondition, buildQuery, conditionComponent, cols }
+    function handleEdit(args: any) {
+      console.log(args)
+      store.setEmittentDetailsFromEmittent(args)
+
+    }
+
+    return { filteredEmittents, options, conditions, addCondition, removeCondition, buildQuery, conditionComponent, cols, handleEdit }
 
   }
 })

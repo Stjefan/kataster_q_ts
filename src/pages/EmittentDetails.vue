@@ -16,7 +16,7 @@
       <q-tab-panel name="sonstiges"></q-tab-panel>
       <q-tab-panel name="allgemeines">
         <div class="row">
-          <q-btn label="Undo" @click="undo" />
+          <q-btn label="Undo" @click="handleUndo" />
           <q-btn label="Redo" @click="redo" />
           <q-btn label="Archiv" @click="openArchive" />
           <q-btn label="Archivieren" @click="makeSnapshot" />
@@ -106,6 +106,12 @@ export default defineComponent({
       deep: true,
     })
     const tab = ref('allgemeines')
+
+    function handleUndo() {
+      console.log('before', emittent.value)
+      undo()
+      console.log('after', emittent.value)
+    }
 
 
 
@@ -260,7 +266,8 @@ export default defineComponent({
 
       selectedMessung,
       createMessung,
-      removeMessung
+      removeMessung,
+      handleUndo
     }
   }
 })

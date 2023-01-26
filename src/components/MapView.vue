@@ -1,27 +1,40 @@
 <template>
   <div>Karte {{ karte?.id }} von {{ mapOwner }}</div>
-  {{ lastClickedPosition }}
+
   <div><q-btn label="Refresh" @click="refresh" /><q-btn label="Zoom zurücksetzen" @click="resetZoom" /><q-btn
       label="Disable" @click="disablePanZoom" /></div>
+  <div class="row">
+    Markergröße:
+    <q-slider v-model="pointSize" :min="0" :max="50" class="col-3" />
+  </div>
+  <div class="row">
+    <div class="col-3">
+      Pixel-Koordinaten {{ lastClickedPosition?.px_x }} | {{ lastClickedPosition?.px_y }}
+    </div>
+    <div class="col-3">
+      GK-Koordinaten: {{ lastClickedPosition?.gk_rechts }} | {{ lastClickedPosition?.gk_hoch }}
+    </div>
+  </div>
   <div style="background-color: lightgray; height: 50vh; overflow: hidden">
-    <div id="zoomPan" style="height: 100%" @contextmenu="handleContextMenu">
+    <div id="zoomPan" style="height: 100%;" @contextmenu="handleContextMenu">
       <q-menu touch-position context-menu>
 
         <q-list dense style="min-width: 100px">
-          <q-item clickable v-close-popup @click="handleContextMenuAdd">
+          <q-item clickable v-close-popup @click="handleContextMenuSelect">
             <q-item-section>Open...</q-item-section>
           </q-item>
-          <q-item clickable v-close-popup>
+          <q-item clickable v-close-popup @click="handleContextMenuAdd">
             <q-item-section>New</q-item-section>
           </q-item>
         </q-list>
       </q-menu>
       <!--<img :src="url" style="position:absolute" />-->
-      <svg style="position:absolute; background-color:darkgray" height="500%" width="500%" ref="elref">
+      <svg style="position:absolute; background-color:darkgray" height="1000%" width="1000%" ref="elref"
+        @mousedown="handleMouseOver">
 
 
         <image :href="karte?.url" />
-        <circle v-for="p in pointsOnMap" :key="p.id" :cx="p.pixel_x" :cy="p.pixel_y" r="5"
+        <circle v-for="p in pointsOnMap" :key="p.id" :cx="p.pixel_x" :cy="p.pixel_y" :r="pointSize"
           :fill="markedPoint == p.id ? 'red' : 'blue'" @click="handleCircleClick(p)"
           @contextmenu.prevent="handleContextMenu"></circle>
         <polygon :points="p.points" v-for="p in rectsOnMap" :key="p.id"
@@ -30,12 +43,10 @@
     </div>
 
   </div>
-  <div>
-    {{ text.elementX }} | {{ text.elementY }}
+  <div v-if="false">
+
+    {{ pointsOnMap }}
   </div>
-  {{ text }}
-  {{ text2 }}
-  {{ pointsOnMap }}
 </template>
 
 <script lang="ts">
@@ -44,8 +55,9 @@ import { useMouseInElement } from '@vueuse/core'
 import { usePointer } from '@vueuse/core'
 
 import panzoom, { PanZoom } from 'panzoom';
-import { KarteDetails, karteDetailsFactory, pointOnMapFactory, PointOnMap, rectOnMapFactory } from 'src/models/v1';
+import { KarteDetails, karteDetailsFactory, pointOnMapFactory, PointOnMap, rectOnMapFactory, Emittent } from 'src/models/v1';
 
+import { px_2_gk, get_gk_2_px_matrix, gk_2_px } from 'src/utility/georeferenzieren'
 import { useKatasterStore } from 'src/stores/kataster-store';
 
 export default defineComponent({
@@ -54,19 +66,20 @@ export default defineComponent({
     const store = useKatasterStore()
     const url = ref('')
     const elref = ref(null);
-    const mouse = useMouseInElement(elref)
+    //const mouse = useMouseInElement(elref)
     const mapOwner = computed(() => store.karteMainPageZuordnung?.name)
-    const p = usePointer({ target: elref })
+    // const p = usePointer({ target: elref })
 
-    const text = ref(mouse)
-    const text2 = ref(p)
+    // const text = ref(mouse)
 
-    const markedPoint = ref('0')
+    const markedPoint = ref(null) as unknown as any
 
-    const lastClickedPosition = ref({ x: 0, y: 0 })
+    const currentlyMarkedPoint = ref(null as PointOnMap | null)
+
+    const lastClickedPosition = ref({ px_x: NaN, px_y: NaN, gk_rechts: NaN, gk_hoch: NaN })
 
 
-
+    const pointSize = ref(5)
 
     let panzoomInstance = null as (null | PanZoom)
 
@@ -75,7 +88,7 @@ export default defineComponent({
       if (element != null)
 
         panzoomInstance = panzoom(element, {
-          bounds: true,
+          bounds: false,
           boundsPadding: 0.1,
           maxZoom: 5,
           minZoom: 0.1,
@@ -86,11 +99,46 @@ export default defineComponent({
     function handleCircleClick(eventArgs: PointOnMap) {
       console.log('handleCircleClick', eventArgs)
       markedPoint.value = eventArgs.id
+      currentlyMarkedPoint.value = eventArgs
+
+    }
+
+    function handleMouseOver(eventArgs: any) {
+      console.log(eventArgs)
+      lastClickedPosition.value = {
+        px_x: eventArgs.offsetX,
+        px_y: eventArgs.offsetY,
+        gk_rechts: NaN,
+        gk_hoch: NaN
+
+      }
+      if (store.karteMainPage?.georeferenzierung) {
+        const m = get_gk_2_px_matrix(store.karteMainPage?.georeferenzierung)
+        console.log(m)
+        const gk = px_2_gk({ px_x: eventArgs.offsetX, px_y: eventArgs.offsetY }, store.karteMainPage?.georeferenzierung)
+        console.log('GK', gk)
+        console.log(gk_2_px(gk, m))
+        lastClickedPosition.value.gk_rechts = gk.gk_rechts
+        lastClickedPosition.value.gk_hoch = gk.gk_hoch
+
+      }
     }
     function handleContextMenu(eventArgs: any) {
       lastClickedPosition.value = {
-        x: eventArgs.offsetX,
-        y: eventArgs.offsetY
+        px_x: eventArgs.offsetX,
+        px_y: eventArgs.offsetY,
+        gk_rechts: NaN,
+        gk_hoch: NaN
+
+      }
+      if (store.karteMainPage?.georeferenzierung) {
+        const m = get_gk_2_px_matrix(store.karteMainPage?.georeferenzierung)
+        console.log(m)
+        const gk = px_2_gk({ px_x: eventArgs.offsetX, px_y: eventArgs.offsetY }, store.karteMainPage?.georeferenzierung)
+        console.log('GK', gk)
+        lastClickedPosition.value.gk_rechts = gk.gk_rechts
+        lastClickedPosition.value.gk_hoch = gk.gk_hoch
+        console.log(gk_2_px(gk, m))
 
       }
       console.log('handleContextMenu', eventArgs)
@@ -99,14 +147,22 @@ export default defineComponent({
     function handleContextMenuAdd() {
       console.log(store.karteMainPageZuordnung)
       if (store.karteMainPageZuordnung?.body == 'dach') {
-        emit('add-emittent', { koordinaten: { gk_rechts: lastClickedPosition.value.x, gk_hoch: lastClickedPosition.value.y } })
+        emit('add-emittent', { koordinaten: { gk_rechts: lastClickedPosition.value.px_x, gk_hoch: lastClickedPosition.value.px_y } })
 
       } else {
 
         pointsOnMap.value.push(pointOnMapFactory.build({
-          pixel_x: lastClickedPosition.value.x,
-          pixel_y: lastClickedPosition.value.y
+          pixel_x: lastClickedPosition.value.px_x,
+          pixel_y: lastClickedPosition.value.px_y
         }))
+      }
+
+    }
+
+    function handleContextMenuSelect() {
+      console.log('MarkedPoint', currentlyMarkedPoint.value, currentlyMarkedPoint.value?.idCorrespondingEmittent)
+      if (currentlyMarkedPoint.value != null) {
+        store.setEmittentDetailsFromEmittent({ id: `${currentlyMarkedPoint.value.idCorrespondingEmittent}` } as Emittent)
       }
 
     }
@@ -173,9 +229,7 @@ export default defineComponent({
       karte,
       resetZoom,
       elref,
-      text,
       url,
-      text2,
       pointsOnMap,
       markedPoint,
       handleCircleClick,
@@ -191,7 +245,10 @@ export default defineComponent({
         console.log(url.value)
       },
       handleContextMenuAdd,
-      lastClickedPosition
+      lastClickedPosition,
+      handleMouseOver,
+      pointSize,
+      handleContextMenuSelect
     }
   }
 })
