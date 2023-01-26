@@ -24,7 +24,7 @@ export interface OverviewFile {
 }
 
 export interface Korrekturwert {
-  lw: number
+  lw1: number
   bemerkung: string
 }
 
@@ -145,7 +145,8 @@ export interface Anlagenpegelreihe {
 }
 
 export interface AuswertungDefault {
-  mittelungspegel: Pegelreihe[]
+  mittelungspegel_gesamt: Pegelreihe[]
+  mittelungspegel_fremd: Pegelreihe[]
   anlagenpegel: (Pegelreihe & Anlagenpegelreihe)[]
 
   lwlin: Pegelreihe & Auswertungspegelreihe
@@ -277,6 +278,7 @@ export interface MesspositionEditViewModel {
 
 }
 
+
 export interface Messung {
   id: string,
   datum: string,
@@ -378,7 +380,8 @@ export interface GeometrieEmittent {
 export interface PointOnMap {
   pixel_x: number
   pixel_y: number
-  id: string
+  id: string,
+  idCorrespondingEmittent: number | null
 }
 
 export interface RectOnMap {
@@ -390,6 +393,7 @@ const pointOnMapFactory = Factory.Sync.makeFactory<PointOnMap>({
   id: Factory.each((i) => `P${i}`),
   pixel_x: Factory.each(() => Math.floor(Math.random() * 10000) / 100),
   pixel_y: Factory.each(() => Math.floor(Math.random() * 10000) / 100),
+  idCorrespondingEmittent: null
 
 })
 
@@ -647,7 +651,8 @@ const auswertungFactory = Factory.Sync.makeFactory<AuswertungDefault>({
   lwa: Factory.each(() => auswertungspegelFactory.build()),
   lwlin: Factory.each(() => auswertungspegelFactory.build()),
   anlagenpegel: Factory.each(() => anlagenpegelFactory.buildList(2)),
-  mittelungspegel: Factory.each(() => messwertereiheFactory.buildList(2)),
+  mittelungspegel_gesamt: Factory.each(() => messwertereiheFactory.buildList(2)),
+  mittelungspegel_fremd: Factory.each(() => messwertereiheFactory.buildList(2)),
   id: Factory.each((i) => `A${i}`)
 })
 
