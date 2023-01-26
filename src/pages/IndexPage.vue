@@ -1,8 +1,9 @@
 <template>
   <q-page class="row items-center justify-evenly">
-    <q-btn label="Login" />
-    <q-btn label="Logout" />
+
     <div v-if="false">
+      <q-btn label="Login" />
+      <q-btn label="Logout" />
       <q-btn label="undo" @click="undo" />
       <q-btn label="redo" @click="redo" />
       <q-select :options="history" option-label="timestamp" v-model="selectedHistory" />

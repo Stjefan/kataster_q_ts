@@ -19,12 +19,15 @@
 import ConditionComponent from 'src/components/ConditionComponent.vue';
 import FilterErgebnis from 'src/components/FilterErgebnis.vue';
 import { useKatasterStore } from 'src/stores/kataster-store';
-import { defineComponent, ref } from 'vue'
+import { defineComponent, ref, } from 'vue'
+import { useRouter } from 'vue-router';
 import { api } from 'src/boot/axios';
+import { ein_punkt_messverfahren, vier_punkt_messverfahren } from 'src/models/v1';
 export default defineComponent({
   components: { ConditionComponent, FilterErgebnis },
   // name: 'PageName'
   setup() {
+    const router = useRouter()
     const store = useKatasterStore()
     function addCondition() {
       conditions.value.push(1);
@@ -85,8 +88,8 @@ export default defineComponent({
       },
       {
         label: 'MultiFieldOrCondition',
-        field: 'zwei_punkt_messungen__typ',
-        multi_fields: ['ein_punkt_messungen__typ', 'zwei_punkt_messungen__typ'],
+        field: 'kamin_messungen__typ',
+        multi_fields: ['ein_punkt_messungen__typ', 'kamin_messungen__typ'],
         type: 'string_constrained',
         constrainedOptions: ['Kaminmessung (eckig)', 'Kaminmessung (rund)'],
 
@@ -95,7 +98,7 @@ export default defineComponent({
 
       {
         label: 'Messverfahren (Kamin)',
-        field: 'zwei_punkt_messungen__typ',
+        field: 'kamin_messungen__typ',
         type: 'string_constrained',
         constrainedOptions: ['Kaminmessung (eckig)', 'Kaminmessung (rund)'],
       },
@@ -139,6 +142,14 @@ export default defineComponent({
           roof__building__plant__project__id: store.project?.id,
         },
         exclude: {},
+        groups: {
+          '$or': [
+            { ein_punkt_messungen__typ: 'Quadermessung an 1 reflektierenden Ebene' },
+            { kamin_messungen__typ: 'Kaminmessung (eckig)' },
+            { 'vier_punkt_messungen__typ': 'Kühler an Kante' }
+
+          ],
+        }
       };
       for (const c of allConditions) {
         mergedConditions.filter = { ...mergedConditions.filter, ...c.filter };
@@ -164,9 +175,11 @@ export default defineComponent({
       { label: '', name: 'edit' }
     ]
 
-    function handleEdit(args: any) {
+    async function handleEdit(args: any) {
       console.log(args)
-      store.setEmittentDetailsFromEmittent(args)
+      await store.setEmittentDetailsFromEmittent(args)
+      router.push({ name: 'emittent' })
+
 
     }
 

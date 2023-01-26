@@ -5,6 +5,8 @@
       <q-tab name="allgemeines" label="Allgemeines" />
       <q-tab name="schallmessung" label="Schallmessung" :disable="selectedMessung.length == 0" />
       <q-tab name="sonstiges" label="Sonstiges" />
+      <q-tab label="Archiv" @click="openArchive" />
+      <q-tab label="Archivieren" @click="makeSnapshot" />
     </q-tabs>
     <q-separator />
     <q-tab-panels v-model="tab" animated>
@@ -16,10 +18,9 @@
       <q-tab-panel name="sonstiges"></q-tab-panel>
       <q-tab-panel name="allgemeines">
         <div class="row">
-          <q-btn label="Undo" @click="handleUndo" />
-          <q-btn label="Redo" @click="redo" />
-          <q-btn label="Archiv" @click="openArchive" />
-          <q-btn label="Archivieren" @click="makeSnapshot" />
+          <q-btn @click="handleUndo" icon="undo" />
+          <q-btn @click="redo" icon="redo" />
+
           <q-btn label="Änderungen speichern" @click="saveChanges" />
         </div>
         <div class="row">

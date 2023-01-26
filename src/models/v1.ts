@@ -18,6 +18,8 @@ export interface Pegelreihe {
 
 }
 
+const USE_DEVELOPMENT_DATA = false
+
 export interface OverviewFile {
   id: number
   upload: string
@@ -403,18 +405,31 @@ const rectOnMapFactory = Factory.Sync.makeFactory<RectOnMap>({
 
 })
 
-const messwertereiheFactory = Factory.Sync.makeFactory<Pegelreihe>({
-  id: Factory.each((i) => `${i}`),
-  hz31_5: Factory.each(() => Math.floor(Math.random() * 10000) / 100),
-  hz63: Factory.each(() => Math.floor(Math.random() * 10000) / 100),
-  hz125: Factory.each(() => Math.floor(Math.random() * 10000) / 100),
-  hz250: Factory.each(() => Math.floor(Math.random() * 10000) / 100),
-  hz500: Factory.each(() => Math.floor(Math.random() * 10000) / 100),
-  hz1000: Factory.each(() => Math.floor(Math.random() * 10000) / 100),
-  hz2000: Factory.each(() => Math.floor(Math.random() * 10000) / 100),
-  hz4000: Factory.each(() => Math.floor(Math.random() * 10000) / 100),
-  hz8000: Factory.each(() => Math.floor(Math.random() * 10000) / 100),
-});
+const messwertereiheFactory = Factory.Sync.makeFactory<Pegelreihe>(
+  USE_DEVELOPMENT_DATA ? {
+    id: Factory.each((i) => `${i}`),
+    hz31_5: Factory.each(() => Math.floor(Math.random() * 10000) / 100),
+    hz63: Factory.each(() => Math.floor(Math.random() * 10000) / 100),
+    hz125: Factory.each(() => Math.floor(Math.random() * 10000) / 100),
+    hz250: Factory.each(() => Math.floor(Math.random() * 10000) / 100),
+    hz500: Factory.each(() => Math.floor(Math.random() * 10000) / 100),
+    hz1000: Factory.each(() => Math.floor(Math.random() * 10000) / 100),
+    hz2000: Factory.each(() => Math.floor(Math.random() * 10000) / 100),
+    hz4000: Factory.each(() => Math.floor(Math.random() * 10000) / 100),
+    hz8000: Factory.each(() => Math.floor(Math.random() * 10000) / 100),
+  } : {
+    id: Factory.each((i) => `${i}`),
+    hz31_5: 0,
+    hz63: 0,
+    hz125: 0,
+    hz250: 0,
+    hz500: 0,
+    hz1000: 0,
+    hz2000: 0,
+    hz4000: 0,
+    hz8000: 0,
+  }
+);
 
 /*
 const messpositionFactory = Factory.Sync.makeFactory<Messposition>({

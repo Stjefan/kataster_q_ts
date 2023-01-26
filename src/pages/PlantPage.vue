@@ -10,7 +10,7 @@
       </div>
       <div class="col-8">
 
-        <map-view @addEmittent="handleAddEmittent" />
+        <map-view @addEmittent="handleAddEmittent" v-if="store.karteMainPage" />
       </div>
     </div>
 
@@ -152,7 +152,8 @@ export default defineComponent({
       refresh,
       treeNodesExpanded,
       handleAddEmittent,
-      createEntityDialog
+      createEntityDialog,
+      store
     }
   }
 })

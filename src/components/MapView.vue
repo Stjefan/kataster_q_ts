@@ -118,8 +118,8 @@ export default defineComponent({
         const gk = px_2_gk({ px_x: eventArgs.offsetX, px_y: eventArgs.offsetY }, store.karteMainPage?.georeferenzierung)
         console.log('GK', gk)
         console.log(gk_2_px(gk, m))
-        lastClickedPosition.value.gk_rechts = gk.gk_rechts
-        lastClickedPosition.value.gk_hoch = gk.gk_hoch
+        lastClickedPosition.value.gk_rechts = Math.round(gk.gk_rechts)
+        lastClickedPosition.value.gk_hoch = Math.round(gk.gk_hoch)
 
       }
     }
@@ -136,8 +136,8 @@ export default defineComponent({
         console.log(m)
         const gk = px_2_gk({ px_x: eventArgs.offsetX, px_y: eventArgs.offsetY }, store.karteMainPage?.georeferenzierung)
         console.log('GK', gk)
-        lastClickedPosition.value.gk_rechts = gk.gk_rechts
-        lastClickedPosition.value.gk_hoch = gk.gk_hoch
+        lastClickedPosition.value.gk_rechts = Math.round(gk.gk_rechts)
+        lastClickedPosition.value.gk_hoch = Math.round(gk.gk_hoch)
         console.log(gk_2_px(gk, m))
 
       }
