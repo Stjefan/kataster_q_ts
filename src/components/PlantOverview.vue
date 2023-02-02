@@ -201,9 +201,26 @@ export default defineComponent({
         case 'werk':
           console.log((_args as Plant).children.map(i => i.children.map(ii => ii.map)))
           const roofs = _.flatMap((_args as Plant).children, i => i.children)
-          store.$patch({
-            rectsOnMap: roofs.filter(i => i.map != null).map(i => rectOnMapFactory.build())
-          })
+          if (_args.map.georeferenzierung) {
+            const mygk2pxMatrix = get_gk_2_px_matrix(_args.map.georeferenzierung)
+
+            store.$patch({
+              rectsOnMap: roofs.filter(i => i.map != null && i.map.georeferenzierung != null).map(i => {
+                const p_ll = gk_2_px(i.map.georeferenzierung!.lower_left, mygk2pxMatrix)
+                const p_lr = gk_2_px(i.map.georeferenzierung!.lower_right, mygk2pxMatrix)
+                const p_ur = gk_2_px(i.map.georeferenzierung!.upper_right, mygk2pxMatrix)
+                const p_ul = gk_2_px(i.map.georeferenzierung!.upper_left, mygk2pxMatrix)
+                const r = rectOnMapFactory.build()
+                r.points = `${Math.floor(p_ll.px_x)}, ${Math.floor(p_ll.px_y)},
+              ${Math.floor(p_lr.px_x)}, ${Math.floor(p_lr.px_y)},
+              ${Math.floor(p_ur.px_x)}, ${Math.floor(p_ur.px_y)},
+              ${Math.floor(p_ul.px_x)}, ${Math.floor(p_ul.px_y)}`
+                r.idCorrespondingRoof = i.idAtBackend
+                r.nameCorrespondingRoof = i.name
+                return r
+              })
+            })
+          }
           break;
 
       }

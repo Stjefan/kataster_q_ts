@@ -1,4 +1,4 @@
-import { anlagenpegelFactory, Anlagenpegelreihe, auswertungspegelFactory, Auswertungspegelreihe, GeometrieEmittent, GeometrieMessung, getField, Korrekturwert, MesspositionEditViewModel, MesspunktAnAnlage, messwertereiheFactory, pegelfrequenzenFields, Pegelreihe, setField } from './v1'
+import { korrekturwertFactory, anlagenpegelFactory, Anlagenpegelreihe, auswertungspegelFactory, Auswertungspegelreihe, GeometrieEmittent, GeometrieMessung, getField, Korrekturwert, MesspositionEditViewModel, MesspunktAnAnlage, messwertereiheFactory, pegelfrequenzenFields, Pegelreihe, setField } from './v1'
 
 
 
@@ -74,7 +74,7 @@ export function transformZ2A(arg: Auswertungspegelreihe & Pegelreihe) {
   return result;
 }
 
-export function berechneLwlin(args: [Anlagenpegelreihe & Pegelreihe]) {
+export function berechneLwlin(args: (Anlagenpegelreihe & Pegelreihe)[]) {
   const korregierte_anlagenpegel = []
   for (const arg of args) {
     const anlagenpegel = messwertereiheFactory.build()
@@ -84,17 +84,17 @@ export function berechneLwlin(args: [Anlagenpegelreihe & Pegelreihe]) {
     }
     korregierte_anlagenpegel.push(anlagenpegel)
   }
-  const auswertungspegelreihe = auswertungspegelFactory.build()
+  const auswertungspegelreihe = energetische_summe(korregierte_anlagenpegel)
 
-  let summierteEnergie = 0
-  for (const f of pegelfrequenzenFields) {
 
-    setField(auswertungspegelreihe, f, korregierte_anlagenpegel.reduce((i, j) => i + getField(j, f), 0))
-    summierteEnergie += getField(auswertungspegelreihe, f)
+  auswertungspegelreihe.summiert = 10 * Math.log10(energieInPegelreihe(auswertungspegelreihe));
+
+  const result: Auswertungspegelreihe & Pegelreihe = {
+    ...auswertungspegelreihe,
+    summiert: 10 * Math.log10(energieInPegelreihe(auswertungspegelreihe))
   }
-  auswertungspegelreihe.summiert = summierteEnergie / pegelfrequenzenFields.length
-  console.log('berechnelwlin', auswertungspegelreihe)
-  return auswertungspegelreihe
+  console.log('berechnelwlin', result)
+  return result
 
 }
 
@@ -143,7 +143,7 @@ function berechneMessflaechenkorrektur(
   emittent_geometrie: GeometrieEmittent,
   messung_geometrie: GeometrieMessung,
   messverfahren: string
-) {
+): Korrekturwert {
   switch (messverfahren) {
     case 'Quadermessung an 1 reflektierenden Ebene':
       return berechneKorrekturQuader1(emittent_geometrie, messung_geometrie);
@@ -214,7 +214,10 @@ export function berechneKorrekturQuader1(
     1.2805 * Math.log10(Math.pow(oberflächeReferenzquader / messabstand, 2)) -
     0.0107;
   console.log(10 * Math.log10(lw_before_logarithm), winkelfehler)
-  return { lw1: 10 * Math.log10(lw_before_logarithm), winkelfehler };
+  const ergebnis = korrekturwertFactory.build()
+  ergebnis.korrekturen.push(10 * Math.log10(lw_before_logarithm))
+  ergebnis.lw1 = 10 * Math.log10(lw_before_logarithm)
+  return ergebnis
 }
 
 //  "korrekturwert_1": 10.8, .4, "emittent_geometrie": { "id": 160, "geo1": 0.7, "geo2": 1.7, "geo3": 1.2, "geo4": 0 }, "messung_geometrie": { "id": 160, "geoxy": 0.5, "geoh": 0, "komega": 0, "k_2_a": 0 }
@@ -234,7 +237,10 @@ export function berechneKorrekturQuader2(
     1.2805 * Math.log10(Math.pow(oberflächeReferenzquader / messabstand, 2)) -
     0.0107;
   console.log(10 * Math.log10(lw_before_logarithm), winkelfehler)
-  return { lw1: 10 * Math.log10(lw_before_logarithm), winkelfehler };
+  const ergebnis = korrekturwertFactory.build()
+  ergebnis.korrekturen.push(10 * Math.log10(lw_before_logarithm))
+  ergebnis.lw1 = 10 * Math.log10(lw_before_logarithm)
+  return ergebnis
 }
 
 function berechneKorrekturQuader3(emittent_geometrie: GeometrieEmittent,
@@ -250,7 +256,10 @@ function berechneKorrekturQuader3(emittent_geometrie: GeometrieEmittent,
     1.2805 * Math.log10(Math.pow(oberflächeReferenzquader / messabstand, 2)) -
     0.0107;
   console.log(10 * Math.log10(lw_before_logarithm), winkelfehler)
-  return { lw1: 10 * Math.log10(lw_before_logarithm), winkelfehler };
+  const ergebnis = korrekturwertFactory.build()
+  ergebnis.korrekturen.push(10 * Math.log10(lw_before_logarithm))
+  ergebnis.lw1 = 10 * Math.log10(lw_before_logarithm)
+  return ergebnis
 }
 
 function berechneKorrekturKaminRund(emittent_geometrie: GeometrieEmittent,
@@ -268,7 +277,12 @@ function berechneKorrekturKaminRund(emittent_geometrie: GeometrieEmittent,
     r2 =
       2 * Math.PI * rs * Math.sqrt(Math.abs(Math.pow(rs, 2) - Math.pow(rk, 2)));
   }
-  return { lw1: 10 * Math.log10(r1), lw2: 10 * Math.log10(r2) };
+  //return { lw1: 10 * Math.log10(r1), lw2: 10 * Math.log10(r2) };
+
+  const ergebnis = korrekturwertFactory.build()
+  ergebnis.korrekturen.push(10 * Math.log10(r1))
+  ergebnis.korrekturen.push(10 * Math.log10(r2))
+  return ergebnis
 }
 
 // FALSCHER WERT
@@ -302,12 +316,15 @@ function berechneKorrekturKaminEckig(emittent_geometrie: GeometrieEmittent,
     r2 =
       2 * Math.PI * rs * Math.sqrt(Math.abs(Math.pow(rs, 2) - Math.pow(rk, 2)));
   }
-  return { lw1: 10 * Math.log10(r1), lw2: 10 * Math.log10(r2) };
+  const ergebnis = korrekturwertFactory.build()
+  ergebnis.korrekturen.push(10 * Math.log10(r1))
+  ergebnis.korrekturen.push(10 * Math.log10(r2))
+  return ergebnis
 }
 
 function berechneKorrekturKugel(emittent_geometrie: GeometrieEmittent,
   messung_geometrie: GeometrieMessung) {
-  const result = {} as Korrekturwert;
+  const ergebnis = korrekturwertFactory.build()
   if (
     messung_geometrie.geoxy < 1 ||
     messung_geometrie.geoxy <
@@ -318,17 +335,17 @@ function berechneKorrekturKugel(emittent_geometrie: GeometrieEmittent,
       Math.pow(emittent_geometrie.geo3 / 2, 2)
     )
   ) {
-    result.bemerkung = 'Nicht Richtlinienkonform';
+    ergebnis.bemerkung = 'Nicht Richtlinienkonform';
   }
 
   const r1 = 4 * (Math.PI * Math.pow(messung_geometrie.geoxy, 2));
-  result.lw1 = 10 * Math.log10(r1);
-  return result;
+  ergebnis.korrekturen.push(10 * Math.log10(r1))
+  return ergebnis
 }
 
 function berechneKorrekturKugel1(emittent_geometrie: GeometrieEmittent,
   messung_geometrie: GeometrieMessung) {
-  const result = {} as Korrekturwert;
+  const ergebnis = korrekturwertFactory.build()
   if (
     messung_geometrie.geoxy < 1 ||
     messung_geometrie.geoxy <
@@ -339,17 +356,18 @@ function berechneKorrekturKugel1(emittent_geometrie: GeometrieEmittent,
       Math.pow(emittent_geometrie.geo3, 2)
     )
   ) {
-    result.bemerkung = 'Nicht Richtlinienkonform';
+    ergebnis.bemerkung = 'Nicht Richtlinienkonform';
   }
 
   const r1 = 2 * (Math.PI * Math.pow(messung_geometrie.geoxy, 2));
-  result.lw1 = 10 * Math.log10(r1);
-  return result;
+
+  ergebnis.korrekturen.push(10 * Math.log10(r1))
+  return ergebnis
 }
 
 function berechneKorrekturKugel2(emittent_geometrie: GeometrieEmittent,
   messung_geometrie: GeometrieMessung) {
-  const result = {} as Korrekturwert;
+  const ergebnis = korrekturwertFactory.build()
   if (
     messung_geometrie.geoxy < 1 ||
     messung_geometrie.geoxy <
@@ -360,12 +378,13 @@ function berechneKorrekturKugel2(emittent_geometrie: GeometrieEmittent,
       Math.pow(emittent_geometrie.geo3, 2)
     )
   ) {
-    result['bemerkung'] = 'Nicht Richtlinienkonform';
+    ergebnis['bemerkung'] = 'Nicht Richtlinienkonform';
   }
 
   const r1 = Math.PI * Math.pow(messung_geometrie.geoxy, 2);
-  result['lw1'] = 10 * Math.log10(r1);
-  return result;
+
+  ergebnis.korrekturen.push(10 * Math.log10(r1))
+  return ergebnis
 }
 
 function berechneKorrekturKugel3(emittent_geometrie: GeometrieEmittent,
@@ -385,8 +404,9 @@ function berechneKorrekturKugel3(emittent_geometrie: GeometrieEmittent,
   }
 
   const r1 = 0.5 * (Math.PI * Math.pow(messung_geometrie.geoxy, 2));
-  result.lw1 = 10 * Math.log10(r1);
-  return result;
+  const ergebnis = korrekturwertFactory.build()
+  ergebnis.korrekturen.push(10 * Math.log10(r1))
+  return ergebnis
 }
 
 function berechneKorrekturKuehlturm(emittent_geometrie: GeometrieEmittent,
@@ -402,11 +422,17 @@ function berechneKorrekturKuehlturm(emittent_geometrie: GeometrieEmittent,
     emittent_geometrie.geo4 *
     (emittent_geometrie.geo3 + messung_geometrie.geoxy);
 
-  return {
-    lw1: 10 * Math.log10(r1),
-    lw2: 10 * Math.log10(r2),
-    lw3: Math.log10(r3),
-  };
+  const ergebnis = korrekturwertFactory.build()
+  ergebnis.korrekturen.push(10 * Math.log10(r1))
+  ergebnis.korrekturen.push(10 * Math.log10(r2))
+  ergebnis.korrekturen.push(10 * Math.log10(r3))
+  return ergebnis
+
+  // return {
+  //   lw1: 10 * Math.log10(r1),
+  //   lw2: 10 * Math.log10(r2),
+  //   lw3: Math.log10(r3),
+  // };
 }
 
 function berechneKorrekturKuehlerFlaeche(
@@ -429,13 +455,21 @@ function berechneKorrekturKuehlerFlaeche(
     (emittent_geometrie.geo1 + 2 * messung_geometrie.geoxy) *
     (emittent_geometrie.geo3 + messung_geometrie.geoxy);
 
-  return {
-    lw1: 10 * Math.log10(r1),
-    lw2: 10 * Math.log10(r2),
-    lw3: Math.log10(r3),
-    lw4: Math.log10(r4),
-    lw5: Math.log10(r5),
-  };
+  const ergebnis = korrekturwertFactory.build()
+  ergebnis.korrekturen.push(10 * Math.log10(r1))
+  ergebnis.korrekturen.push(10 * Math.log10(r2))
+  ergebnis.korrekturen.push(10 * Math.log10(r3))
+  ergebnis.korrekturen.push(10 * Math.log10(r4))
+  ergebnis.korrekturen.push(10 * Math.log10(r5))
+  return ergebnis
+
+  // return {
+  //   lw1: 10 * Math.log10(r1),
+  //   lw2: 10 * Math.log10(r2),
+  //   lw3: Math.log10(r3),
+  //   lw4: Math.log10(r4),
+  //   lw5: Math.log10(r5),
+  // };
 }
 
 function berechneKorrekturKuehlerKante(emittent_geometrie: GeometrieEmittent,
@@ -453,12 +487,20 @@ function berechneKorrekturKuehlerKante(emittent_geometrie: GeometrieEmittent,
     (emittent_geometrie.geo2 + messung_geometrie.geoxy) *
     (emittent_geometrie.geo3 + messung_geometrie.geoxy);
 
-  return {
-    lw1: 10 * Math.log10(r1),
-    lw2: 10 * Math.log10(r2),
-    lw3: Math.log10(r3),
-    lw4: Math.log10(r4),
-  };
+  const ergebnis = korrekturwertFactory.build()
+  ergebnis.korrekturen.push(10 * Math.log10(r1))
+  ergebnis.korrekturen.push(10 * Math.log10(r2))
+  ergebnis.korrekturen.push(10 * Math.log10(r3))
+  ergebnis.korrekturen.push(10 * Math.log10(r4))
+
+  return ergebnis
+
+  // return {
+  //   lw1: 10 * Math.log10(r1),
+  //   lw2: 10 * Math.log10(r2),
+  //   lw3: Math.log10(r3),
+  //   lw4: Math.log10(r4),
+  // };
 }
 
 function berechneKorrekturInnerhalbRahmen(
@@ -468,7 +510,9 @@ function berechneKorrekturInnerhalbRahmen(
   const r1 =
     emittent_geometrie.geo1 * emittent_geometrie.geo2 -
     emittent_geometrie.geo3 * emittent_geometrie.geo4;
-  return { lw1: 10 * Math.log10(r1) };
+  const ergebnis = korrekturwertFactory.build()
+  ergebnis.korrekturen.push(10 * Math.log10(r1))
+  return ergebnis
 }
 
 function berechneKorrekturInnerhalbEckig(
@@ -476,7 +520,9 @@ function berechneKorrekturInnerhalbEckig(
   messung_geometrie: GeometrieMessung
 ) {
   const r1 = emittent_geometrie.geo1 * emittent_geometrie.geo2;
-  return { lw1: 10 * Math.log10(r1) };
+  const ergebnis = korrekturwertFactory.build()
+  ergebnis.korrekturen.push(10 * Math.log10(r1))
+  return ergebnis
 }
 
 function berechneKorrekturInnerhalbKreis(
@@ -484,7 +530,9 @@ function berechneKorrekturInnerhalbKreis(
   messung_geometrie: GeometrieMessung
 ) {
   const r1 = Math.PI * Math.pow(emittent_geometrie.geo1 / 2, 2);
-  return { lw1: 10 * Math.log10(r1) };
+  const ergebnis = korrekturwertFactory.build()
+  ergebnis.korrekturen.push(10 * Math.log10(r1))
+  return ergebnis
 }
 
 function berechneKorrekturInnerhalbKreisring(
@@ -494,7 +542,9 @@ function berechneKorrekturInnerhalbKreisring(
   const r1 =
     Math.PI * Math.pow(emittent_geometrie.geo1 / 2, 2) -
     Math.PI * Math.pow(emittent_geometrie.geo2 / 2, 2);
-  return { lw1: 10 * Math.log10(r1) };
+  const ergebnis = korrekturwertFactory.build()
+  ergebnis.korrekturen.push(10 * Math.log10(r1))
+  return ergebnis
 }
 
 function berechneKorrekturAusserhalbRahmen(
@@ -515,7 +565,9 @@ function berechneKorrekturAusserhalbRahmen(
     emittent_geometrie.geo2,
     messung_geometrie.komega
   );
-  return { lw1: 10 * Math.log10(aussen - innen) };
+  const ergebnis = korrekturwertFactory.build()
+  ergebnis.korrekturen.push(10 * Math.log10(aussen - innen))
+  return ergebnis
 }
 
 function berechneKorrekturAusserhalbEckig(
@@ -529,7 +581,9 @@ function berechneKorrekturAusserhalbEckig(
     emittent_geometrie.geo2,
     messung_geometrie.komega
   );
-  return { lw1: 10 * Math.log10(korrektur) };
+  const ergebnis = korrekturwertFactory.build()
+  ergebnis.korrekturen.push(10 * Math.log10(korrektur))
+  return ergebnis
 }
 
 function berechneKorrekturAusserhalbKreis(
@@ -545,7 +599,10 @@ function berechneKorrekturAusserhalbKreis(
     equivalentSquare,
     messung_geometrie.komega
   );
-  return { lw1: 10 * Math.log10(korrektur) };
+  const ergebnis = korrekturwertFactory.build()
+  ergebnis.korrekturen.push(10 * Math.log10(korrektur))
+  return ergebnis
+  // return { lw1: 10 * Math.log10(korrektur) };
 }
 
 function berechneKorrekturAusserhalbKreisring(
@@ -568,6 +625,10 @@ function berechneKorrekturAusserhalbKreisring(
     equivalentSquare_innen,
     messung_geometrie.komega
   );
+
+  const ergebnis = korrekturwertFactory.build()
+  ergebnis.korrekturen.push(10 * Math.log10(korrektur_aussen - korrektur_innen))
+  return ergebnis
 
   return { lw1: 10 * Math.log10(korrektur_aussen - korrektur_innen) };
 }

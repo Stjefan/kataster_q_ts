@@ -69,8 +69,9 @@
             </q-td>
           </template>
         </q-table>
-        {{ selectedMessung }}
-
+        <div v-if="store.developmentMode">
+          {{ selectedMessung }}
+        </div>
 
       </q-tab-panel>
     </q-tab-panels>
@@ -111,6 +112,7 @@ export default defineComponent({
     function handleUndo() {
       console.log('before', emittent.value)
       undo()
+      selectedMessung.value = []
       console.log('after', emittent.value)
     }
 
@@ -198,7 +200,7 @@ export default defineComponent({
       }).onOk(data => {
         console.log(data)
         if (store.emittentSource != null) {
-          store.createRevision(store.emittentSource)
+          store.createRevision(store.emittentSource, data)
         }
 
         // console.log('>>>> OK, received', data)
@@ -232,18 +234,10 @@ export default defineComponent({
 
     function saveChanges() {
       console.log('Saving...')
-      store.$patch((state) => {
-        state.emittentSource!.name = emittent.value.name
-        state.emittentSource!.koordinaten!.gk_rechts = emittent.value.gkrechts
-        state.emittentSource!.koordinaten!.gk_hoch = emittent.value.gkhoch
-
-        Object.assign(state.emittent!, emittent.value)
-
-
-
-      })
-
-      store.updateEmittentDetails(store.emittent!, fileupload.value.length > 0 ? fileupload.value[0] as File : null)
+      if (store != null) {
+        Object.assign(store.emittent!, emittent.value)
+        store.updateEmittentDetails(store.emittent!, fileupload.value.length > 0 ? fileupload.value[0] as File : null)
+      }
     }
 
     const cols = [
@@ -268,7 +262,8 @@ export default defineComponent({
       selectedMessung,
       createMessung,
       removeMessung,
-      handleUndo
+      handleUndo,
+      store
     }
   }
 })

@@ -18,6 +18,11 @@ const routes: RouteRecordRaw[] = [
         auth: true
       }
     },
+    {
+      path: 'pouch', component: () => import('pages/PouchPage.vue'), name: 'pouch', meta: {
+        auth: true
+      }
+    },
     { path: 'emittent', component: () => import('pages/EmittentDetails.vue'), name: 'emittent' },
     { path: 'map', component: () => import('pages/MapPage.vue'), name: 'map' },
     { path: 'mapper', component: () => import('pages/MapperPage.vue'), name: 'mapper', },

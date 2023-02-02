@@ -5,6 +5,7 @@
 
     <q-input label="Overview-Upload" v-model="upload" type="file" />
     <q-btn label="Hochladen" @click="push2server" />
+    <q-btn label="Löschen" @click="deleteSelected" />
   </q-page>
 </template>
 
@@ -16,7 +17,7 @@ export default defineComponent({
   setup() {
     const store = useKatasterStore()
 
-    const selectedOverview = ref('')
+    const selectedOverview = ref('' as any)
 
     const upload = ref('')
 
@@ -31,7 +32,9 @@ export default defineComponent({
 
     }
 
-
+    function deleteSelected() {
+      store.deleteOverview(selectedOverview.value.id)
+    }
 
 
 
@@ -39,7 +42,8 @@ export default defineComponent({
       store,
       selectedOverview,
       upload,
-      push2server
+      push2server,
+      deleteSelected
     }
   }
 })

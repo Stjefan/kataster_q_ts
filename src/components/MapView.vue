@@ -15,16 +15,16 @@
       GK-Koordinaten: {{ lastClickedPosition?.gk_rechts }} | {{ lastClickedPosition?.gk_hoch }}
     </div>
   </div>
-  <div style="background-color: lightgray; height: 50vh; overflow: hidden">
+  <div style="background-color: lightgray; height: 80vh; overflow: hidden">
     <div id="zoomPan" style="height: 100%;" @contextmenu="handleContextMenu">
       <q-menu touch-position context-menu>
 
         <q-list dense style="min-width: 100px">
           <q-item clickable v-close-popup @click="handleContextMenuSelect">
-            <q-item-section>Open...</q-item-section>
+            <q-item-section>Emittent bearbeiten</q-item-section>
           </q-item>
           <q-item clickable v-close-popup @click="handleContextMenuAdd">
-            <q-item-section>New</q-item-section>
+            <q-item-section>Neuen Emittent anlegen</q-item-section>
           </q-item>
         </q-list>
       </q-menu>
@@ -38,7 +38,9 @@
           :fill="markedPoint == p.id ? 'red' : 'blue'" @click="handleCircleClick(p)"
           @contextmenu.prevent="handleContextMenu"></circle>
         <polygon :points="p.points" v-for="p in rectsOnMap" :key="p.id"
-          style="opacity: 0.5;fill:lime;stroke:purple;stroke-width:1" />
+          style="opacity: 0.5;fill:lime;stroke:purple;stroke-width:1">
+          <title>{{ p.nameCorrespondingRoof }} ({{ p.idCorrespondingRoof }})</title>
+        </polygon>
       </svg>
     </div>
 
@@ -147,7 +149,7 @@ export default defineComponent({
     function handleContextMenuAdd() {
       console.log(store.karteMainPageZuordnung)
       if (store.karteMainPageZuordnung?.body == 'dach') {
-        emit('add-emittent', { koordinaten: { gk_rechts: lastClickedPosition.value.px_x, gk_hoch: lastClickedPosition.value.px_y } })
+        emit('add-emittent', { koordinaten: { gk_rechts: lastClickedPosition.value.gk_rechts, gk_hoch: lastClickedPosition.value.gk_hoch } })
 
       } else {
 

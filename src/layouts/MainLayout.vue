@@ -7,7 +7,7 @@
         <q-toolbar-title>
           <!--Kataster App-->
         </q-toolbar-title>
-        <div>{{ auth.user() }}</div>
+        <div>{{ auth.user()?.username }}</div>
         <q-btn v-if="auth.user()" label="Logout" @click="logout()" flat />
 
         <div v-if="false">Quasar v{{ $q.version }}</div>
@@ -19,6 +19,7 @@
         <!--<q-route-tab :to="{ name: 'mapper' }" exact label="Mapper" />-->
 
         <!--<q-route-tab :to="{ name: 'login' }" exact label="Login" />-->
+        <q-route-tab to="pouch" label="Pouch" />
         <q-route-tab :to="{ name: 'projects' }" exact label="Projekte" />
         <!--
         <q-route-tab :to="{ name: 'sts' }" exact label="STS" />

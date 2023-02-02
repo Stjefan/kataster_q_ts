@@ -10,7 +10,13 @@
         <q-td>
           <q-btn label="Bearbeiten" @click="handleEdit(props.row)" />
         </q-td>
-      </template></q-table>
+      </template>
+      <template v-slot:body-cell-checked="props">
+        <q-td>
+          <q-toggle v-model="props.row.checked" />
+        </q-td>
+      </template>
+    </q-table>
     <filter-ergebnis />
   </q-page>
 </template>
@@ -22,7 +28,7 @@ import { useKatasterStore } from 'src/stores/kataster-store';
 import { defineComponent, ref, } from 'vue'
 import { useRouter } from 'vue-router';
 import { api } from 'src/boot/axios';
-import { ein_punkt_messverfahren, vier_punkt_messverfahren } from 'src/models/v1';
+import { ein_punkt_messverfahren, filterResultFactory, vier_punkt_messverfahren } from 'src/models/v1';
 export default defineComponent({
   components: { ConditionComponent, FilterErgebnis },
   // name: 'PageName'
@@ -163,7 +169,7 @@ export default defineComponent({
 
       api.put('/filter/', mergedConditions).then(response => {
         console.log(response)
-        filteredEmittents.value = response.data
+        filteredEmittents.value = response.data.map((i: any) => filterResultFactory.build({ name: i.name, id: i.id }))
       })
 
     }
@@ -172,7 +178,8 @@ export default defineComponent({
       { label: 'Name', field: 'name' },
       { label: 'Rechtswert', field: (arg: any) => arg.lage?.gk_rechts },
       { label: 'Hochwert', field: (arg: any) => arg.lage?.gk_hoch },
-      { label: '', name: 'edit' }
+      { label: '', name: 'edit' },
+      { label: '', field: 'checked', name: 'checked' }
     ]
 
     async function handleEdit(args: any) {

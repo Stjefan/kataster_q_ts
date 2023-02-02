@@ -12,9 +12,9 @@
             <q-btn label="Daten laden" @click="ladeVersion(props.row)" />
           </q-td>
         </template>
-        <template v-slot:body-cell-delete>
+        <template v-slot:body-cell-delete="props">
           <q-td>
-            <q-btn label="Version löschen" />
+            <q-btn label="Version löschen" @click="deleteVersion(props.row)" />
           </q-td>
         </template>
       </q-table>
@@ -53,12 +53,17 @@ export default {
       store.showReversion(target.data)
       // console.log(target.data)
     }
+
+    function deleteVersion(target) {
+      store.deleteReversion(target.data)
+      console.log(target)
+    }
     const rows = computed(() => store.currentArchive)
     const cols = [
       {
         name: 'bemerkung',
         label: 'Bemerkung',
-        field: 'kommentar',
+        field: 'comment',
       },
       {
         name: 'datum',
@@ -109,7 +114,8 @@ export default {
       // we can passthrough onDialogCancel directly
       onCancelClick: onDialogCancel,
       cols,
-      ladeVersion
+      ladeVersion,
+      deleteVersion
     }
   }
 }

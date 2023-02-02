@@ -5,7 +5,7 @@
   <q-btn label="Messwerte auswerten" @click="evaluateMesswerte" />
   <q-btn label="Bericht erstellen" @click="createExcelReport" />
   <div>Bezeichnung Messverfahren {{ messung?.messverfahren }}</div>
-  <div>{{ store.messung2edit }}</div>
+  <div v-if="store.developmentMode">{{ store.messung2edit }}</div>
 
   <q-tabs v-model="tab">
     <q-tab name="messwerte" label="Messwerte" />
@@ -19,15 +19,16 @@
       <div class="row justify-evenly">
         <q-select label="Messgerät" v-model="defaultMessgeraet" class="col-2" :options="messgeraete"
           option-label="name" />
-        <q-btn label="Übertragen" @click="uebetrageMessgeraet" />
+        <q-btn label="Übertragen" @click="uebetrageMessgeraet" dense class="col-1" />
         <q-input type="date" label="Messdatum" v-model="defaultMessdatum" class="col-2" />
+        <q-btn label="Übertragen" @click="uebetrageMessdatum" dense class="col-1" />
         <q-input label="Overview-File" v-model="defaultOverviewfile" class="col-2" />
-        <q-btn label="Übertragen" @click="uebetrageMessdatum" />
+        <q-btn label="Übertragen" @click="uebetrageMessdatum" dense class="col-1" />
         <q-btn label="Messwerte auslesen" @click="uebetrageMesswerte" />
       </div>
 
       <div v-for="kvp in orderedMesspositionenKvps" :key="kvp[0]">
-        Messpunkte an Anlage {{ kvp[0] }}:
+        Messpunkte an Anlage {{ kvp[0] + 1 }}:
         <edit-messreihe :messwertereihen="kvp[1].messwertereihen" @addMesswertereihe="onAddMesswertereiheRequest"
           @pasteRequest="handlePasteRequest" @removeMesswertereihe="onRemoveMesswertereiheRequest($event)" />
       </div>
@@ -94,14 +95,14 @@ export default defineComponent({
     function onAddMesswertereiheRequest(args: unknown) {
       console.log(args)
       console.log(messung)
-      messung?.value?.messpositionen.get(1)?.messwertereihen.push(messpunktAnAnlageFactory.build())
-      console.log(messung?.value?.messpositionen.get(1))
+      messung?.value?.messpositionen[0]?.messwertereihen.push(messpunktAnAnlageFactory.build())
+      console.log(messung?.value?.messpositionen[0])
       // messposition1.value.messwertereihen.push(messwertereiheDiscriminatorFactory.build({ type: "Fremdpegel" }))
     }
 
     function onRemoveMesswertereiheRequest(args: unknown) {
       console.log(args)
-      const target = messung.value?.messpositionen.get(1)
+      const target = messung.value?.messpositionen[0]
       if (target != null) {
 
         const idx = target.messwertereihen.findIndex(i => i.id == args)
@@ -115,7 +116,7 @@ export default defineComponent({
     function uebetrageMessgeraet() {
       if (messung.value != null) {
         for (const k of messung.value.messpositionen.keys()) {
-          const val = messung.value.messpositionen.get(k)
+          const val = messung.value.messpositionen[k]
           if (val != null) {
 
             for (const mp of val.messwertereihen) {
@@ -133,7 +134,7 @@ export default defineComponent({
     function uebetrageMessdatum() {
       if (messung.value != null) {
         for (const k of messung.value.messpositionen.keys()) {
-          const val = messung.value.messpositionen.get(k)
+          const val = messung.value.messpositionen[k]
           if (val != null) {
 
             for (const mp of val.messwertereihen) {
@@ -191,7 +192,7 @@ export default defineComponent({
     function uebetrageMesswerte() {
       if (messung.value != null) {
         for (const k of messung.value.messpositionen.keys()) {
-          const val = messung.value.messpositionen.get(k)
+          const val = messung.value.messpositionen[k]
           if (val != null) {
             const p = { hz31_5: 100 } as Pegelreihe
 
@@ -214,57 +215,50 @@ export default defineComponent({
 
 
       if (messung.value != null) {
-        for (let k of messung.value?.messpositionen.keys()) {
-
-          if (k != undefined) {
-            messung.value?.messpositionen.get(k)
-          }
-        }
-      }
-
-      const m = messung.value?.messpositionen.get(1)
-      if (m != null) {
-        // berechneMittelungspegel(m)
 
 
-        if (messung.value) {
-          const korrektur = berechneMessflaechenkorrektur(messung.value?.geometrie_emittent, messung.value?.geometrie_messung, messung.value?.messverfahren)
-          console.log('korrektur', korrektur)
+        const korrektur = berechneMessflaechenkorrektur(messung.value?.geometrie_emittent, messung.value?.geometrie_messung, messung.value?.messverfahren)
+        const auswertung = auswertungFactory.build()
+        const anlagenpegel_alle_messpositionen = []
+        const mittelungspegel_gesamt_alle_messpositionen = []
+        const mittelungspegel_fremd_alle_messpositionen = []
+
+        console.log('korrektur', korrektur)
+
+        for (let i = 0; i < messung.value?.messpositionen.length; i++) {
+          const m = messung.value?.messpositionen[i]
+
           const m_quer = berechneMittelungspegel(m)
           console.log('m_quer', m_quer)
-          const a = berechneAnlagenpegel(m, korrektur.lw1)
-          a.korrektur = korrektur.lw1
+          const a = berechneAnlagenpegel(m, korrektur.korrekturen[i])
+          a.korrektur = korrektur.korrekturen[i]
+          anlagenpegel_alle_messpositionen.push(a)
+          mittelungspegel_gesamt_alle_messpositionen.push(m_quer.gesamtpegel)
+          if (m_quer.fremdpegel != null) {
+            mittelungspegel_fremd_alle_messpositionen.push(m_quer.fremdpegel)
+          }
 
-          const lwlin = berechneLwlin([a])
-          console.log('lwlin', lwlin)
-          const lwa = transformZ2A(lwlin)
-          console.log('lwa', lwa)
-
-          messung.value.auswertung = auswertungFactory.build()
-
-          messung.value.auswertung.anlagenpegel = [a]
-
-          messung.value.auswertung.mittelungspegel_gesamt = [m_quer.gesamtpegel]
-          messung.value.auswertung.mittelungspegel_fremd = m_quer.fremdpegel != null ? [m_quer.fremdpegel] : []
-
-
-
-
-          messung.value.auswertung.lwlin = lwlin
-          messung.value.auswertung.lwa = lwa
 
         }
 
 
+        console.log('gesamtanlagenpegel', anlagenpegel_alle_messpositionen)
 
+        const lwlin = berechneLwlin(anlagenpegel_alle_messpositionen)
+        console.log('lwlin', lwlin)
+        const lwa = transformZ2A(lwlin)
+        console.log('lwa', lwa)
+
+        auswertung.mittelungspegel_gesamt = mittelungspegel_gesamt_alle_messpositionen
+        auswertung.mittelungspegel_fremd = mittelungspegel_fremd_alle_messpositionen
+        auswertung.anlagenpegel = anlagenpegel_alle_messpositionen
+        auswertung.lwlin = lwlin
+        auswertung.lwa = lwa
+
+        messung.value.auswertung = auswertung
 
 
       }
-
-
-
-
-
 
     }
 

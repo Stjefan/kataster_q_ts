@@ -1254,25 +1254,25 @@ export interface KaminMessung {
    * @type {Messposition}
    * @memberof KaminMessung
    */
-  messpositionA1: Messposition;
+  messposition_a1: Messposition;
   /**
    *
    * @type {Messposition}
    * @memberof KaminMessung
    */
-  messpositionA2: Messposition;
+  messposition_a2: Messposition;
   /**
    *
    * @type {Messposition}
    * @memberof KaminMessung
    */
-  messpositionB1: Messposition;
+  messposition_b1: Messposition;
   /**
    *
    * @type {Messposition}
    * @memberof KaminMessung
    */
-  messpositionB2: Messposition;
+  messposition_b2: Messposition;
   /**
    *
    * @type {number}
@@ -1398,6 +1398,7 @@ export interface Werk {
   name: string,
   map: null,
   project: number | null
+  guid: string | null
 }
 
 

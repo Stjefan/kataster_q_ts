@@ -2,15 +2,25 @@
   <q-page padding>
     <!-- content -->
     <div class="row">
-      <div class="col-3" style="height: 300px">
+      <q-scroll-area style="height: 70vh;" class="col-3">
         <q-btn label="Neues Werk  " @click="init" />
         <q-btn icon="autorenew" @click="refresh" />
+        <q-btn label="Emittenten download" @click="longLastingTask" />
+        <q-btn label="Pouch-Fun" @click="store.funWithPouch" />
+        <q-btn label="Filter" @click="store.filterWithPouch" />
+        <q-btn label="Baumstruktur" @click="store.funWithBaumstruktur" />
+        <q-btn label="Baum-Read" @click="store.funWithBaumRead" />
+        <q-btn label="Destroy-Pouch" @click="store.destroyPouch" />
+        <q-btn label="Backup" @click="store.funWithBackup" />
+        <q-btn label="funWithAttachment" @click="store.funWithAttachment" />
+        <q-btn label="loadMap" @click="store.loadMapFromPouch" />
         <plant-overview :uebersichtTreeNodes="treeNodes" @createChildDialog="createEntityDialog" @removeNode="remove"
           v-model:expanded="treeNodesExpanded" />
-      </div>
+      </q-scroll-area>
       <div class="col-8">
 
-        <map-view @addEmittent="handleAddEmittent" v-if="store.karteMainPage" />
+        <map-view @addEmittent="handleAddEmittent" @selectNodeRequest="handleSelectNodeRequest"
+          v-if="store.karteMainPage" style="height: 70vh" />
       </div>
     </div>
 
@@ -18,7 +28,7 @@
 </template>
 
 <script lang="ts">
-import { Building, Plant, Roof, plantFactory, roofFactory, buildingFactory, emittentFactory, Emittent, Koordinaten } from '../models/v1'
+import { Building, Plant, Roof, plantFactory, roofFactory, buildingFactory, emittentFactory, Emittent, Koordinaten, koordinatenFactory } from '../models/v1'
 
 import { computed, defineComponent, ref, Ref } from 'vue'
 import PlantOverview from '../components/PlantOverview.vue'
@@ -79,22 +89,26 @@ export default defineComponent({
       switch (_args.target.body) {
         case 'werk':
           console.log('werk');
-          store.createBuildingBackend(buildingFactory.build({ parent: `${_args.target.id}`, name: _args.data.name }), parseInt(_args.target.id))
+          store.createBuildingBackend(buildingFactory.build({ parent: `${_args.target.id}`, name: _args.data.name }), _args.target.id)
 
           break;
         case 'dach':
           console.log('dach');
-          store.createEmittentBackend(emittentFactory.build({ parent: `${_args.target.id}`, name: _args.data.name, koordinaten: _args.data.koordinaten }), parseInt(_args.target.id))
+          store.createEmittentBackend(emittentFactory.build({ parent: `${_args.target.id}`, name: _args.data.name, koordinaten: _args.data.koordinaten ?? koordinatenFactory.build() }), _args.target.id)
 
           // (_args as Roof).children.push(emittentFactory.build({ parent: _args.id }))
           break;
         case 'gebaeude':
           console.log('gebaeude');
-          store.createRoofBackend(roofFactory.build({ parent: `${_args.target.id}`, name: _args.data.name }), parseInt(_args.target.id))
+          store.createRoofBackend(roofFactory.build({ parent: `${_args.target.id}`, name: _args.data.name }), _args.target.id)
           break;
 
       }
 
+    }
+
+    function longLastingTask() {
+      store.loadAllEmittentDetailsIntoStorage()
     }
 
     function createEntityDialog(parent: any, furtherArgs: any) {
@@ -128,6 +142,10 @@ export default defineComponent({
       createEntityDialog(store.karteMainPageZuordnung, args)
     }
 
+    function handleSelectNodeRequest(args: unknown) {
+      console.log(args)
+    }
+
     function remove(node: Plant | Roof | Building | Emittent) {
       switch (node.body) {
         case 'werk':
@@ -153,7 +171,9 @@ export default defineComponent({
       treeNodesExpanded,
       handleAddEmittent,
       createEntityDialog,
-      store
+      store,
+      longLastingTask,
+      handleSelectNodeRequest
     }
   }
 })

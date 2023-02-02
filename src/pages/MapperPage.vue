@@ -228,7 +228,7 @@ export default defineComponent({
 
       const e_bar = mapper.map<EmittentDetail, EmittentDetails>(w_bar, 'EmittentDetailsAPI', 'EmittentDetails')
 
-      const target = e_bar.messungen[0]?.messpositionen.get(1)?.messwertereihen[0]
+      const target = e_bar.messungen[0]?.messpositionen[0]?.messwertereihen[0]
       if (target != null) {
         target.metainfoGesamtpegel = target.metainfoGesamtpegel ?? metainfoFactory.build()
         target.metainfoFremdpegel = target.metainfoFremdpegel ?? metainfoFactory.build()
