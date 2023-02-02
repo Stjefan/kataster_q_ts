@@ -27,7 +27,9 @@ export interface OverviewFile {
 
 export interface Korrekturwert {
   lw1: number
-  bemerkung: string
+  bemerkung: string | null,
+  korrekturen: number[]
+  bemerkungen: string[]
 }
 
 export function getField(arg: Pegelreihe, field: string) {
@@ -136,6 +138,16 @@ export interface Messgeraet {
   offsetLines: number
   seriennummer: string
   idAtBackend: number | null
+  hz31_5: number | null;
+  hz63: number | null
+  hz125: number | null
+  hz250: number | null
+  hz500: number | null
+  hz1000: number | null
+  hz2000: number | null
+  hz4000: number | null
+  hz8000: number | null
+
 }
 
 export interface Auswertungspegelreihe {
@@ -288,7 +300,7 @@ export interface Messung {
   geometrie_emittent: GeometrieEmittent,
   geometrie_messung: GeometrieMessung
 
-  messpositionen: Map<number, MesspositionEditViewModel>
+  messpositionen: MesspositionEditViewModel[]
 
   auswertung: AuswertungDefault | null
 
@@ -306,7 +318,7 @@ export interface Plant {
   body: string
   map: KarteDetails
   project_id: number,
-  idAtBackend: number | null
+  idAtBackend: number | null,
 }
 
 export interface Building {
@@ -339,6 +351,15 @@ export interface Emittent {
   parent: string
 }
 
+export interface EmittentFilterresult {
+  id: string,
+  name: string
+  koordinaten: Koordinaten
+  parent: string
+  idAtBackend: number | null,
+  checked: boolean
+}
+
 export interface EmittentDetails {
   id: string
   name: string
@@ -359,6 +380,8 @@ export interface EmittentDetails {
   in_betrieb: boolean,
   fuer_messung_vormerken: boolean,
   liegt_an_fassade: boolean,
+
+  idAtBackend: number | null
 
 }
 
@@ -388,7 +411,9 @@ export interface PointOnMap {
 
 export interface RectOnMap {
   points: string
-  id: string
+  id: string,
+  idCorrespondingRoof: number | null,
+  nameCorrespondingRoof: string | null
 }
 
 const pointOnMapFactory = Factory.Sync.makeFactory<PointOnMap>({
@@ -400,6 +425,8 @@ const pointOnMapFactory = Factory.Sync.makeFactory<PointOnMap>({
 })
 
 const rectOnMapFactory = Factory.Sync.makeFactory<RectOnMap>({
+  idCorrespondingRoof: null,
+  nameCorrespondingRoof: null,
   id: Factory.each((i) => `P${i}`),
   points: Factory.each(() => `${(Math.floor(Math.random() * 10000) / 100)}, ${(Math.floor(Math.random() * 10000) / 100)}, ${(Math.floor(Math.random() * 10000) / 100)}, ${(Math.floor(Math.random() * 10000) / 100)}, ${(Math.floor(Math.random() * 10000) / 100)}, ${(Math.floor(Math.random() * 10000) / 100)}`),
 
@@ -442,7 +469,7 @@ const messpositionFactory = Factory.Sync.makeFactory<Messposition>({
 const _messungFactory = Factory.Async.makeFactoryWithRequired<Messung, 'type'>({
   id: Factory.Async.each((i) => `${i}`),
   datum: Factory.Async.each(() => new Date().toISOString()),
-  messpositionen: Factory.Async.each(() => new Map<number, MesspositionEditViewModel>()),
+  messpositionen: Factory.Async.each(() => []),
   geometrie_messung: Factory.Async.each(() => geometrieMessungFactory.build()),
   geometrie_emittent: Factory.Async.each(() => geometrieEmittentFactory.build()),
   messverfahren: '',
@@ -456,7 +483,7 @@ const messungFactory = _messungFactory.transform(obj => {
 
 
     case '1P':
-      obj.messpositionen.set(1, messpositionEditViewModelFactory.build())
+      obj.messpositionen.push(messpositionEditViewModelFactory.build())
       obj.messverfahren = ein_punkt_messverfahren[random(0, ein_punkt_messverfahren.length - 1)]
       return obj
     /*
@@ -467,25 +494,25 @@ const messungFactory = _messungFactory.transform(obj => {
       return obj
             */
     case '3P':
-      obj.messpositionen.set(1, messpositionEditViewModelFactory.build())
-      obj.messpositionen.set(2, messpositionEditViewModelFactory.build())
-      obj.messpositionen.set(3, messpositionEditViewModelFactory.build())
+      obj.messpositionen.push(messpositionEditViewModelFactory.build())
+      obj.messpositionen.push(messpositionEditViewModelFactory.build())
+      obj.messpositionen.push(messpositionEditViewModelFactory.build())
       obj.messverfahren = drei_punkt_messverfahren[random(0, drei_punkt_messverfahren.length - 1)]
       return obj
 
     case '4P':
-      obj.messpositionen.set(1, messpositionEditViewModelFactory.build())
-      obj.messpositionen.set(2, messpositionEditViewModelFactory.build())
-      obj.messpositionen.set(3, messpositionEditViewModelFactory.build())
-      obj.messpositionen.set(4, messpositionEditViewModelFactory.build())
+      obj.messpositionen.push(messpositionEditViewModelFactory.build())
+      obj.messpositionen.push(messpositionEditViewModelFactory.build())
+      obj.messpositionen.push(messpositionEditViewModelFactory.build())
+      obj.messpositionen.push(messpositionEditViewModelFactory.build())
       obj.messverfahren = vier_punkt_messverfahren[random(0, vier_punkt_messverfahren.length - 1)]
       return obj
     case '5P':
-      obj.messpositionen.set(1, messpositionEditViewModelFactory.build())
-      obj.messpositionen.set(2, messpositionEditViewModelFactory.build())
-      obj.messpositionen.set(3, messpositionEditViewModelFactory.build())
-      obj.messpositionen.set(4, messpositionEditViewModelFactory.build())
-      obj.messpositionen.set(5, messpositionEditViewModelFactory.build())
+      obj.messpositionen.push(messpositionEditViewModelFactory.build())
+      obj.messpositionen.push(messpositionEditViewModelFactory.build())
+      obj.messpositionen.push(messpositionEditViewModelFactory.build())
+      obj.messpositionen.push(messpositionEditViewModelFactory.build())
+      obj.messpositionen.push(messpositionEditViewModelFactory.build())
       obj.messverfahren = fuenf_punkt_messverfahren[random(0, fuenf_punkt_messverfahren.length - 1)]
       return obj
   }
@@ -650,7 +677,19 @@ export const emittentDetailsFactory = Factory.Sync.makeFactory<EmittentDetails>(
   gkhoch: 2,
   hoehe: 3,
   bemerkung: '',
-  messungen: Factory.Sync.each(() => [])
+  messungen: Factory.Sync.each(() => []),
+  idAtBackend: null
+})
+
+export const filterResultFactory = Factory.Sync.makeFactory<EmittentFilterresult>({
+  id: Factory.each((i) => `E${i}`),
+  name: Factory.each((i) => `${i}`),
+
+  koordinaten: Factory.each(() => koordinatenFactory.build()),
+  idAtBackend: null,
+  parent: 'X10',
+  checked: true
+
 })
 
 
@@ -681,7 +720,16 @@ const messgeraetFactory = Factory.Sync.makeFactory<Messgeraet>({
   id: Factory.each((i) => `M${i}`),
   offsetLines: 3,
   seriennummer: 'NOR118_5989863',
-  idAtBackend: null
+  idAtBackend: null,
+  hz31_5: Factory.each(() => 10),
+  hz63: Factory.each(() => 11),
+  hz125: Factory.each(() => 12),
+  hz250: Factory.each(() => 13),
+  hz500: Factory.each(() => 14),
+  hz1000: Factory.each(() => 15),
+  hz2000: Factory.each(() => 16),
+  hz4000: Factory.each(() => 17),
+  hz8000: Factory.each(() => 18),
 })
 
 const vorlageFactory = Factory.Sync.makeFactory<Vorlage>({
@@ -690,8 +738,17 @@ const vorlageFactory = Factory.Sync.makeFactory<Vorlage>({
   idAtBackend: null
 })
 
+const korrekturwertFactory = Factory.Sync.makeFactory<Korrekturwert>({
+  korrekturen: Factory.each((i) => []),
+  lw1: 0,
+  bemerkung: null,
+  bemerkungen: []
+})
+
+
 
 export {
+  korrekturwertFactory,
   projectFactory,
   vorlageFactory,
   messgeraetFactory,
@@ -712,7 +769,8 @@ export {
   messpunktAnAnlageFactory,
   pointOnMapFactory,
   rectOnMapFactory,
-  excelFieldImportFactory
+  excelFieldImportFactory,
+  koordinatenFactory
 }
 
 
