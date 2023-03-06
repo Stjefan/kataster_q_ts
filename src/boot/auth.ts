@@ -9,6 +9,7 @@ import { boot } from 'quasar/wrappers';
 import { api } from './axios'
 
 export default boot(({ app, router }) => {
+  /*
   const auth = createAuth({
     plugins: {
       http: api,
@@ -38,6 +39,6 @@ export default boot(({ app, router }) => {
       }
     },
   });
-
-  app.use(auth);
+  */
+  // app.use(auth);
 });

@@ -45,36 +45,41 @@ export default defineComponent({
     }
     const conditions = ref([1]);
     const options = [
-      { label: 'Name', field: 'name', type: 'string' },
+      { label: 'Name', field: 'data.name', type: 'string' },
+      { label: 'Bearbeiter', field: 'data.bearbeiter', type: 'string' },
+
+
       {
         label: 'Messdatum',
-        field: 'ein_punkt_messungen__messdatum',
+        field: 'data.messungen.0.datum',
         type: 'date',
       },
-      { label: 'In Betrieb', field: 'in_betrieb', type: 'boolean' },
+
+      { label: 'In Betrieb', field: 'data.inBetrieb', type: 'boolean' },
       {
         label: 'vorgemerkt',
-        field: 'fuer_messung_vormerken',
+        field: 'data.fuerMessungVormerken',
         type: 'boolean',
       },
-      { label: 'liegt an Fassade', field: 'liegt_an_fassade', type: 'boolean' },
-      { label: 'Lage', field: 'lage', type: 'emptyCheck' },
-      { label: 'Dach', field: 'roof__name', type: 'string' },
-      { label: 'Gebäude', field: 'roof__buidling__name', type: 'string' },
-      { label: 'Messungen', field: 'ein_punkt_messungen', type: 'emptyCheck' },
+      { label: 'liegt an Fassade', field: 'data.liegtAnFassade', type: 'boolean' },
+      { label: 'Lage', field: 'data.lage', type: 'emptyCheck' },
+      { label: 'Dach', field: 'data.name', type: 'string', conditionFor: 'roof' },
+      { label: 'Gebäude', field: 'data.name', type: 'string', conditionFor: 'building' },
+      { label: 'Werk', field: 'data.name', type: 'string', conditionFor: 'plant' },
+      { label: 'Messungen', field: 'data.messungen.0', type: 'emptyCheck' },
       {
         label: 'Auswertungen',
-        field: 'ein_punkt_messungen__auswertung',
+        field: 'data.messungen.0.auswertung',
         type: 'emptyCheck',
       },
       {
         label: 'Bild',
-        field: 'upload',
-        type: 'string', // Django behandelt Files als Strings
+        field: '_attachments.image',
+        type: 'emptyCheck', // Django behandelt Files als Strings
       },
       {
-        label: 'Messverfahren (1 Messposition)',
-        field: 'ein_punkt_messungen__typ',
+        label: 'Messverfahren',
+        field: 'data.messungen.0.messverfahren',
         type: 'string_constrained',
         constrainedOptions: [
           'Quadermessung an 1 reflektierenden Ebene',
@@ -90,36 +95,9 @@ export default defineComponent({
           'Außerhalb einer Kreisfläche',
           'Außerhalb einer Kreisringfläche',
           'Innenpegel',
-        ],
+        ].concat(['Kaminmessung (eckig)', 'Kaminmessung (rund)']).concat(['Kühler an Kante']).concat(['runder Kühler']),
       },
-      {
-        label: 'MultiFieldOrCondition',
-        field: 'kamin_messungen__typ',
-        multi_fields: ['ein_punkt_messungen__typ', 'kamin_messungen__typ'],
-        type: 'string_constrained',
-        constrainedOptions: ['Kaminmessung (eckig)', 'Kaminmessung (rund)'],
-
-      },
-
-
-      {
-        label: 'Messverfahren (Kamin)',
-        field: 'kamin_messungen__typ',
-        type: 'string_constrained',
-        constrainedOptions: ['Kaminmessung (eckig)', 'Kaminmessung (rund)'],
-      },
-      {
-        label: 'Kühlermessverfahren (an Kante)',
-        field: 'vier_punkt_messungen__typ',
-        type: 'string_constrained',
-        constrainedOptions: ['Kühler an Kante'],
-      },
-      {
-        label: 'Kühlermessverfahren (rund)',
-        field: 'vier_punkt_messungen__typ',
-        type: 'string_constrained',
-        constrainedOptions: ['runder Kühler'],
-      },
+      /*
       {
         label: 'Letzte Änderung',
         field: 'modified',
@@ -130,54 +108,77 @@ export default defineComponent({
         field: 'created',
         type: 'date',
       },
+      */
     ];
 
     const conditionComponent: any = ref(null);
 
-    function buildQuery(args: any) {
+    async function buildQuery(args: any) {
       console.log(args);
 
       console.log(conditionComponent.value);
       const allConditions = conditionComponent.value.map((i: any) =>
         i.buildCondition()
       );
-      console.log(allConditions);
+      console.log('all conditions', allConditions);
 
       let mergedConditions = {
         filter: {
-          roof__building__plant__project__id: store.project?.id,
         },
         exclude: {},
-        groups: {
-          '$or': [
-            { ein_punkt_messungen__typ: 'Quadermessung an 1 reflektierenden Ebene' },
-            { kamin_messungen__typ: 'Kaminmessung (eckig)' },
-            { 'vier_punkt_messungen__typ': 'Kühler an Kante' }
-
-          ],
-        }
       };
+      let conditionsOnRoof = {}
+      let conditionsOnBuilding = {}
+      let conditionsOnPlant = {}
       for (const c of allConditions) {
-        mergedConditions.filter = { ...mergedConditions.filter, ...c.filter };
+        if (c.conditionFor == 'roof') {
+          conditionsOnRoof = { ...conditionsOnRoof, ...c.filter }
+
+        } else if (c.conditionFor == 'building') {
+          conditionsOnBuilding = { ...conditionsOnBuilding, ...c.filter }
+
+        } else if (c.conditionFor == 'plant') {
+          conditionsOnPlant = { ...conditionsOnPlant, ...c.filter }
+
+        } else
+          mergedConditions.filter = { ...mergedConditions.filter, ...c.filter };
+        /*
         mergedConditions.exclude = {
           ...mergedConditions.exclude,
           ...c.exclude,
         };
+        */
       }
-      console.log(mergedConditions);
+      console.log('Conditions 2 check', mergedConditions, conditionsOnRoof);
       //runFilterV2(mergedConditions);
 
-      api.put('/filter/', mergedConditions).then(response => {
-        console.log(response)
-        filteredEmittents.value = response.data.map((i: any) => filterResultFactory.build({ name: i.name, id: i.id }))
-      })
+      const results = await store.runQueryOnEmittents(
+        {
+          //'data.name': 'E22',
+          // 'data.inBetrieb': true,
+          // 'data.lage.gkhoch': { $gt: 1 }
+          //'data.name': { '$regex': /.*Q001.*/ }
+          ...mergedConditions.filter
+        }, conditionsOnRoof, conditionsOnBuilding, conditionsOnPlant)
+
+      filteredEmittents.value = results.map((i: any) => filterResultFactory.build({ name: i.name, id: i.id, gkhoch: i.lage?.gkhoch, gkrechts: i.lage.gkrechts }))
+
+
+      if (false) {
+        api.put('/filter/', mergedConditions).then(response => {
+          console.log(response)
+          filteredEmittents.value = response.data.map((i: any) => filterResultFactory.build({ name: i.name, id: i.id }))
+        })
+
+
+      }
 
     }
 
     const cols = [
       { label: 'Name', field: 'name' },
-      { label: 'Rechtswert', field: (arg: any) => arg.lage?.gk_rechts },
-      { label: 'Hochwert', field: (arg: any) => arg.lage?.gk_hoch },
+      { label: 'Rechtswert', field: (arg: any) => arg.gkrechts },
+      { label: 'Hochwert', field: (arg: any) => arg.gkhoch },
       { label: '', name: 'edit' },
       { label: '', field: 'checked', name: 'checked' }
     ]

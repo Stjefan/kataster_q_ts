@@ -11,6 +11,7 @@
         v-model:hz1000="selectedMessgeraet.hz1000" v-model:hz2000="selectedMessgeraet.hz2000"
         v-model:hz4000="selectedMessgeraet.hz4000" v-model:hz8000="selectedMessgeraet.hz8000" />
     </div>
+    {{ messgeraete }}
   </q-page>
 </template>
 

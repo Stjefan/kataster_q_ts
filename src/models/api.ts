@@ -823,13 +823,13 @@ export interface KoordinatenHoehe {
    * @type {number}
    * @memberof KoordinatenHoehe
    */
-  gk_rechts: number;
+  gkrechts: number;
   /**
    *
    * @type {number}
    * @memberof KoordinatenHoehe
    */
-  gk_hoch: number;
+  gkhoch: number;
   /**
    *
    * @type {number}

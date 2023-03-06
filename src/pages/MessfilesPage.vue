@@ -1,7 +1,8 @@
 <template>
   <q-page padding>
     <!-- content -->
-    <q-select :options="store.overviews" v-model="selectedOverview" option-label="upload" />
+    {{ store.overviews }}
+    <q-select :options="store.overviews" v-model="selectedOverview" option-label="filename" map-options />
 
     <q-input label="Overview-Upload" v-model="upload" type="file" />
     <q-btn label="Hochladen" @click="push2server" />

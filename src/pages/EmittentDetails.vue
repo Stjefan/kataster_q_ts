@@ -1,6 +1,7 @@
 <template>
   <q-page padding>
     <!-- content -->
+    <q-btn label="Änderungen speichern" @click="saveChanges" />
     <q-tabs v-model="tab">
       <q-tab name="allgemeines" label="Allgemeines" />
       <q-tab name="schallmessung" label="Schallmessung" :disable="selectedMessung.length == 0" />
@@ -15,13 +16,15 @@
           <default-messung />
         </suspense>
       </q-tab-panel>
-      <q-tab-panel name="sonstiges"></q-tab-panel>
+      <q-tab-panel name="sonstiges">
+        <luftschadstoffe-component></luftschadstoffe-component>
+      </q-tab-panel>
       <q-tab-panel name="allgemeines">
         <div class="row">
           <q-btn @click="handleUndo" icon="undo" />
           <q-btn @click="redo" icon="redo" />
 
-          <q-btn label="Änderungen speichern" @click="saveChanges" />
+
         </div>
         <div class="row">
           <div class="col-6 q-pa-md">
@@ -83,6 +86,7 @@
 import { defineComponent, Ref, ref, watch } from 'vue'
 
 import DefaultMessung from '../components/DefaultMessung.vue'
+import LuftschadstoffeComponent from 'src/components/LuftschadstoffeComponent.vue'
 import { Messung, messungFactory, emittentDetailsFactory, verfuegbareMessverfahren, kamin_messverfahren, ein_punkt_messverfahren, vier_punkt_messverfahren, fuenf_punkt_messverfahren } from '../models/v1'
 
 import { useRefHistory } from '@vueuse/core'
@@ -92,7 +96,8 @@ import * as _ from 'lodash'
 import { useKatasterStore } from 'src/stores/kataster-store';
 export default defineComponent({
   components: {
-    DefaultMessung
+    DefaultMessung,
+    LuftschadstoffeComponent
   },
   // name: 'PageName'
   setup() {
@@ -153,16 +158,16 @@ export default defineComponent({
       }).onOk(async (data) => {
         console.log(data);
         if (ein_punkt_messverfahren.includes(data)) {
-          emittent.value.messungen.push((await messungFactory.build({ 'type': '1P' }))!)
+          emittent.value.messungen.push((await messungFactory.build({ 'type': '1P', messverfahren: data }))!)
 
         } else if (kamin_messverfahren.includes(data)) {
-          emittent.value.messungen.push((await messungFactory.build({ 'type': '4P' }))!)
+          emittent.value.messungen.push((await messungFactory.build({ 'type': '4P', messverfahren: data }))!)
 
         } else if (vier_punkt_messverfahren.includes(data)) {
-          emittent.value.messungen.push((await messungFactory.build({ 'type': '4P' }))!)
+          emittent.value.messungen.push((await messungFactory.build({ 'type': '4P', messverfahren: data }))!)
 
         } else if (fuenf_punkt_messverfahren.includes(data)) {
-          emittent.value.messungen.push((await messungFactory.build({ 'type': '5P' }))!)
+          emittent.value.messungen.push((await messungFactory.build({ 'type': '5P', messverfahren: data }))!)
 
         }
 

@@ -7,8 +7,7 @@
         <q-toolbar-title>
           <!--Kataster App-->
         </q-toolbar-title>
-        <div>{{ auth.user()?.username }}</div>
-        <q-btn v-if="auth.user()" label="Logout" @click="logout()" flat />
+
 
         <div v-if="false">Quasar v{{ $q.version }}</div>
       </q-toolbar>
@@ -19,7 +18,9 @@
         <!--<q-route-tab :to="{ name: 'mapper' }" exact label="Mapper" />-->
 
         <!--<q-route-tab :to="{ name: 'login' }" exact label="Login" />-->
+        <!--
         <q-route-tab to="pouch" label="Pouch" />
+        -->
         <q-route-tab :to="{ name: 'projects' }" exact label="Projekte" />
         <!--
         <q-route-tab :to="{ name: 'sts' }" exact label="STS" />
@@ -36,6 +37,7 @@
         <q-route-tab to="map" exact label="Karte" :disable="store.karte2edit == null" />
 
         <q-route-tab to="emittent" exact label="Emittent" :disable="store.emittent == null" />
+        <q-route-tab to="playground" exact label="Dev" />
         <!--
         <q-tab @click="blabla" label="Auth" />
 -->
@@ -49,7 +51,7 @@
 import { ref } from 'vue';
 import { mapper } from '../mappings/mapper'
 import { useKatasterStore } from 'src/stores/kataster-store';
-import { useAuth } from '@websanova/vue-auth';
+// import { useAuth } from '@websanova/vue-auth';
 import {
   messwertereiheFactory, Pegelreihe, Messung,
   messungFactory,
@@ -58,7 +60,7 @@ import { Pegelreihe as PegelreiheAPI, MesspositionPegelreiheSerializerV2 } from 
 
 const store = useKatasterStore()
 
-const auth = useAuth()
+// const auth = useAuth()
 
 const source = messwertereiheFactory.build()
 console.log('Mapping...', source)
@@ -78,7 +80,8 @@ async function blabla() {
 }
 
 function logout() {
-  auth.logout({}).then(() => console.log(auth.user()))
+  console.log('Logout')
+  // auth.logout({}).then(() => console.log(auth.user()))
 }
 function toggleLeftDrawer() {
   leftDrawerOpen.value = !leftDrawerOpen.value

@@ -172,7 +172,9 @@ export default defineComponent({
         })
       } else {
         store.$patch({
-          karte2edit: karteDetailsFactory.build(),
+          karte2edit: karteDetailsFactory.build({
+            zuordnung: _args.id
+          }),
           karte2editZuordnung: _args
         })
       }
@@ -183,14 +185,15 @@ export default defineComponent({
       store.showMap(_args)
       switch (_args.body) {
         case 'dach':
-
+          console.log('_args')
           if (_args.map.georeferenzierung) {
             const mygk2pxMatrix = get_gk_2_px_matrix(_args.map.georeferenzierung)
 
             store.$patch({
               pointsOnMap: (_args as Roof).children.filter(i => i.koordinaten != null).map(i => {
-                const p = gk_2_px(i.koordinaten, mygk2pxMatrix)
-                return pointOnMapFactory.build({ pixel_x: p.px_x, pixel_y: p.px_y, idCorrespondingEmittent: parseInt(i.id) })
+                console.log('i', i)
+                const p = gk_2_px({ gk_rechts: i.koordinaten.gk_rechts, gk_hoch: i.koordinaten.gk_hoch }, mygk2pxMatrix)
+                return pointOnMapFactory.build({ pixel_x: p.px_x, pixel_y: p.px_y, idCorrespondingEmittent: i.id })
               })
             })
             console.log(store.pointsOnMap)
@@ -202,15 +205,20 @@ export default defineComponent({
           console.log((_args as Plant).children.map(i => i.children.map(ii => ii.map)))
           const roofs = _.flatMap((_args as Plant).children, i => i.children)
           if (_args.map.georeferenzierung) {
+            console.log(_args.map.georeferenzierung)
             const mygk2pxMatrix = get_gk_2_px_matrix(_args.map.georeferenzierung)
+
+            console.log(roofs.filter(i => i.map != null && i.map.georeferenzierung != null), mygk2pxMatrix)
 
             store.$patch({
               rectsOnMap: roofs.filter(i => i.map != null && i.map.georeferenzierung != null).map(i => {
+                console.log('Georef', i.map.georeferenzierung!.lower_left)
                 const p_ll = gk_2_px(i.map.georeferenzierung!.lower_left, mygk2pxMatrix)
                 const p_lr = gk_2_px(i.map.georeferenzierung!.lower_right, mygk2pxMatrix)
                 const p_ur = gk_2_px(i.map.georeferenzierung!.upper_right, mygk2pxMatrix)
                 const p_ul = gk_2_px(i.map.georeferenzierung!.upper_left, mygk2pxMatrix)
                 const r = rectOnMapFactory.build()
+                console.log('Results', p_ll, p_lr, p_ur, p_ul)
                 r.points = `${Math.floor(p_ll.px_x)}, ${Math.floor(p_ll.px_y)},
               ${Math.floor(p_lr.px_x)}, ${Math.floor(p_lr.px_y)},
               ${Math.floor(p_ur.px_x)}, ${Math.floor(p_ur.px_y)},

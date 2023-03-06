@@ -1,0 +1,37 @@
+[
+  {
+    "id": "bf471857-053a-484e-8e83-5e31731a5dd7",
+    "name": "VBau",
+    "plant": "566faf38-dbd8-4892-9ad7-374a137140d9"
+  },
+  {
+    "id": "9dac2944-7cc2-497d-a71c-611eed5aaf0e",
+    "name": "Altbau ",
+    "plant": "566faf38-dbd8-4892-9ad7-374a137140d9"
+  },
+  {
+    "id": "a761b99d-50ba-423a-94a2-653885fe2cce",
+    "name": "Halle N/NW",
+    "plant": "566faf38-dbd8-4892-9ad7-374a137140d9"
+  },
+  {
+    "id": "b5b4ee9a-d7ad-447b-adc0-be491bf91afb",
+    "name": "Halle W",
+    "plant": "566faf38-dbd8-4892-9ad7-374a137140d9"
+  },
+  {
+    "id": "cc6518a7-cefc-4e1b-a9dd-0d41e712e78b",
+    "name": "GBau 1-2",
+    "plant": "566faf38-dbd8-4892-9ad7-374a137140d9"
+  },
+  {
+    "id": "b0a7779a-d522-4426-ba23-b607d5467d63",
+    "name": "Shedhalle",
+    "plant": "566faf38-dbd8-4892-9ad7-374a137140d9"
+  },
+  {
+    "id": "69fbbca6-12ca-4420-99dc-5d83fda536f0",
+    "name": "Lagerhalle ",
+    "plant": "566faf38-dbd8-4892-9ad7-374a137140d9"
+  }
+]

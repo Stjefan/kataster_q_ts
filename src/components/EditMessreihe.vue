@@ -106,13 +106,13 @@
     <template v-slot:body-cell-messgeraet="props">
       <q-td>
         <tr>
-          <q-select v-model="props.row.metainfoGesamtpegel.messgeraet" :options="messgeraete" option-label="name" />
+          <q-select v-model="props.row.metainfoGesamtpegel.messgeraet" :options="messgeraete" option-value="id"
+            option-label="name" emit-value map-options />
         </tr>
         <tr>
           <q-select v-model="props.row.metainfoFremdpegel.messgeraet" :options="messgeraete" option-label="name"
-            v-if="props.row.fremdpegelVorhanden" />
+            map-options emit-value option-value="id" v-if="props.row.fremdpegelVorhanden" />
         </tr>
-
       </q-td>
     </template>
     <template v-slot:body-cell-messdatum="props">
@@ -129,10 +129,12 @@
     <template v-slot:body-cell-overviewfile="props">
       <q-td>
         <tr>
-          <q-input v-model="props.row.metainfoGesamtpegel.overviewfile" />
+          <q-select v-model="props.row.metainfoGesamtpegel.overviewfile" :options="store.overviews" map-options emit-value
+            option-label="filename" option-value="id" />
         </tr>
         <tr>
-          <q-input v-model="props.row.metainfoFremdpegel.overviewfile" v-if="props.row.fremdpegelVorhanden" />
+          <q-select v-model="props.row.metainfoFremdpegel.overviewfile" :options="store.overviews" map-options emit-value
+            option-label="filename" option-value="id" v-if="props.row.fremdpegelVorhanden" />
         </tr>
 
       </q-td>
@@ -158,10 +160,10 @@
     <template v-slot:body-cell-einlesen="props">
       <q-td>
         <tr>
-          <q-btn label="Einlesen" @click="einlesen(props.row)" />
+          <q-btn label="Einlesen" @click="einlesen(props.row, 'gesamtpegel')" />
         </tr>
         <tr>
-          <q-btn label="Einlesen" v-if="props.row.fremdpegelVorhanden" @click="einlesen(props.row)" />
+          <q-btn label="Einlesen" v-if="props.row.fremdpegelVorhanden" @click="einlesen(props.row, 'fremdpegel')" />
         </tr>
       </q-td>
     </template>
@@ -181,10 +183,10 @@
 </template>
 
 <script lang="ts">
-import { Pegelreihe } from 'src/models/v1';
+import { excelFieldImportFactory, Pegelreihe } from 'src/models/v1';
 import { defineComponent, ref, defineEmits, computed } from 'vue';
 import { useKatasterStore } from '../stores/kataster-store'
-
+import { readMessfileInOverview } from 'src/utility/excelhandling'
 export default defineComponent({
   name: 'MessungenPage',
   props: ['messwertereihen'],
@@ -213,6 +215,7 @@ export default defineComponent({
       return result;
     });
     */
+
     function pasteFromClipboard(args: string, sender: Pegelreihe) {
       console.log(args, sender)
       emit('paste-request', {
@@ -294,6 +297,7 @@ export default defineComponent({
         name: 'hz1000',
         label: '1000 Hz',
         field: 'type',
+
       },
       {
         name: 'hz2000',
@@ -353,10 +357,26 @@ export default defineComponent({
       //'messfile',
     ];
     const y = ref(0);
-    function einlesen(target: any) {
-      console.log(einlesen);
+    async function einlesen(target: any, discriminator: string) {
+      const myMessgeraet = messgeraete.value[0]
+      console.log(messgeraete.value, store.overviews, target.metainfoGesamtpegel.overviewfile, target.metainfoFremdpegel.overviewfile);
+
+      const expectedCols = ['hz31_5', 'hz63', 'hz125', 'hz250', 'hz500', 'hz1000', 'hz2000', 'hz4000', 'hz8000'].map((i, ix) => excelFieldImportFactory.build({ maps_to: i, col: ix + 10, name: i }))
+      if (discriminator == 'gesamtpegel') {
+        const myBlob = await store.getOverviewfile(target.metainfoGesamtpegel.overviewfile)
+        const result = await readMessfileInOverview(myBlob, target.metainfoGesamtpegel.name_messfile, expectedCols, 1)
+        console.log(target, result, expectedCols)
+        target.gesamtpegel = { ...target.gesamtpegel, ...result }
+      } else if (discriminator == 'fremdpegel') {
+        const myBlob = await store.getOverviewfile(target.metainfoFremdpegel.overviewfile)
+        const result = await readMessfileInOverview(myBlob, target.metainfoFremdpegel.name_messfile, expectedCols, 1)
+        target.fremdpegel = { ...target.fremdpegel, ...result }
+        console.log(target, result, expectedCols)
+      }
+
+
     }
-    return { y, cols, selected, pasteFromClipboard, einlesen, messgeraete };
+    return { y, cols, selected, pasteFromClipboard, einlesen, messgeraete, store };
   },
   methods: {},
 });

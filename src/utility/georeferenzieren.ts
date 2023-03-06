@@ -41,7 +41,8 @@ export function get_gk_2_px_matrix(georef: Georeferenzierung) {
 
 }
 
-export function gk_2_px(args: { gk_rechts: number, gk_hoch: number }, inverter: GK2PxMatrix) {
+export function gk_2_px(args: PointGK, inverter: GK2PxMatrix) {
+  console.log(args, inverter)
   const step1 = add([[args.gk_rechts], [args.gk_hoch]], inverter.translation)
 
   const step2 = multiply(inverter.matrix, step1)

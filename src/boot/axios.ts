@@ -5,12 +5,17 @@ import { useKatasterStore } from 'src/stores/kataster-store';
 import { GesturePlugin } from '@vueuse/gesture'
 
 
+import { plugin, defaultConfig } from '@formkit/vue'
 
 declare module '@vue/runtime-core' {
   interface ComponentCustomProperties {
     $axios: AxiosInstance;
   }
 }
+
+import { Notify } from 'quasar'
+
+
 
 
 
@@ -28,6 +33,14 @@ export default boot(async ({ app, router }) => {
 
 
   // for use inside Vue files (Options API) through this.$axios and this.$api
+
+  app.config.errorHandler = (err, vm, info) => {
+    Notify.create('Danger, Will Robinson! Danger!')
+    console.log(err)
+    throw err
+  }
+
+  app.use(plugin, defaultConfig)
   const store = useKatasterStore()
   await store.init()
   app.use(GesturePlugin)

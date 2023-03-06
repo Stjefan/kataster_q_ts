@@ -1,0 +1,3499 @@
+[
+  {
+    "bearbeiter": "KUF\\ma",
+    "kostenstelle": "",
+    "messungen": [
+      {
+        "messposition_1": {
+          "messpositionpegelreihe_set": [
+            {
+              "fremdpegel": {
+                "hz31_5": 0,
+                "hz63": 0,
+                "hz125": 0,
+                "hz250": 0,
+                "hz500": 0,
+                "hz1000": 0,
+                "hz2000": 0,
+                "hz4000": 0,
+                "hz8000": 0
+              },
+              "gesamtpegel": {
+                "hz31_5": 0,
+                "hz63": 0,
+                "hz125": 0,
+                "hz250": 0,
+                "hz500": 0,
+                "hz1000": 0,
+                "hz2000": 0,
+                "hz4000": 0,
+                "hz8000": 0
+              },
+              "metainfo_fremdpegel": {
+                "datum": "2021-03-31",
+                "file_no": "N/A",
+                "overview_path": "NOR140_1405890"
+              },
+              "metainfo_gesamtpegel": {
+                "datum": "2021-03-31",
+                "file_no": "0001",
+                "overview_path": "NOR140_1405890"
+              }
+            }
+          ]
+        },
+        "emittent": 0,
+        "typ": "Au\u00dferhalb einer eckigen Fl\u00e4che",
+        "emittent_geometrie": {
+          "geo_1": 0.55,
+          "geo_2": 0.55,
+          "geo_3": 0.0,
+          "geo_4": 0.0
+        },
+        "messung_geometrie": {
+          "geo_xy": 0.275,
+          "geo_h": 0.5,
+          "k_2_a": 0.0,
+          "k_omega": 3.0
+        },
+        "auswertung": {
+          "lwlin": {
+            "hz31_5": 0,
+            "hz63": 0,
+            "hz125": 0,
+            "hz250": 0,
+            "hz500": 0,
+            "hz1000": 0,
+            "hz2000": 0,
+            "hz4000": 0,
+            "hz8000": 0,
+            "summiert": 0
+          },
+          "anlagenpegel_1": {
+            "hz31_5": 0,
+            "hz63": 0,
+            "hz125": 0,
+            "hz250": 0,
+            "hz500": 0,
+            "hz1000": 0,
+            "hz2000": 0,
+            "hz4000": 0,
+            "hz8000": 0,
+            "summiert": 0
+          },
+          "lwa": {
+            "hz31_5": 0,
+            "hz63": 0,
+            "hz125": 0,
+            "hz250": 0,
+            "hz500": 0,
+            "hz1000": 0,
+            "hz2000": 0,
+            "hz4000": 0,
+            "hz8000": 0,
+            "summiert": 0
+          },
+          "korrekturwert_1": 0.0,
+          "korrekturwert_2": 0.0,
+          "korrekturwert_3": 0.0,
+          "korrekturwert_4": 0.0,
+          "korrekturwert_5": 0.0
+        }
+      }
+    ],
+    "abteilung": "",
+    "lage": { "gk_rechts": 522488.03, "gk_hoch": 5408069.32, "hoehe": 0.0 },
+    "liegt_an_fassade": true,
+    "anlage": "WC Abluft Anlage D",
+    "messinstitut": "Kurz und Fischer GmbH",
+    "image": "V-Bau_01_20210331.jpg",
+    "bemerkung": "",
+    "name": "VBau_01",
+    "roof": "ca4cb2ea-8780-4160-8750-e60e078f0680"
+  },
+  {
+    "bearbeiter": "KUF\\ma",
+    "kostenstelle": "",
+    "messungen": [
+      {
+        "messposition_1": {
+          "messpositionpegelreihe_set": [
+            {
+              "fremdpegel": {
+                "hz31_5": 0,
+                "hz63": 0,
+                "hz125": 0,
+                "hz250": 0,
+                "hz500": 0,
+                "hz1000": 0,
+                "hz2000": 0,
+                "hz4000": 0,
+                "hz8000": 0
+              },
+              "gesamtpegel": {
+                "hz31_5": 74.3478405297357,
+                "hz63": 73.0944773234565,
+                "hz125": 70.7717421577415,
+                "hz250": 69.690012844925,
+                "hz500": 72.1428997240974,
+                "hz1000": 71.9738460525843,
+                "hz2000": 69.2276924938127,
+                "hz4000": 65.8972370707635,
+                "hz8000": 61.3546471574921
+              },
+              "metainfo_fremdpegel": {
+                "datum": "2021-03-31",
+                "file_no": "N/A",
+                "overview_path": "NOR140_1405890"
+              },
+              "metainfo_gesamtpegel": {
+                "datum": "2021-03-31",
+                "file_no": "0002",
+                "overview_path": "NOR140_1405890"
+              }
+            }
+          ]
+        },
+        "emittent": 0,
+        "typ": "Au\u00dferhalb einer eckigen Fl\u00e4che",
+        "emittent_geometrie": {
+          "geo_1": 0.55,
+          "geo_2": 0.55,
+          "geo_3": 0.0,
+          "geo_4": 0.0
+        },
+        "messung_geometrie": {
+          "geo_xy": 0.275,
+          "geo_h": 0.5,
+          "k_2_a": 0.0,
+          "k_omega": 3.0
+        },
+        "auswertung": {
+          "lwlin": {
+            "hz31_5": 77.0,
+            "hz63": 75.8,
+            "hz125": 73.5,
+            "hz250": 72.4,
+            "hz500": 74.8,
+            "hz1000": 74.7,
+            "hz2000": 71.9,
+            "hz4000": 68.6,
+            "hz8000": 64.1,
+            "summiert": 83.3
+          },
+          "anlagenpegel_1": {
+            "hz31_5": 74.3,
+            "hz63": 73.1,
+            "hz125": 70.8,
+            "hz250": 69.7,
+            "hz500": 72.1,
+            "hz1000": 72.0,
+            "hz2000": 69.2,
+            "hz4000": 65.9,
+            "hz8000": 61.4,
+            "summiert": 76.2
+          },
+          "lwa": {
+            "hz31_5": 37.6,
+            "hz63": 49.6,
+            "hz125": 57.4,
+            "hz250": 63.8,
+            "hz500": 71.6,
+            "hz1000": 74.7,
+            "hz2000": 73.1,
+            "hz4000": 69.6,
+            "hz8000": 63.0,
+            "summiert": 78.9
+          },
+          "korrekturwert_1": 2.7,
+          "korrekturwert_2": 0,
+          "korrekturwert_3": 0,
+          "korrekturwert_4": 0,
+          "korrekturwert_5": 0
+        }
+      }
+    ],
+    "abteilung": "",
+    "lage": { "gk_rechts": 522505.55, "gk_hoch": 5408070.62, "hoehe": 0.0 },
+    "liegt_an_fassade": true,
+    "anlage": "Fortluft K\u00fcche ",
+    "messinstitut": "Kurz und Fischer GmbH",
+    "image": "VBau_02_20210331.jpg",
+    "bemerkung": "",
+    "name": "VBau_02",
+    "roof": "ca4cb2ea-8780-4160-8750-e60e078f0680"
+  },
+  {
+    "bearbeiter": "KUF\\ma",
+    "kostenstelle": "",
+    "messungen": [],
+    "abteilung": "",
+    "lage": { "gk_rechts": 522463.5625, "gk_hoch": 5408060.0, "hoehe": 0.0 },
+    "liegt_an_fassade": true,
+    "anlage": "R\u00fcckk\u00fchlwerk EDV alt",
+    "messinstitut": "Kurz und Fischer GmbH",
+    "image": "Altbau _02_20210331.jpg",
+    "bemerkung": "",
+    "name": "Altbau _02",
+    "roof": "216d3576-4923-405f-b6f4-0061537af37d"
+  },
+  {
+    "bearbeiter": "KUF\\ma",
+    "kostenstelle": "",
+    "messungen": [
+      {
+        "messposition_1": {
+          "messpositionpegelreihe_set": [
+            {
+              "fremdpegel": {
+                "hz31_5": 0,
+                "hz63": 0,
+                "hz125": 0,
+                "hz250": 0,
+                "hz500": 0,
+                "hz1000": 0,
+                "hz2000": 0,
+                "hz4000": 0,
+                "hz8000": 0
+              },
+              "gesamtpegel": {
+                "hz31_5": 66.5399928871645,
+                "hz63": 61.5947093978564,
+                "hz125": 67.7926993460633,
+                "hz250": 68.4579122398639,
+                "hz500": 58.4970951503036,
+                "hz1000": 56.5568569523677,
+                "hz2000": 51.0198195277048,
+                "hz4000": 50.6302751837717,
+                "hz8000": 42.3810375267404
+              },
+              "metainfo_fremdpegel": {
+                "datum": "2021-03-31",
+                "file_no": "N/A",
+                "overview_path": "N/A"
+              },
+              "metainfo_gesamtpegel": {
+                "datum": "2021-03-31",
+                "file_no": "0006",
+                "overview_path": "N/A"
+              }
+            }
+          ]
+        },
+        "emittent": 0,
+        "typ": "Quadermessung an 1 reflektierenden Ebene",
+        "emittent_geometrie": {
+          "geo_1": 0.6,
+          "geo_2": 0.8,
+          "geo_3": 0.5,
+          "geo_4": 0.0
+        },
+        "messung_geometrie": {
+          "geo_xy": 0.5,
+          "geo_h": 0.0,
+          "k_2_a": 0.0,
+          "k_omega": 0.0
+        },
+        "auswertung": {
+          "lwlin": {
+            "hz31_5": 76.4,
+            "hz63": 71.5,
+            "hz125": 77.7,
+            "hz250": 78.4,
+            "hz500": 68.4,
+            "hz1000": 66.5,
+            "hz2000": 60.9,
+            "hz4000": 60.5,
+            "hz8000": 52.3,
+            "summiert": 83.0
+          },
+          "anlagenpegel_1": {
+            "hz31_5": 66.5,
+            "hz63": 61.6,
+            "hz125": 67.8,
+            "hz250": 68.5,
+            "hz500": 58.5,
+            "hz1000": 56.6,
+            "hz2000": 51.0,
+            "hz4000": 50.6,
+            "hz8000": 42.4,
+            "summiert": 62.5
+          },
+          "lwa": {
+            "hz31_5": 37.0,
+            "hz63": 45.3,
+            "hz125": 61.6,
+            "hz250": 69.8,
+            "hz500": 65.2,
+            "hz1000": 66.5,
+            "hz2000": 62.1,
+            "hz4000": 61.5,
+            "hz8000": 51.2,
+            "summiert": 72.4
+          },
+          "korrekturwert_1": 9.9,
+          "korrekturwert_2": 0,
+          "korrekturwert_3": 0,
+          "korrekturwert_4": 0,
+          "korrekturwert_5": 0
+        }
+      }
+    ],
+    "abteilung": "",
+    "lage": { "gk_rechts": 522464.75, "gk_hoch": 5408062.5, "hoehe": 0.0 },
+    "liegt_an_fassade": true,
+    "anlage": "Splittger\u00e4t ",
+    "messinstitut": "Kurz und Fischer GmbH",
+    "image": "Altbau _03_20210331.jpg",
+    "bemerkung": "",
+    "name": "Altbau _03",
+    "roof": "216d3576-4923-405f-b6f4-0061537af37d"
+  },
+  {
+    "bearbeiter": "KUF\\ma",
+    "kostenstelle": "",
+    "messungen": [
+      {
+        "messposition_1": {
+          "messpositionpegelreihe_set": [
+            {
+              "fremdpegel": {
+                "hz31_5": 0,
+                "hz63": 0,
+                "hz125": 0,
+                "hz250": 0,
+                "hz500": 0,
+                "hz1000": 0,
+                "hz2000": 0,
+                "hz4000": 0,
+                "hz8000": 0
+              },
+              "gesamtpegel": {
+                "hz31_5": 72.4917027838027,
+                "hz63": 73.5612484331879,
+                "hz125": 71.7321881387447,
+                "hz250": 73.1499571667815,
+                "hz500": 64.5545955745593,
+                "hz1000": 53.009597715876,
+                "hz2000": 48.0410942189825,
+                "hz4000": 46.1286254031024,
+                "hz8000": 47.7806381053323
+              },
+              "metainfo_fremdpegel": {
+                "datum": "2021-03-31",
+                "file_no": "N/A",
+                "overview_path": "NOR140_1405890"
+              },
+              "metainfo_gesamtpegel": {
+                "datum": "2021-03-31",
+                "file_no": "0020",
+                "overview_path": "NOR140_1405890"
+              }
+            }
+          ]
+        },
+        "emittent": 0,
+        "typ": "Au\u00dferhalb einer Kreisfl\u00e4che",
+        "emittent_geometrie": {
+          "geo_1": 0.28,
+          "geo_2": 0.0,
+          "geo_3": 0.0,
+          "geo_4": 0.0
+        },
+        "messung_geometrie": {
+          "geo_xy": 0.14,
+          "geo_h": 0.5,
+          "k_2_a": 0.0,
+          "k_omega": 3.0
+        },
+        "auswertung": {
+          "lwlin": {
+            "hz31_5": 74.6,
+            "hz63": 75.7,
+            "hz125": 73.8,
+            "hz250": 75.2,
+            "hz500": 66.7,
+            "hz1000": 55.1,
+            "hz2000": 50.1,
+            "hz4000": 48.2,
+            "hz8000": 49.9,
+            "summiert": 81.1
+          },
+          "anlagenpegel_1": {
+            "hz31_5": 72.5,
+            "hz63": 73.6,
+            "hz125": 71.7,
+            "hz250": 73.1,
+            "hz500": 64.6,
+            "hz1000": 53.0,
+            "hz2000": 48.0,
+            "hz4000": 46.1,
+            "hz8000": 47.8,
+            "summiert": 66.5
+          },
+          "lwa": {
+            "hz31_5": 35.2,
+            "hz63": 49.5,
+            "hz125": 57.7,
+            "hz250": 66.6,
+            "hz500": 63.5,
+            "hz1000": 55.1,
+            "hz2000": 51.3,
+            "hz4000": 49.2,
+            "hz8000": 48.8,
+            "summiert": 68.6
+          },
+          "korrekturwert_1": 2.1,
+          "korrekturwert_2": 0,
+          "korrekturwert_3": 0,
+          "korrekturwert_4": 0,
+          "korrekturwert_5": 0
+        }
+      }
+    ],
+    "abteilung": "",
+    "lage": { "gk_rechts": 522485.25, "gk_hoch": 5408017.5, "hoehe": 0.0 },
+    "liegt_an_fassade": true,
+    "anlage": "Fortluft Schlosserei",
+    "messinstitut": "Kurz und Fischer GmbH",
+    "image": "Altbau _04_20210331.jpg",
+    "bemerkung": "",
+    "name": "Altbau _04",
+    "roof": "216d3576-4923-405f-b6f4-0061537af37d"
+  },
+  {
+    "bearbeiter": "KUF\\ma",
+    "kostenstelle": "",
+    "messungen": [
+      {
+        "messposition_1": {
+          "messpositionpegelreihe_set": [
+            {
+              "fremdpegel": {
+                "hz31_5": 0,
+                "hz63": 0,
+                "hz125": 0,
+                "hz250": 0,
+                "hz500": 0,
+                "hz1000": 0,
+                "hz2000": 0,
+                "hz4000": 0,
+                "hz8000": 0
+              },
+              "gesamtpegel": {
+                "hz31_5": 62.2524165614494,
+                "hz63": 69.022537509679,
+                "hz125": 77.3784602550936,
+                "hz250": 68.1574932292048,
+                "hz500": 67.6766365545232,
+                "hz1000": 65.3253384623761,
+                "hz2000": 61.4308328891977,
+                "hz4000": 55.389539650067,
+                "hz8000": 46.2935676676385
+              },
+              "metainfo_fremdpegel": {
+                "datum": "2021-03-31",
+                "file_no": "N/A",
+                "overview_path": "NOR140_1405890"
+              },
+              "metainfo_gesamtpegel": {
+                "datum": "2021-03-31",
+                "file_no": "0021",
+                "overview_path": "NOR140_1405890"
+              }
+            }
+          ]
+        },
+        "emittent": 0,
+        "typ": "Au\u00dferhalb einer eckigen Fl\u00e4che",
+        "emittent_geometrie": {
+          "geo_1": 0.35,
+          "geo_2": 0.35,
+          "geo_3": 0.0,
+          "geo_4": 0.0
+        },
+        "messung_geometrie": {
+          "geo_xy": 0.175,
+          "geo_h": 0.5,
+          "k_2_a": 0.0,
+          "k_omega": 3.0
+        },
+        "auswertung": {
+          "lwlin": {
+            "hz31_5": 64.6,
+            "hz63": 71.3,
+            "hz125": 79.7,
+            "hz250": 70.5,
+            "hz500": 70.0,
+            "hz1000": 67.6,
+            "hz2000": 63.7,
+            "hz4000": 57.7,
+            "hz8000": 48.6,
+            "summiert": 81.5
+          },
+          "anlagenpegel_1": {
+            "hz31_5": 62.3,
+            "hz63": 69.0,
+            "hz125": 77.4,
+            "hz250": 68.2,
+            "hz500": 67.7,
+            "hz1000": 65.3,
+            "hz2000": 61.4,
+            "hz4000": 55.4,
+            "hz8000": 46.3,
+            "summiert": 70.2
+          },
+          "lwa": {
+            "hz31_5": 25.2,
+            "hz63": 45.1,
+            "hz125": 63.6,
+            "hz250": 61.9,
+            "hz500": 66.8,
+            "hz1000": 67.6,
+            "hz2000": 64.9,
+            "hz4000": 58.7,
+            "hz8000": 47.5,
+            "summiert": 72.5
+          },
+          "korrekturwert_1": 2.3,
+          "korrekturwert_2": 0,
+          "korrekturwert_3": 0,
+          "korrekturwert_4": 0,
+          "korrekturwert_5": 0
+        }
+      }
+    ],
+    "abteilung": "",
+    "lage": { "gk_rechts": 522481.94, "gk_hoch": 5408015.9, "hoehe": 0.0 },
+    "liegt_an_fassade": true,
+    "anlage": "Fortluft Traforaum",
+    "messinstitut": "Kurz und Fischer GmbH",
+    "image": "Altbau _05_20210331.jpg",
+    "bemerkung": "",
+    "name": "Altbau _05",
+    "roof": "216d3576-4923-405f-b6f4-0061537af37d"
+  },
+  {
+    "bearbeiter": "KUF\\ma",
+    "kostenstelle": "",
+    "messungen": [
+      {
+        "messposition_1": {
+          "messpositionpegelreihe_set": [
+            {
+              "fremdpegel": {
+                "hz31_5": 0,
+                "hz63": 0,
+                "hz125": 0,
+                "hz250": 0,
+                "hz500": 0,
+                "hz1000": 0,
+                "hz2000": 0,
+                "hz4000": 0,
+                "hz8000": 0
+              },
+              "gesamtpegel": {
+                "hz31_5": 79.0914321112398,
+                "hz63": 75.9197339677303,
+                "hz125": 81.6881933116933,
+                "hz250": 78.2718952998171,
+                "hz500": 72.6264403405579,
+                "hz1000": 68.2725308267178,
+                "hz2000": 66.8081726731403,
+                "hz4000": 61.976023955385,
+                "hz8000": 63.4148174399043
+              },
+              "metainfo_fremdpegel": {
+                "datum": "2021-03-31",
+                "file_no": "N/A",
+                "overview_path": "NOR140_1405890"
+              },
+              "metainfo_gesamtpegel": {
+                "datum": "2021-03-31",
+                "file_no": "0012",
+                "overview_path": "NOR140_1405890"
+              }
+            }
+          ]
+        },
+        "emittent": 0,
+        "typ": "Au\u00dferhalb einer eckigen Fl\u00e4che",
+        "emittent_geometrie": {
+          "geo_1": 0.8,
+          "geo_2": 0.5,
+          "geo_3": 0.0,
+          "geo_4": 0.0
+        },
+        "messung_geometrie": {
+          "geo_xy": 0.25,
+          "geo_h": 0.5,
+          "k_2_a": 0.0,
+          "k_omega": 3.0
+        },
+        "auswertung": {
+          "lwlin": {
+            "hz31_5": 82.1,
+            "hz63": 78.9,
+            "hz125": 84.7,
+            "hz250": 81.3,
+            "hz500": 75.6,
+            "hz1000": 71.3,
+            "hz2000": 69.8,
+            "hz4000": 65.0,
+            "hz8000": 66.4,
+            "summiert": 88.7
+          },
+          "anlagenpegel_1": {
+            "hz31_5": 79.1,
+            "hz63": 75.9,
+            "hz125": 81.7,
+            "hz250": 78.3,
+            "hz500": 72.6,
+            "hz1000": 68.3,
+            "hz2000": 66.8,
+            "hz4000": 62.0,
+            "hz8000": 63.4,
+            "summiert": 75.5
+          },
+          "lwa": {
+            "hz31_5": 42.7,
+            "hz63": 52.7,
+            "hz125": 68.6,
+            "hz250": 72.7,
+            "hz500": 72.4,
+            "hz1000": 71.3,
+            "hz2000": 71.0,
+            "hz4000": 66.0,
+            "hz8000": 65.3,
+            "summiert": 78.5
+          },
+          "korrekturwert_1": 3.0,
+          "korrekturwert_2": 0,
+          "korrekturwert_3": 0,
+          "korrekturwert_4": 0,
+          "korrekturwert_5": 0
+        }
+      }
+    ],
+    "abteilung": "",
+    "lage": { "gk_rechts": 522411.77, "gk_hoch": 5408014.41, "hoehe": 0.0 },
+    "liegt_an_fassade": true,
+    "anlage": "Fortluft H\u00e4rterei",
+    "messinstitut": "Kurz und Fischer GmbH",
+    "image": "Halle W_02_20210331.jpg",
+    "bemerkung": "",
+    "name": "Halle W_02",
+    "roof": "2e397863-499f-4952-8452-8f24f5369d36"
+  },
+  {
+    "bearbeiter": "KUF\\ma",
+    "kostenstelle": "",
+    "messungen": [
+      {
+        "messposition_1": {
+          "messpositionpegelreihe_set": [
+            {
+              "fremdpegel": {
+                "hz31_5": 0,
+                "hz63": 0,
+                "hz125": 0,
+                "hz250": 0,
+                "hz500": 0,
+                "hz1000": 0,
+                "hz2000": 0,
+                "hz4000": 0,
+                "hz8000": 0
+              },
+              "gesamtpegel": {
+                "hz31_5": 91.5684493715959,
+                "hz63": 86.670347916711,
+                "hz125": 86.6312121389327,
+                "hz250": 84.7326752677189,
+                "hz500": 78.6989588584746,
+                "hz1000": 75.7765306148613,
+                "hz2000": 73.0761892339647,
+                "hz4000": 67.5503670139086,
+                "hz8000": 59.7243655264387
+              },
+              "metainfo_fremdpegel": {
+                "datum": "2021-03-31",
+                "file_no": "N/A",
+                "overview_path": "NOR140_1405890"
+              },
+              "metainfo_gesamtpegel": {
+                "datum": "2021-03-31",
+                "file_no": "0013",
+                "overview_path": "NOR140_1405890"
+              }
+            }
+          ]
+        },
+        "emittent": 0,
+        "typ": "Quadermessung an 2 reflektierenden Ebenen",
+        "emittent_geometrie": {
+          "geo_1": 1.5,
+          "geo_2": 1.3,
+          "geo_3": 1.25,
+          "geo_4": 0.0
+        },
+        "messung_geometrie": {
+          "geo_xy": 0.5,
+          "geo_h": 0.0,
+          "k_2_a": 0.0,
+          "k_omega": 0.0
+        },
+        "auswertung": {
+          "lwlin": {
+            "hz31_5": 103.5,
+            "hz63": 98.6,
+            "hz125": 98.5,
+            "hz250": 96.6,
+            "hz500": 90.6,
+            "hz1000": 87.7,
+            "hz2000": 85.0,
+            "hz4000": 79.5,
+            "hz8000": 71.6,
+            "summiert": 106.4
+          },
+          "anlagenpegel_1": {
+            "hz31_5": 91.6,
+            "hz63": 86.7,
+            "hz125": 86.6,
+            "hz250": 84.7,
+            "hz500": 78.7,
+            "hz1000": 75.8,
+            "hz2000": 73.1,
+            "hz4000": 67.6,
+            "hz8000": 59.7,
+            "summiert": 81.7
+          },
+          "lwa": {
+            "hz31_5": 64.1,
+            "hz63": 72.4,
+            "hz125": 82.4,
+            "hz250": 88.0,
+            "hz500": 87.4,
+            "hz1000": 87.7,
+            "hz2000": 86.2,
+            "hz4000": 80.5,
+            "hz8000": 70.5,
+            "summiert": 93.6
+          },
+          "korrekturwert_1": 11.9,
+          "korrekturwert_2": 0,
+          "korrekturwert_3": 0,
+          "korrekturwert_4": 0,
+          "korrekturwert_5": 0
+        }
+      }
+    ],
+    "abteilung": "",
+    "lage": { "gk_rechts": 522410.625, "gk_hoch": 5408019.0, "hoehe": 0.0 },
+    "liegt_an_fassade": true,
+    "anlage": "R\u00fcckk\u00fchlwerk",
+    "messinstitut": "Kurz und Fischer GmbH",
+    "image": "Halle W_03_20210331.jpg",
+    "bemerkung": "",
+    "name": "Halle W_03",
+    "roof": "2e397863-499f-4952-8452-8f24f5369d36"
+  },
+  {
+    "bearbeiter": "KUF\\ma",
+    "kostenstelle": "",
+    "messungen": [
+      {
+        "messposition_1": {
+          "messpositionpegelreihe_set": [
+            {
+              "fremdpegel": {
+                "hz31_5": 0,
+                "hz63": 0,
+                "hz125": 0,
+                "hz250": 0,
+                "hz500": 0,
+                "hz1000": 0,
+                "hz2000": 0,
+                "hz4000": 0,
+                "hz8000": 0
+              },
+              "gesamtpegel": {
+                "hz31_5": 79.6584583833003,
+                "hz63": 73.3603719401191,
+                "hz125": 76.9225637929148,
+                "hz250": 65.1438084185136,
+                "hz500": 60.325689700503,
+                "hz1000": 57.8305518470097,
+                "hz2000": 53.1608078328086,
+                "hz4000": 46.1850259746227,
+                "hz8000": 43.9524414693579
+              },
+              "metainfo_fremdpegel": {
+                "datum": "2021-03-31",
+                "file_no": "N/A",
+                "overview_path": "NOR140_1405890"
+              },
+              "metainfo_gesamtpegel": {
+                "datum": "2021-03-31",
+                "file_no": "0018",
+                "overview_path": "NOR140_1405890"
+              }
+            }
+          ]
+        },
+        "emittent": 0,
+        "typ": "Au\u00dferhalb einer eckigen Fl\u00e4che",
+        "emittent_geometrie": {
+          "geo_1": 1.95,
+          "geo_2": 1.2,
+          "geo_3": 0.0,
+          "geo_4": 0.0
+        },
+        "messung_geometrie": {
+          "geo_xy": 0.6,
+          "geo_h": 0.5,
+          "k_2_a": 0.0,
+          "k_omega": 3.0
+        },
+        "auswertung": {
+          "lwlin": {
+            "hz31_5": 85.2,
+            "hz63": 78.9,
+            "hz125": 82.4,
+            "hz250": 70.6,
+            "hz500": 65.8,
+            "hz1000": 63.3,
+            "hz2000": 58.7,
+            "hz4000": 51.7,
+            "hz8000": 49.5,
+            "summiert": 87.8
+          },
+          "anlagenpegel_1": {
+            "hz31_5": 79.7,
+            "hz63": 73.4,
+            "hz125": 76.9,
+            "hz250": 65.1,
+            "hz500": 60.3,
+            "hz1000": 57.8,
+            "hz2000": 53.2,
+            "hz4000": 46.2,
+            "hz8000": 44.0,
+            "summiert": 64.7
+          },
+          "lwa": {
+            "hz31_5": 45.8,
+            "hz63": 52.7,
+            "hz125": 66.3,
+            "hz250": 62.0,
+            "hz500": 62.6,
+            "hz1000": 63.3,
+            "hz2000": 59.9,
+            "hz4000": 52.7,
+            "hz8000": 48.4,
+            "summiert": 70.2
+          },
+          "korrekturwert_1": 5.5,
+          "korrekturwert_2": 0,
+          "korrekturwert_3": 0,
+          "korrekturwert_4": 0,
+          "korrekturwert_5": 0
+        }
+      }
+    ],
+    "abteilung": "",
+    "lage": { "gk_rechts": 522411.75, "gk_hoch": 5408029.7, "hoehe": 0.0 },
+    "liegt_an_fassade": true,
+    "anlage": "Au\u00dfenluft Abgasreinigung",
+    "messinstitut": "Kurz und Fischer GmbH",
+    "image": "Halle W_05_20210331.jpg",
+    "bemerkung": "",
+    "name": "Halle W_05",
+    "roof": "2e397863-499f-4952-8452-8f24f5369d36"
+  },
+  {
+    "bearbeiter": "KUF\\ma",
+    "kostenstelle": "",
+    "messungen": [
+      {
+        "messposition_1": {
+          "messpositionpegelreihe_set": [
+            {
+              "fremdpegel": {
+                "hz31_5": 0,
+                "hz63": 0,
+                "hz125": 0,
+                "hz250": 0,
+                "hz500": 0,
+                "hz1000": 0,
+                "hz2000": 0,
+                "hz4000": 0,
+                "hz8000": 0
+              },
+              "gesamtpegel": {
+                "hz31_5": 81.8993347165679,
+                "hz63": 74.3945217253867,
+                "hz125": 70.0914348470165,
+                "hz250": 66.0872577022262,
+                "hz500": 64.7968458496389,
+                "hz1000": 69.8259805361307,
+                "hz2000": 62.7732115788182,
+                "hz4000": 56.7216748728304,
+                "hz8000": 46.0108768336365
+              },
+              "metainfo_fremdpegel": {
+                "datum": "2021-03-31",
+                "file_no": "N/A",
+                "overview_path": "NOR140_1405890"
+              },
+              "metainfo_gesamtpegel": {
+                "datum": "2021-03-31",
+                "file_no": "0019",
+                "overview_path": "NOR140_1405890"
+              }
+            }
+          ]
+        },
+        "emittent": 0,
+        "typ": "Innerhalb einer eckigen Fl\u00e4che",
+        "emittent_geometrie": {
+          "geo_1": 0.35,
+          "geo_2": 0.3,
+          "geo_3": 0.0,
+          "geo_4": 0.0
+        },
+        "messung_geometrie": {
+          "geo_xy": 0.15,
+          "geo_h": 0.5,
+          "k_2_a": 0.0,
+          "k_omega": 3.0
+        },
+        "auswertung": {
+          "lwlin": {
+            "hz31_5": 72.1,
+            "hz63": 64.6,
+            "hz125": 60.3,
+            "hz250": 56.3,
+            "hz500": 55.0,
+            "hz1000": 60.0,
+            "hz2000": 53.0,
+            "hz4000": 46.9,
+            "hz8000": 36.2,
+            "summiert": 73.5
+          },
+          "anlagenpegel_1": {
+            "hz31_5": 81.9,
+            "hz63": 74.4,
+            "hz125": 70.1,
+            "hz250": 66.1,
+            "hz500": 64.8,
+            "hz1000": 69.8,
+            "hz2000": 62.8,
+            "hz4000": 56.7,
+            "hz8000": 46.0,
+            "summiert": 71.7
+          },
+          "lwa": {
+            "hz31_5": 32.7,
+            "hz63": 38.4,
+            "hz125": 44.2,
+            "hz250": 47.7,
+            "hz500": 51.8,
+            "hz1000": 60.0,
+            "hz2000": 54.2,
+            "hz4000": 47.9,
+            "hz8000": 35.1,
+            "summiert": 61.9
+          },
+          "korrekturwert_1": -9.8,
+          "korrekturwert_2": 0,
+          "korrekturwert_3": 0,
+          "korrekturwert_4": 0,
+          "korrekturwert_5": 0
+        }
+      }
+    ],
+    "abteilung": "",
+    "lage": { "gk_rechts": 522411.41, "gk_hoch": 5408028.75, "hoehe": 0.0 },
+    "liegt_an_fassade": true,
+    "anlage": "Raumentl\u00fcftung",
+    "messinstitut": "Kurz und Fischer GmbH",
+    "image": "Halle W_06_20210331.jpg",
+    "bemerkung": "",
+    "name": "Halle W_06",
+    "roof": "2e397863-499f-4952-8452-8f24f5369d36"
+  },
+  {
+    "bearbeiter": "KUF\\hg",
+    "kostenstelle": "",
+    "messungen": [],
+    "abteilung": "",
+    "lage": { "gk_rechts": 522425.64, "gk_hoch": 5408007.75, "hoehe": 0.0 },
+    "liegt_an_fassade": true,
+    "anlage": "Innenpegel H\u00e4rterei",
+    "messinstitut": "Kurz und Fischer GmbH",
+    "image": "Halle W_07_2021408.jpg",
+    "bemerkung": "",
+    "name": "Halle W_07",
+    "roof": "2e397863-499f-4952-8452-8f24f5369d36"
+  },
+  {
+    "bearbeiter": "KUF\\hg",
+    "kostenstelle": "",
+    "messungen": [],
+    "abteilung": "",
+    "lage": { "gk_rechts": 522418.6, "gk_hoch": 5408018.09, "hoehe": 0.0 },
+    "liegt_an_fassade": true,
+    "anlage": "Innenpegel Technik",
+    "messinstitut": "Kurz und Fischer GmbH",
+    "image": "Halle W_08_20100117.jpg",
+    "bemerkung": "",
+    "name": "Halle W_08",
+    "roof": "2e397863-499f-4952-8452-8f24f5369d36"
+  },
+  {
+    "bearbeiter": "KUF\\ma",
+    "kostenstelle": "",
+    "messungen": [
+      {
+        "messposition_1": {
+          "messpositionpegelreihe_set": [
+            {
+              "fremdpegel": {
+                "hz31_5": 0,
+                "hz63": 0,
+                "hz125": 0,
+                "hz250": 0,
+                "hz500": 0,
+                "hz1000": 0,
+                "hz2000": 0,
+                "hz4000": 0,
+                "hz8000": 0
+              },
+              "gesamtpegel": {
+                "hz31_5": 89.1412274297714,
+                "hz63": 83.6271858480403,
+                "hz125": 81.4462755789133,
+                "hz250": 77.1686081423068,
+                "hz500": 81.9789643873033,
+                "hz1000": 77.9800703642244,
+                "hz2000": 69.8089169694078,
+                "hz4000": 62.2846013150862,
+                "hz8000": 54.5946707459248
+              },
+              "metainfo_fremdpegel": {
+                "datum": "2021-03-31",
+                "file_no": "N/A",
+                "overview_path": "NOR140_1405890"
+              },
+              "metainfo_gesamtpegel": {
+                "datum": "2021-03-31",
+                "file_no": "0011",
+                "overview_path": "NOR140_1405890"
+              }
+            }
+          ]
+        },
+        "emittent": 0,
+        "typ": "Au\u00dferhalb einer Kreisfl\u00e4che",
+        "emittent_geometrie": {
+          "geo_1": 0.6,
+          "geo_2": 0.0,
+          "geo_3": 0.0,
+          "geo_4": 0.0
+        },
+        "messung_geometrie": {
+          "geo_xy": 0.3,
+          "geo_h": 1.0,
+          "k_2_a": 0.0,
+          "k_omega": 3.0
+        },
+        "auswertung": {
+          "lwlin": {
+            "hz31_5": 97.3,
+            "hz63": 91.8,
+            "hz125": 89.6,
+            "hz250": 85.4,
+            "hz500": 90.2,
+            "hz1000": 86.2,
+            "hz2000": 78.0,
+            "hz4000": 70.5,
+            "hz8000": 62.8,
+            "summiert": 99.9
+          },
+          "anlagenpegel_1": {
+            "hz31_5": 89.1,
+            "hz63": 83.6,
+            "hz125": 81.4,
+            "hz250": 77.2,
+            "hz500": 82.0,
+            "hz1000": 78.0,
+            "hz2000": 69.8,
+            "hz4000": 62.3,
+            "hz8000": 54.6,
+            "summiert": 81.4
+          },
+          "lwa": {
+            "hz31_5": 57.9,
+            "hz63": 65.6,
+            "hz125": 73.5,
+            "hz250": 76.8,
+            "hz500": 87.0,
+            "hz1000": 86.2,
+            "hz2000": 79.2,
+            "hz4000": 71.5,
+            "hz8000": 61.7,
+            "summiert": 89.6
+          },
+          "korrekturwert_1": 8.2,
+          "korrekturwert_2": 0,
+          "korrekturwert_3": 0,
+          "korrekturwert_4": 0,
+          "korrekturwert_5": 0
+        }
+      }
+    ],
+    "abteilung": "",
+    "lage": { "gk_rechts": 522439.9, "gk_hoch": 5407995.16, "hoehe": 0.0 },
+    "liegt_an_fassade": true,
+    "anlage": "Fortluft Schleifanlagen",
+    "messinstitut": "Kurz und Fischer GmbH",
+    "image": "GBau 1-2_02_20210331.jpg",
+    "bemerkung": "",
+    "name": "GBau 1-2_02",
+    "roof": "d8f8caf5-d991-4940-9a3a-4846c0d90b03"
+  },
+  {
+    "bearbeiter": "KUF\\hg",
+    "kostenstelle": "",
+    "messungen": [
+      {
+        "messposition_1": {
+          "messpositionpegelreihe_set": [
+            {
+              "fremdpegel": {
+                "hz31_5": 0,
+                "hz63": 0,
+                "hz125": 0,
+                "hz250": 0,
+                "hz500": 0,
+                "hz1000": 0,
+                "hz2000": 0,
+                "hz4000": 0,
+                "hz8000": 0
+              },
+              "gesamtpegel": {
+                "hz31_5": 108.757733188865,
+                "hz63": 104.576189233965,
+                "hz125": 99.0158720833556,
+                "hz250": 91.6755416696952,
+                "hz500": 91.2436668590652,
+                "hz1000": 85.970347916711,
+                "hz2000": 80.2157091413937,
+                "hz4000": 75.6090135520015,
+                "hz8000": 67.7241679150744
+              },
+              "metainfo_fremdpegel": {
+                "datum": "2021-04-08",
+                "file_no": "N/A",
+                "overview_path": "NOR140_1405890"
+              },
+              "metainfo_gesamtpegel": {
+                "datum": "2021-04-08",
+                "file_no": "0016",
+                "overview_path": "NOR140_1405890"
+              }
+            }
+          ]
+        },
+        "emittent": 0,
+        "typ": "Au\u00dferhalb einer Kreisfl\u00e4che",
+        "emittent_geometrie": {
+          "geo_1": 0.35,
+          "geo_2": 0.0,
+          "geo_3": 0.0,
+          "geo_4": 0.0
+        },
+        "messung_geometrie": {
+          "geo_xy": 0.175,
+          "geo_h": 1.0,
+          "k_2_a": 0.0,
+          "k_omega": 6.0
+        },
+        "auswertung": {
+          "lwlin": {
+            "hz31_5": 113.9,
+            "hz63": 109.7,
+            "hz125": 104.1,
+            "hz250": 96.8,
+            "hz500": 96.3,
+            "hz1000": 91.1,
+            "hz2000": 85.3,
+            "hz4000": 80.7,
+            "hz8000": 72.8,
+            "summiert": 115.7
+          },
+          "anlagenpegel_1": {
+            "hz31_5": 108.8,
+            "hz63": 104.6,
+            "hz125": 99.0,
+            "hz250": 91.7,
+            "hz500": 91.2,
+            "hz1000": 86.0,
+            "hz2000": 80.2,
+            "hz4000": 75.6,
+            "hz8000": 67.7,
+            "summiert": 92.3
+          },
+          "lwa": {
+            "hz31_5": 74.5,
+            "hz63": 83.5,
+            "hz125": 88.0,
+            "hz250": 88.2,
+            "hz500": 93.1,
+            "hz1000": 91.1,
+            "hz2000": 86.5,
+            "hz4000": 81.7,
+            "hz8000": 71.7,
+            "summiert": 97.4
+          },
+          "korrekturwert_1": 5.1,
+          "korrekturwert_2": 0,
+          "korrekturwert_3": 0,
+          "korrekturwert_4": 0,
+          "korrekturwert_5": 0
+        }
+      }
+    ],
+    "abteilung": "",
+    "lage": { "gk_rechts": 522560.67, "gk_hoch": 5408002.63, "hoehe": 0.0 },
+    "liegt_an_fassade": true,
+    "anlage": "Fortluft Raumabsaugung Brennofen",
+    "messinstitut": "Kurz und Fischer GmbH",
+    "image": "GBau 1-2_03_20210804.jpg",
+    "bemerkung": "",
+    "name": "GBau 1-2_03",
+    "roof": "d8f8caf5-d991-4940-9a3a-4846c0d90b03"
+  },
+  {
+    "bearbeiter": "KUF\\ma",
+    "kostenstelle": "",
+    "messungen": [
+      {
+        "messposition_1": {
+          "messpositionpegelreihe_set": [
+            {
+              "fremdpegel": {
+                "hz31_5": 0,
+                "hz63": 0,
+                "hz125": 0,
+                "hz250": 0,
+                "hz500": 0,
+                "hz1000": 0,
+                "hz2000": 0,
+                "hz4000": 0,
+                "hz8000": 0
+              },
+              "gesamtpegel": {
+                "hz31_5": 81.3784367209203,
+                "hz63": 79.4372929784409,
+                "hz125": 71.8811253623538,
+                "hz250": 65.1635966969481,
+                "hz500": 65.2078483038685,
+                "hz1000": 66.2314507283273,
+                "hz2000": 60.7757192593994,
+                "hz4000": 55.053773202192,
+                "hz8000": 47.5197184283833
+              },
+              "metainfo_fremdpegel": {
+                "datum": "2021-04-08",
+                "file_no": "N/A",
+                "overview_path": "NOR140_1405890"
+              },
+              "metainfo_gesamtpegel": {
+                "datum": "2021-04-08",
+                "file_no": "0009",
+                "overview_path": "NOR140_1405890"
+              }
+            }
+          ]
+        },
+        "emittent": 0,
+        "typ": "Quadermessung an 2 reflektierenden Ebenen",
+        "emittent_geometrie": {
+          "geo_1": 1.2,
+          "geo_2": 0.7,
+          "geo_3": 2.0,
+          "geo_4": 0.0
+        },
+        "messung_geometrie": {
+          "geo_xy": 0.5,
+          "geo_h": 0.0,
+          "k_2_a": 0.0,
+          "k_omega": 0.0
+        },
+        "auswertung": {
+          "lwlin": {
+            "hz31_5": 93.3,
+            "hz63": 91.3,
+            "hz125": 83.8,
+            "hz250": 77.1,
+            "hz500": 77.1,
+            "hz1000": 78.1,
+            "hz2000": 72.7,
+            "hz4000": 67.0,
+            "hz8000": 59.4,
+            "summiert": 95.9
+          },
+          "anlagenpegel_1": {
+            "hz31_5": 81.4,
+            "hz63": 79.4,
+            "hz125": 71.9,
+            "hz250": 65.2,
+            "hz500": 65.2,
+            "hz1000": 66.2,
+            "hz2000": 60.8,
+            "hz4000": 55.1,
+            "hz8000": 47.5,
+            "summiert": 69.4
+          },
+          "lwa": {
+            "hz31_5": 53.9,
+            "hz63": 65.1,
+            "hz125": 67.7,
+            "hz250": 68.5,
+            "hz500": 73.9,
+            "hz1000": 78.1,
+            "hz2000": 73.9,
+            "hz4000": 68.0,
+            "hz8000": 58.3,
+            "summiert": 81.3
+          },
+          "korrekturwert_1": 11.9,
+          "korrekturwert_2": 0,
+          "korrekturwert_3": 0,
+          "korrekturwert_4": 0,
+          "korrekturwert_5": 0
+        }
+      }
+    ],
+    "abteilung": "",
+    "lage": { "gk_rechts": 522514.79, "gk_hoch": 5407996.75, "hoehe": 0.0 },
+    "liegt_an_fassade": true,
+    "anlage": "K\u00fchlaggregat Schulungszentrum",
+    "messinstitut": "Kurz und Fischer GmbH",
+    "image": "GBau 1-2_06_20210408.jpg",
+    "bemerkung": "",
+    "name": "GBau 1-2_04",
+    "roof": "d8f8caf5-d991-4940-9a3a-4846c0d90b03"
+  },
+  {
+    "bearbeiter": "KUF\\ma",
+    "kostenstelle": "",
+    "messungen": [],
+    "abteilung": "",
+    "lage": { "gk_rechts": 522520.8125, "gk_hoch": 5407999.0, "hoehe": 0.0 },
+    "liegt_an_fassade": true,
+    "anlage": "Innenpegel Presszangenmontage",
+    "messinstitut": "Kurz und Fischer GmbH",
+    "image": "GBau 1-2_04_20210408.jpg",
+    "bemerkung": "",
+    "name": "GBau 1-2_05",
+    "roof": "d8f8caf5-d991-4940-9a3a-4846c0d90b03"
+  },
+  {
+    "bearbeiter": "KUF\\ma",
+    "kostenstelle": "",
+    "messungen": [],
+    "abteilung": "",
+    "lage": { "gk_rechts": 522549.375, "gk_hoch": 5407999.5, "hoehe": 0.0 },
+    "liegt_an_fassade": true,
+    "anlage": "Innenpegel Solar push",
+    "messinstitut": "Kurz und Fischer GmbH",
+    "image": "GBau 1-2_05_20210408.jpg",
+    "bemerkung": "",
+    "name": "GBau 1-2_06",
+    "roof": "d8f8caf5-d991-4940-9a3a-4846c0d90b03"
+  },
+  {
+    "bearbeiter": "KUF\\ma",
+    "kostenstelle": "",
+    "messungen": [],
+    "abteilung": "",
+    "lage": { "gk_rechts": 522476.0625, "gk_hoch": 5407983.0, "hoehe": 0.0 },
+    "liegt_an_fassade": true,
+    "anlage": "Innenpegel Montage",
+    "messinstitut": "Kurz und Fischer GmbH",
+    "image": "GBau 1-2_07_20210408.jpg",
+    "bemerkung": "",
+    "name": "GBau 1-2_07",
+    "roof": "d8f8caf5-d991-4940-9a3a-4846c0d90b03"
+  },
+  {
+    "bearbeiter": "KUF\\ma",
+    "kostenstelle": "",
+    "messungen": [],
+    "abteilung": "",
+    "lage": { "gk_rechts": 522462.65625, "gk_hoch": 5407991.5, "hoehe": 0.0 },
+    "liegt_an_fassade": true,
+    "anlage": "Innenpegel Musterbau",
+    "messinstitut": "Kurz und Fischer GmbH",
+    "image": "GBau 1-2_08_20210408.jpg",
+    "bemerkung": "",
+    "name": "GBau 1-2_08",
+    "roof": "d8f8caf5-d991-4940-9a3a-4846c0d90b03"
+  },
+  {
+    "bearbeiter": "KUF\\ma",
+    "kostenstelle": "",
+    "messungen": [],
+    "abteilung": "",
+    "lage": { "gk_rechts": 522460.625, "gk_hoch": 5407986.0, "hoehe": 0.0 },
+    "liegt_an_fassade": true,
+    "anlage": "Innenpegel Bohren Schleiffen",
+    "messinstitut": "Kurz und Fischer GmbH",
+    "image": "",
+    "bemerkung": "",
+    "name": "GBau 1-2_09",
+    "roof": "d8f8caf5-d991-4940-9a3a-4846c0d90b03"
+  },
+  {
+    "bearbeiter": "KUF\\hg",
+    "kostenstelle": "",
+    "messungen": [],
+    "abteilung": "",
+    "lage": { "gk_rechts": 522524.03, "gk_hoch": 5407989.43, "hoehe": 0.0 },
+    "liegt_an_fassade": true,
+    "anlage": "Innenpegel Schleiferei",
+    "messinstitut": "Kurz und Fischer GmbH",
+    "image": "GBau 1-2_10_20210408.jpg",
+    "bemerkung": "",
+    "name": "GBau 1-2_10",
+    "roof": "d8f8caf5-d991-4940-9a3a-4846c0d90b03"
+  },
+  {
+    "bearbeiter": "KUF\\ma",
+    "kostenstelle": "",
+    "messungen": [
+      {
+        "messposition_1": {
+          "messpositionpegelreihe_set": [
+            {
+              "fremdpegel": {
+                "hz31_5": 0,
+                "hz63": 0,
+                "hz125": 0,
+                "hz250": 0,
+                "hz500": 0,
+                "hz1000": 0,
+                "hz2000": 0,
+                "hz4000": 0,
+                "hz8000": 0
+              },
+              "gesamtpegel": {
+                "hz31_5": 80.6145828353046,
+                "hz63": 77.7543802324099,
+                "hz125": 78.7185092984286,
+                "hz250": 72.9962939986795,
+                "hz500": 66.0663830359932,
+                "hz1000": 63.9078483038685,
+                "hz2000": 62.5891404448451,
+                "hz4000": 57.6688559412238,
+                "hz8000": 50.6643874222655
+              },
+              "metainfo_fremdpegel": {
+                "datum": "2021-03-31",
+                "file_no": "N/A",
+                "overview_path": "NOR140_1405890"
+              },
+              "metainfo_gesamtpegel": {
+                "datum": "2021-03-31",
+                "file_no": "0008",
+                "overview_path": "NOR140_1405890"
+              }
+            }
+          ]
+        },
+        "emittent": 0,
+        "typ": "Au\u00dferhalb einer Kreisfl\u00e4che",
+        "emittent_geometrie": {
+          "geo_1": 0.5,
+          "geo_2": 0.0,
+          "geo_3": 0.0,
+          "geo_4": 0.0
+        },
+        "messung_geometrie": {
+          "geo_xy": 0.25,
+          "geo_h": 1.0,
+          "k_2_a": 0.0,
+          "k_omega": 3.0
+        },
+        "auswertung": {
+          "lwlin": {
+            "hz31_5": 88.7,
+            "hz63": 85.9,
+            "hz125": 86.8,
+            "hz250": 81.1,
+            "hz500": 74.2,
+            "hz1000": 72.0,
+            "hz2000": 70.7,
+            "hz4000": 65.8,
+            "hz8000": 58.8,
+            "summiert": 92.5
+          },
+          "anlagenpegel_1": {
+            "hz31_5": 80.6,
+            "hz63": 77.8,
+            "hz125": 78.7,
+            "hz250": 73.0,
+            "hz500": 66.1,
+            "hz1000": 63.9,
+            "hz2000": 62.6,
+            "hz4000": 57.7,
+            "hz8000": 50.7,
+            "summiert": 70.7
+          },
+          "lwa": {
+            "hz31_5": 49.3,
+            "hz63": 59.7,
+            "hz125": 70.7,
+            "hz250": 72.5,
+            "hz500": 71.0,
+            "hz1000": 72.0,
+            "hz2000": 71.9,
+            "hz4000": 66.8,
+            "hz8000": 57.7,
+            "summiert": 78.8
+          },
+          "korrekturwert_1": 8.1,
+          "korrekturwert_2": 0,
+          "korrekturwert_3": 0,
+          "korrekturwert_4": 0,
+          "korrekturwert_5": 0
+        }
+      }
+    ],
+    "abteilung": "",
+    "lage": { "gk_rechts": 522579.85, "gk_hoch": 5408047.53, "hoehe": 0.0 },
+    "liegt_an_fassade": true,
+    "anlage": "Hallen Fortluft",
+    "messinstitut": "Kurz und Fischer GmbH",
+    "image": "Shedhalle_02_20210428.jpg",
+    "bemerkung": "",
+    "name": "Shedhalle_02",
+    "roof": "e7b92644-a1d4-4875-929b-654a99bd578f"
+  },
+  {
+    "bearbeiter": "KUF\\ma",
+    "kostenstelle": "",
+    "messungen": [
+      {
+        "messposition_1": {
+          "messpositionpegelreihe_set": [
+            {
+              "fremdpegel": {
+                "hz31_5": 0,
+                "hz63": 0,
+                "hz125": 0,
+                "hz250": 0,
+                "hz500": 0,
+                "hz1000": 0,
+                "hz2000": 0,
+                "hz4000": 0,
+                "hz8000": 0
+              },
+              "gesamtpegel": {
+                "hz31_5": 76.0300406463864,
+                "hz63": 75.2418587185331,
+                "hz125": 77.128777225301,
+                "hz250": 71.1325318016731,
+                "hz500": 65.0917994780905,
+                "hz1000": 65.5701869985059,
+                "hz2000": 62.7043019239674,
+                "hz4000": 56.5320411606764,
+                "hz8000": 49.8620187130971
+              },
+              "metainfo_fremdpegel": {
+                "datum": "2021-03-31",
+                "file_no": "N/A",
+                "overview_path": "NOR140_1405890"
+              },
+              "metainfo_gesamtpegel": {
+                "datum": "2021-03-31",
+                "file_no": "0009",
+                "overview_path": "NOR140_1405890"
+              }
+            }
+          ]
+        },
+        "emittent": 0,
+        "typ": "Au\u00dferhalb einer Kreisfl\u00e4che",
+        "emittent_geometrie": {
+          "geo_1": 0.5,
+          "geo_2": 0.0,
+          "geo_3": 0.0,
+          "geo_4": 0.0
+        },
+        "messung_geometrie": {
+          "geo_xy": 0.25,
+          "geo_h": 1.0,
+          "k_2_a": 0.0,
+          "k_omega": 3.0
+        },
+        "auswertung": {
+          "lwlin": {
+            "hz31_5": 84.1,
+            "hz63": 83.3,
+            "hz125": 85.2,
+            "hz250": 79.2,
+            "hz500": 73.2,
+            "hz1000": 73.7,
+            "hz2000": 70.8,
+            "hz4000": 64.6,
+            "hz8000": 58.0,
+            "summiert": 89.8
+          },
+          "anlagenpegel_1": {
+            "hz31_5": 76.0,
+            "hz63": 75.2,
+            "hz125": 77.1,
+            "hz250": 71.1,
+            "hz500": 65.1,
+            "hz1000": 65.6,
+            "hz2000": 62.7,
+            "hz4000": 56.5,
+            "hz8000": 49.9,
+            "summiert": 70.4
+          },
+          "lwa": {
+            "hz31_5": 44.7,
+            "hz63": 57.1,
+            "hz125": 69.1,
+            "hz250": 70.6,
+            "hz500": 70.0,
+            "hz1000": 73.7,
+            "hz2000": 72.0,
+            "hz4000": 65.6,
+            "hz8000": 56.9,
+            "summiert": 78.5
+          },
+          "korrekturwert_1": 8.1,
+          "korrekturwert_2": 0,
+          "korrekturwert_3": 0,
+          "korrekturwert_4": 0,
+          "korrekturwert_5": 0
+        }
+      }
+    ],
+    "abteilung": "",
+    "lage": { "gk_rechts": 522583.12, "gk_hoch": 5408058.88, "hoehe": 0.0 },
+    "liegt_an_fassade": true,
+    "anlage": "Hallenfortluft",
+    "messinstitut": "Kurz und Fischer GmbH",
+    "image": "Shedhalle_03_20210331.jpg",
+    "bemerkung": "",
+    "name": "Shedhalle_03",
+    "roof": "e7b92644-a1d4-4875-929b-654a99bd578f"
+  },
+  {
+    "bearbeiter": "KUF\\ma",
+    "kostenstelle": "",
+    "messungen": [
+      {
+        "messposition_1": {
+          "messpositionpegelreihe_set": [
+            {
+              "fremdpegel": {
+                "hz31_5": 0,
+                "hz63": 0,
+                "hz125": 0,
+                "hz250": 0,
+                "hz500": 0,
+                "hz1000": 0,
+                "hz2000": 0,
+                "hz4000": 0,
+                "hz8000": 0
+              },
+              "gesamtpegel": {
+                "hz31_5": 78.6639934898591,
+                "hz63": 77.4499887679742,
+                "hz125": 80.9408953112036,
+                "hz250": 74.2436675619252,
+                "hz500": 66.4979316327119,
+                "hz1000": 65.4627741901398,
+                "hz2000": 64.722986922544,
+                "hz4000": 58.9036473032441,
+                "hz8000": 51.5638701021066
+              },
+              "metainfo_fremdpegel": {
+                "datum": "2021-03-31",
+                "file_no": "N/A",
+                "overview_path": "NOR140_1405890"
+              },
+              "metainfo_gesamtpegel": {
+                "datum": "2021-03-31",
+                "file_no": "0010",
+                "overview_path": "NOR140_1405890"
+              }
+            }
+          ]
+        },
+        "emittent": 0,
+        "typ": "Au\u00dferhalb einer Kreisfl\u00e4che",
+        "emittent_geometrie": {
+          "geo_1": 0.5,
+          "geo_2": 0.0,
+          "geo_3": 0.0,
+          "geo_4": 0.0
+        },
+        "messung_geometrie": {
+          "geo_xy": 0.25,
+          "geo_h": 1.0,
+          "k_2_a": 0.0,
+          "k_omega": 3.0
+        },
+        "auswertung": {
+          "lwlin": {
+            "hz31_5": 86.8,
+            "hz63": 85.5,
+            "hz125": 89.0,
+            "hz250": 82.3,
+            "hz500": 74.6,
+            "hz1000": 73.6,
+            "hz2000": 72.8,
+            "hz4000": 67.0,
+            "hz8000": 59.7,
+            "summiert": 92.7
+          },
+          "anlagenpegel_1": {
+            "hz31_5": 78.7,
+            "hz63": 77.4,
+            "hz125": 80.9,
+            "hz250": 74.2,
+            "hz500": 66.5,
+            "hz1000": 65.5,
+            "hz2000": 64.7,
+            "hz4000": 58.9,
+            "hz8000": 51.6,
+            "summiert": 72.2
+          },
+          "lwa": {
+            "hz31_5": 47.4,
+            "hz63": 59.3,
+            "hz125": 72.9,
+            "hz250": 73.7,
+            "hz500": 71.4,
+            "hz1000": 73.6,
+            "hz2000": 74.0,
+            "hz4000": 68.0,
+            "hz8000": 58.6,
+            "summiert": 80.3
+          },
+          "korrekturwert_1": 8.1,
+          "korrekturwert_2": 0,
+          "korrekturwert_3": 0,
+          "korrekturwert_4": 0,
+          "korrekturwert_5": 0
+        }
+      }
+    ],
+    "abteilung": "",
+    "lage": { "gk_rechts": 522574.125, "gk_hoch": 5408028.0, "hoehe": 0.0 },
+    "liegt_an_fassade": true,
+    "anlage": "Hallenfortluft",
+    "messinstitut": "Kurz und Fischer GmbH",
+    "image": "Shedhalle_04_20210408jpg.jpg",
+    "bemerkung": "",
+    "name": "Shedhalle_04",
+    "roof": "e7b92644-a1d4-4875-929b-654a99bd578f"
+  },
+  {
+    "bearbeiter": "KUF\\ma",
+    "kostenstelle": "",
+    "messungen": [
+      {
+        "messposition_1": {
+          "messpositionpegelreihe_set": [
+            {
+              "fremdpegel": {
+                "hz31_5": 0,
+                "hz63": 0,
+                "hz125": 0,
+                "hz250": 0,
+                "hz500": 0,
+                "hz1000": 0,
+                "hz2000": 0,
+                "hz4000": 0,
+                "hz8000": 0
+              },
+              "gesamtpegel": {
+                "hz31_5": 78.6639934898591,
+                "hz63": 77.4499887679742,
+                "hz125": 80.9408953112036,
+                "hz250": 74.2436675619252,
+                "hz500": 66.4979316327119,
+                "hz1000": 65.4627741901398,
+                "hz2000": 64.722986922544,
+                "hz4000": 58.9036473032441,
+                "hz8000": 51.5638701021066
+              },
+              "metainfo_fremdpegel": {
+                "datum": "2021-03-31",
+                "file_no": "N/A",
+                "overview_path": "NOR140_1405890 Oktav"
+              },
+              "metainfo_gesamtpegel": {
+                "datum": "2021-03-31",
+                "file_no": "0010",
+                "overview_path": "NOR140_1405890 Oktav"
+              }
+            }
+          ]
+        },
+        "emittent": 0,
+        "typ": "Au\u00dferhalb einer Kreisfl\u00e4che",
+        "emittent_geometrie": {
+          "geo_1": 0.5,
+          "geo_2": 0.0,
+          "geo_3": 0.0,
+          "geo_4": 0.0
+        },
+        "messung_geometrie": {
+          "geo_xy": 0.25,
+          "geo_h": 1.0,
+          "k_2_a": 0.0,
+          "k_omega": 3.0
+        },
+        "auswertung": null
+      },
+      {
+        "messposition_1": {
+          "messpositionpegelreihe_set": [
+            {
+              "fremdpegel": {
+                "hz31_5": 0,
+                "hz63": 0,
+                "hz125": 0,
+                "hz250": 0,
+                "hz500": 0,
+                "hz1000": 0,
+                "hz2000": 0,
+                "hz4000": 0,
+                "hz8000": 0
+              },
+              "gesamtpegel": {
+                "hz31_5": 76.0300406463864,
+                "hz63": 75.2418587185331,
+                "hz125": 77.128777225301,
+                "hz250": 71.1325318016731,
+                "hz500": 65.0917994780905,
+                "hz1000": 65.5701869985059,
+                "hz2000": 62.7043019239674,
+                "hz4000": 56.5320411606764,
+                "hz8000": 49.8620187130971
+              },
+              "metainfo_fremdpegel": {
+                "datum": "2021-03-31",
+                "file_no": "N/A",
+                "overview_path": "NOR140_1405890 Oktav"
+              },
+              "metainfo_gesamtpegel": {
+                "datum": "2021-03-31",
+                "file_no": "0009",
+                "overview_path": "NOR140_1405890 Oktav"
+              }
+            }
+          ]
+        },
+        "emittent": 0,
+        "typ": "Au\u00dferhalb einer Kreisfl\u00e4che",
+        "emittent_geometrie": {
+          "geo_1": 0.5,
+          "geo_2": 0.0,
+          "geo_3": 0.0,
+          "geo_4": 0.0
+        },
+        "messung_geometrie": {
+          "geo_xy": 0.25,
+          "geo_h": 1.0,
+          "k_2_a": 0.0,
+          "k_omega": 3.0
+        },
+        "auswertung": null
+      },
+      {
+        "messposition_1": {
+          "messpositionpegelreihe_set": [
+            {
+              "fremdpegel": {
+                "hz31_5": 0,
+                "hz63": 0,
+                "hz125": 0,
+                "hz250": 0,
+                "hz500": 0,
+                "hz1000": 0,
+                "hz2000": 0,
+                "hz4000": 0,
+                "hz8000": 0
+              },
+              "gesamtpegel": {
+                "hz31_5": 80.6145828353046,
+                "hz63": 77.7543802324099,
+                "hz125": 78.7185092984286,
+                "hz250": 72.9962939986795,
+                "hz500": 66.0663830359932,
+                "hz1000": 63.9078483038685,
+                "hz2000": 62.5891404448451,
+                "hz4000": 57.6688559412238,
+                "hz8000": 50.6643874222655
+              },
+              "metainfo_fremdpegel": {
+                "datum": "2021-03-31",
+                "file_no": "N/A",
+                "overview_path": "NOR140_1405890 Oktav"
+              },
+              "metainfo_gesamtpegel": {
+                "datum": "2021-03-31",
+                "file_no": "0008",
+                "overview_path": "NOR140_1405890 Oktav"
+              }
+            }
+          ]
+        },
+        "emittent": 0,
+        "typ": "Au\u00dferhalb einer Kreisfl\u00e4che",
+        "emittent_geometrie": {
+          "geo_1": 0.5,
+          "geo_2": 0.0,
+          "geo_3": 0.0,
+          "geo_4": 0.0
+        },
+        "messung_geometrie": {
+          "geo_xy": 0.25,
+          "geo_h": 1.0,
+          "k_2_a": 0.0,
+          "k_omega": 3.0
+        },
+        "auswertung": {
+          "lwlin": {
+            "hz31_5": 86.9,
+            "hz63": 85.1,
+            "hz125": 87.3,
+            "hz250": 81.1,
+            "hz500": 74.0,
+            "hz1000": 73.1,
+            "hz2000": 71.6,
+            "hz4000": 65.9,
+            "hz8000": 58.9,
+            "summiert": 91.9
+          },
+          "anlagenpegel_1": {
+            "hz31_5": 78.8,
+            "hz63": 77.0,
+            "hz125": 79.2,
+            "hz250": 73.0,
+            "hz500": 65.9,
+            "hz1000": 65.0,
+            "hz2000": 63.5,
+            "hz4000": 57.8,
+            "hz8000": 50.8,
+            "summiert": 71.2
+          },
+          "lwa": {
+            "hz31_5": 47.5,
+            "hz63": 58.9,
+            "hz125": 71.2,
+            "hz250": 72.5,
+            "hz500": 70.8,
+            "hz1000": 73.1,
+            "hz2000": 72.8,
+            "hz4000": 66.9,
+            "hz8000": 57.8,
+            "summiert": 79.3
+          },
+          "korrekturwert_1": 8.1,
+          "korrekturwert_2": 0,
+          "korrekturwert_3": 0,
+          "korrekturwert_4": 0,
+          "korrekturwert_5": 0
+        }
+      }
+    ],
+    "abteilung": "",
+    "lage": { "gk_rechts": 522570.375, "gk_hoch": 5408013.0, "hoehe": 0.0 },
+    "liegt_an_fassade": true,
+    "anlage": "Hallenfortluft",
+    "messinstitut": "Kurz und Fischer GmbH",
+    "image": "Shedhalle_05_20210408.jpg",
+    "bemerkung": "",
+    "name": "Shedhalle_05",
+    "roof": "e7b92644-a1d4-4875-929b-654a99bd578f"
+  },
+  {
+    "bearbeiter": "KUF\\ma",
+    "kostenstelle": "",
+    "messungen": [
+      {
+        "messposition_1": {
+          "messpositionpegelreihe_set": [
+            {
+              "fremdpegel": {
+                "hz31_5": 0,
+                "hz63": 0,
+                "hz125": 0,
+                "hz250": 0,
+                "hz500": 0,
+                "hz1000": 0,
+                "hz2000": 0,
+                "hz4000": 0,
+                "hz8000": 0
+              },
+              "gesamtpegel": {
+                "hz31_5": 74.5138602661287,
+                "hz63": 69.0700907135663,
+                "hz125": 75.6169397777652,
+                "hz250": 71.2112641737269,
+                "hz500": 63.0166857264059,
+                "hz1000": 58.3088022360916,
+                "hz2000": 50.33025785333,
+                "hz4000": 41.2518910834475,
+                "hz8000": 30.9551450984636
+              },
+              "metainfo_fremdpegel": {
+                "datum": "2021-04-08",
+                "file_no": "N/A",
+                "overview_path": "NOR140_1405890"
+              },
+              "metainfo_gesamtpegel": {
+                "datum": "2021-04-08",
+                "file_no": "0017",
+                "overview_path": "NOR140_1405890"
+              }
+            }
+          ]
+        },
+        "emittent": 0,
+        "typ": "Au\u00dferhalb einer Kreisfl\u00e4che",
+        "emittent_geometrie": {
+          "geo_1": 0.5,
+          "geo_2": 0.0,
+          "geo_3": 0.0,
+          "geo_4": 0.0
+        },
+        "messung_geometrie": {
+          "geo_xy": 0.25,
+          "geo_h": 0.5,
+          "k_2_a": 0.0,
+          "k_omega": 3.0
+        },
+        "auswertung": {
+          "lwlin": {
+            "hz31_5": 77.0,
+            "hz63": 71.6,
+            "hz125": 78.1,
+            "hz250": 73.7,
+            "hz500": 65.5,
+            "hz1000": 60.8,
+            "hz2000": 52.8,
+            "hz4000": 43.8,
+            "hz8000": 33.5,
+            "summiert": 82.0
+          },
+          "anlagenpegel_1": {
+            "hz31_5": 74.5,
+            "hz63": 69.1,
+            "hz125": 75.6,
+            "hz250": 71.2,
+            "hz500": 63.0,
+            "hz1000": 58.3,
+            "hz2000": 50.3,
+            "hz4000": 41.3,
+            "hz8000": 31.0,
+            "summiert": 66.0
+          },
+          "lwa": {
+            "hz31_5": 37.6,
+            "hz63": 45.4,
+            "hz125": 62.0,
+            "hz250": 65.1,
+            "hz500": 62.3,
+            "hz1000": 60.8,
+            "hz2000": 54.0,
+            "hz4000": 44.8,
+            "hz8000": 32.4,
+            "summiert": 68.5
+          },
+          "korrekturwert_1": 2.5,
+          "korrekturwert_2": 0,
+          "korrekturwert_3": 0,
+          "korrekturwert_4": 0,
+          "korrekturwert_5": 0
+        }
+      }
+    ],
+    "abteilung": "",
+    "lage": { "gk_rechts": 522520.69, "gk_hoch": 5408003.1, "hoehe": 0.0 },
+    "liegt_an_fassade": true,
+    "anlage": "Fortluft Lackierstand",
+    "messinstitut": "Kurz und Fischer GmbH",
+    "image": "Shedhalle_06_20210408.jpg",
+    "bemerkung": "",
+    "name": "Shedhalle_06",
+    "roof": "e7b92644-a1d4-4875-929b-654a99bd578f"
+  },
+  {
+    "bearbeiter": "KUF\\ma",
+    "kostenstelle": "",
+    "messungen": [
+      {
+        "messposition_1": {
+          "messpositionpegelreihe_set": [
+            {
+              "fremdpegel": {
+                "hz31_5": 0,
+                "hz63": 0,
+                "hz125": 0,
+                "hz250": 0,
+                "hz500": 0,
+                "hz1000": 0,
+                "hz2000": 0,
+                "hz4000": 0,
+                "hz8000": 0
+              },
+              "gesamtpegel": {
+                "hz31_5": 96.6990500652571,
+                "hz63": 87.8091132231199,
+                "hz125": 77.4684215178298,
+                "hz250": 64.8251997226228,
+                "hz500": 60.6719729598939,
+                "hz1000": 57.5097937394206,
+                "hz2000": 59.8810788339199,
+                "hz4000": 56.5957924840756,
+                "hz8000": 48.2277826952352
+              },
+              "metainfo_fremdpegel": {
+                "datum": "2021-04-08",
+                "file_no": "N/A",
+                "overview_path": "NOR140_1405890"
+              },
+              "metainfo_gesamtpegel": {
+                "datum": "2021-04-08",
+                "file_no": "0018",
+                "overview_path": "NOR140_1405890"
+              }
+            }
+          ]
+        },
+        "emittent": 0,
+        "typ": "Au\u00dferhalb einer eckigen Fl\u00e4che",
+        "emittent_geometrie": {
+          "geo_1": 0.8,
+          "geo_2": 0.2,
+          "geo_3": 0.0,
+          "geo_4": 0.0
+        },
+        "messung_geometrie": {
+          "geo_xy": 0.1,
+          "geo_h": 0.5,
+          "k_2_a": 0.0,
+          "k_omega": 6.0
+        },
+        "auswertung": {
+          "lwlin": {
+            "hz31_5": 96.5,
+            "hz63": 87.6,
+            "hz125": 77.3,
+            "hz250": 64.6,
+            "hz500": 60.5,
+            "hz1000": 57.3,
+            "hz2000": 59.7,
+            "hz4000": 56.4,
+            "hz8000": 48.0,
+            "summiert": 97.1
+          },
+          "anlagenpegel_1": {
+            "hz31_5": 96.7,
+            "hz63": 87.8,
+            "hz125": 77.5,
+            "hz250": 64.8,
+            "hz500": 60.7,
+            "hz1000": 57.5,
+            "hz2000": 59.9,
+            "hz4000": 56.6,
+            "hz8000": 48.2,
+            "summiert": 68.0
+          },
+          "lwa": {
+            "hz31_5": 57.1,
+            "hz63": 61.4,
+            "hz125": 61.2,
+            "hz250": 56.0,
+            "hz500": 57.3,
+            "hz1000": 57.3,
+            "hz2000": 60.9,
+            "hz4000": 57.4,
+            "hz8000": 46.9,
+            "summiert": 67.8
+          },
+          "korrekturwert_1": -0.2,
+          "korrekturwert_2": 0,
+          "korrekturwert_3": 0,
+          "korrekturwert_4": 0,
+          "korrekturwert_5": 0
+        }
+      }
+    ],
+    "abteilung": "",
+    "lage": { "gk_rechts": 522520.85, "gk_hoch": 5408000.45, "hoehe": 0.0 },
+    "liegt_an_fassade": true,
+    "anlage": "Fortluft Malerei",
+    "messinstitut": "Kurz und Fischer GmbH",
+    "image": "Shedhalle_07_20210408.jpg",
+    "bemerkung": "",
+    "name": "Shedhalle_07",
+    "roof": "e7b92644-a1d4-4875-929b-654a99bd578f"
+  },
+  {
+    "bearbeiter": "KUF\\ma",
+    "kostenstelle": "",
+    "messungen": [],
+    "abteilung": "",
+    "lage": { "gk_rechts": 522554.625, "gk_hoch": 5408059.5, "hoehe": 0.0 },
+    "liegt_an_fassade": true,
+    "anlage": "Innenpegel Nordfassade",
+    "messinstitut": "Kurz und Fischer GmbH",
+    "image": "Shedhalle_07_20210331.jpg",
+    "bemerkung": "",
+    "name": "Shedhalle_08",
+    "roof": "e7b92644-a1d4-4875-929b-654a99bd578f"
+  },
+  {
+    "bearbeiter": "KUF\\hg",
+    "kostenstelle": "",
+    "messungen": [
+      {
+        "messposition_1": {
+          "messpositionpegelreihe_set": [
+            {
+              "fremdpegel": {
+                "hz31_5": 0,
+                "hz63": 0,
+                "hz125": 0,
+                "hz250": 0,
+                "hz500": 0,
+                "hz1000": 0,
+                "hz2000": 0,
+                "hz4000": 0,
+                "hz8000": 0
+              },
+              "gesamtpegel": {
+                "hz31_5": 65.2528614357975,
+                "hz63": 68.3824713558758,
+                "hz125": 70.8490575394108,
+                "hz250": 69.5304860194021,
+                "hz500": 68.7096016537701,
+                "hz1000": 61.932489659291,
+                "hz2000": 56.9800059659237,
+                "hz4000": 49.0203256595231,
+                "hz8000": 39.0379446548081
+              },
+              "metainfo_fremdpegel": {
+                "datum": "2021-04-08",
+                "file_no": "N/A",
+                "overview_path": "NOR140_1405890"
+              },
+              "metainfo_gesamtpegel": {
+                "datum": "2021-04-08",
+                "file_no": "0019",
+                "overview_path": "NOR140_1405890"
+              }
+            }
+          ]
+        },
+        "emittent": 0,
+        "typ": "Innerhalb einer eckigen Fl\u00e4che",
+        "emittent_geometrie": {
+          "geo_1": 10.5,
+          "geo_2": 5.0,
+          "geo_3": 0.0,
+          "geo_4": 0.0
+        },
+        "messung_geometrie": {
+          "geo_xy": 2.5,
+          "geo_h": 0.0,
+          "k_2_a": 0.0,
+          "k_omega": 0.0
+        },
+        "auswertung": {
+          "lwlin": {
+            "hz31_5": 82.5,
+            "hz63": 85.6,
+            "hz125": 88.0,
+            "hz250": 86.7,
+            "hz500": 85.9,
+            "hz1000": 79.1,
+            "hz2000": 74.2,
+            "hz4000": 66.2,
+            "hz8000": 56.2,
+            "summiert": 93.3
+          },
+          "anlagenpegel_1": {
+            "hz31_5": 65.3,
+            "hz63": 68.4,
+            "hz125": 70.8,
+            "hz250": 69.5,
+            "hz500": 68.7,
+            "hz1000": 61.9,
+            "hz2000": 57.0,
+            "hz4000": 49.0,
+            "hz8000": 39.0,
+            "summiert": 68.5
+          },
+          "lwa": {
+            "hz31_5": 43.1,
+            "hz63": 59.4,
+            "hz125": 71.9,
+            "hz250": 78.1,
+            "hz500": 82.7,
+            "hz1000": 79.1,
+            "hz2000": 75.4,
+            "hz4000": 67.2,
+            "hz8000": 55.1,
+            "summiert": 85.7
+          },
+          "korrekturwert_1": 17.2,
+          "korrekturwert_2": 0,
+          "korrekturwert_3": 0,
+          "korrekturwert_4": 0,
+          "korrekturwert_5": 0
+        }
+      }
+    ],
+    "abteilung": "",
+    "lage": { "gk_rechts": 522515.84375, "gk_hoch": 5408029.0, "hoehe": 0.0 },
+    "liegt_an_fassade": true,
+    "anlage": "Entsorgungsbereich und Technik",
+    "messinstitut": "Kurz und Fischer GmbH",
+    "image": "Shedhalle_09_20210408jpg.jpg",
+    "bemerkung": "",
+    "name": "Shedhalle_09",
+    "roof": "e7b92644-a1d4-4875-929b-654a99bd578f"
+  },
+  {
+    "bearbeiter": "KUF\\hg",
+    "kostenstelle": "",
+    "messungen": [],
+    "abteilung": "",
+    "lage": { "gk_rechts": 522553.87, "gk_hoch": 5408035.05, "hoehe": 0.0 },
+    "liegt_an_fassade": true,
+    "anlage": "Innenpegel Dachbereich Nord",
+    "messinstitut": "Kurz und Fischer GmbH",
+    "image": "Shedhalle_10_20100116.jpg",
+    "bemerkung": "",
+    "name": "Shedhalle_10",
+    "roof": "e7b92644-a1d4-4875-929b-654a99bd578f"
+  },
+  {
+    "bearbeiter": "KUF\\hg",
+    "kostenstelle": "",
+    "messungen": [],
+    "abteilung": "",
+    "lage": { "gk_rechts": 522519.6, "gk_hoch": 5408037.28, "hoehe": 0.0 },
+    "liegt_an_fassade": true,
+    "anlage": "Innenpegel Westfassade",
+    "messinstitut": "Kurz und Fischer GmbH",
+    "image": "",
+    "bemerkung": "",
+    "name": "Shedhalle_11",
+    "roof": "e7b92644-a1d4-4875-929b-654a99bd578f"
+  },
+  {
+    "bearbeiter": "KUF\\hg",
+    "kostenstelle": "",
+    "messungen": [],
+    "abteilung": "",
+    "lage": { "gk_rechts": 522568.42, "gk_hoch": 5408027.19, "hoehe": 0.0 },
+    "liegt_an_fassade": true,
+    "anlage": "Innenpegel Ostfassade",
+    "messinstitut": "Kurz und Fischer GmbH",
+    "image": "Shedhalle_12_20210408.jpg",
+    "bemerkung": "",
+    "name": "Shedhalle_12",
+    "roof": "e7b92644-a1d4-4875-929b-654a99bd578f"
+  },
+  {
+    "bearbeiter": "KUF\\ma",
+    "kostenstelle": "",
+    "messungen": [
+      {
+        "messposition_1": {
+          "messpositionpegelreihe_set": [
+            {
+              "fremdpegel": {
+                "hz31_5": 0,
+                "hz63": 0,
+                "hz125": 0,
+                "hz250": 0,
+                "hz500": 0,
+                "hz1000": 0,
+                "hz2000": 0,
+                "hz4000": 0,
+                "hz8000": 0
+              },
+              "gesamtpegel": {
+                "hz31_5": 71.5788804689989,
+                "hz63": 68.4876184975685,
+                "hz125": 62.9004793159908,
+                "hz250": 61.0619653337319,
+                "hz500": 52.814360808291,
+                "hz1000": 49.6327837150182,
+                "hz2000": 45.1232253151022,
+                "hz4000": 39.0361429006076,
+                "hz8000": 33.2439892920835
+              },
+              "metainfo_fremdpegel": {
+                "datum": "2021-04-28",
+                "file_no": "N/A",
+                "overview_path": "NOR140_1405890"
+              },
+              "metainfo_gesamtpegel": {
+                "datum": "2021-04-28",
+                "file_no": "0006",
+                "overview_path": "NOR140_1405890"
+              }
+            }
+          ]
+        },
+        "emittent": 0,
+        "typ": "Quadermessung an 1 reflektierenden Ebene",
+        "emittent_geometrie": {
+          "geo_1": 1.0,
+          "geo_2": 0.3,
+          "geo_3": 1.8,
+          "geo_4": 0.0
+        },
+        "messung_geometrie": {
+          "geo_xy": 0.5,
+          "geo_h": 0.0,
+          "k_2_a": 0.0,
+          "k_omega": 0.0
+        },
+        "auswertung": {
+          "lwlin": {
+            "hz31_5": 84.1,
+            "hz63": 81.0,
+            "hz125": 75.4,
+            "hz250": 73.6,
+            "hz500": 65.3,
+            "hz1000": 62.1,
+            "hz2000": 57.6,
+            "hz4000": 51.5,
+            "hz8000": 45.7,
+            "summiert": 86.5
+          },
+          "anlagenpegel_1": {
+            "hz31_5": 71.6,
+            "hz63": 68.5,
+            "hz125": 62.9,
+            "hz250": 61.1,
+            "hz500": 52.8,
+            "hz1000": 49.6,
+            "hz2000": 45.1,
+            "hz4000": 39.0,
+            "hz8000": 33.2,
+            "summiert": 56.8
+          },
+          "lwa": {
+            "hz31_5": 44.7,
+            "hz63": 54.8,
+            "hz125": 59.3,
+            "hz250": 65.0,
+            "hz500": 62.1,
+            "hz1000": 62.1,
+            "hz2000": 58.8,
+            "hz4000": 52.5,
+            "hz8000": 44.6,
+            "summiert": 69.3
+          },
+          "korrekturwert_1": 12.5,
+          "korrekturwert_2": 0,
+          "korrekturwert_3": 0,
+          "korrekturwert_4": 0,
+          "korrekturwert_5": 0
+        }
+      }
+    ],
+    "abteilung": "",
+    "lage": { "gk_rechts": 522556.54, "gk_hoch": 5408050.29, "hoehe": 0.0 },
+    "liegt_an_fassade": true,
+    "anlage": "Klimager\u00e4t",
+    "messinstitut": "Kurz und Fischer GmbH",
+    "image": "Shedhalle_14_20210428.JPG",
+    "bemerkung": "",
+    "name": "Shedhalle_14",
+    "roof": "e7b92644-a1d4-4875-929b-654a99bd578f"
+  },
+  {
+    "bearbeiter": "KUF\\ma",
+    "kostenstelle": "",
+    "messungen": [
+      {
+        "messposition_1": {
+          "messpositionpegelreihe_set": [
+            {
+              "fremdpegel": {
+                "hz31_5": 0,
+                "hz63": 0,
+                "hz125": 0,
+                "hz250": 0,
+                "hz500": 0,
+                "hz1000": 0,
+                "hz2000": 0,
+                "hz4000": 0,
+                "hz8000": 0
+              },
+              "gesamtpegel": {
+                "hz31_5": 69.3923721715621,
+                "hz63": 72.128811368472,
+                "hz125": 76.4985474396732,
+                "hz250": 70.0153430710124,
+                "hz500": 67.0616147620891,
+                "hz1000": 62.8158720833556,
+                "hz2000": 56.9222826477573,
+                "hz4000": 51.6532807449327,
+                "hz8000": 43.6595720154182
+              },
+              "metainfo_fremdpegel": {
+                "datum": "2021-04-08",
+                "file_no": "N/A",
+                "overview_path": "NOR140_1405890"
+              },
+              "metainfo_gesamtpegel": {
+                "datum": "2021-04-08",
+                "file_no": "0015",
+                "overview_path": "NOR140_1405890"
+              }
+            }
+          ]
+        },
+        "emittent": 0,
+        "typ": "Quadermessung an 1 reflektierenden Ebene",
+        "emittent_geometrie": {
+          "geo_1": 0.6,
+          "geo_2": 0.45,
+          "geo_3": 0.75,
+          "geo_4": 0.0
+        },
+        "messung_geometrie": {
+          "geo_xy": 0.5,
+          "geo_h": 0.0,
+          "k_2_a": 0.0,
+          "k_omega": 0.0
+        },
+        "auswertung": {
+          "lwlin": {
+            "hz31_5": 79.4,
+            "hz63": 82.1,
+            "hz125": 86.5,
+            "hz250": 80.0,
+            "hz500": 77.1,
+            "hz1000": 72.8,
+            "hz2000": 66.9,
+            "hz4000": 61.7,
+            "hz8000": 53.7,
+            "summiert": 89.4
+          },
+          "anlagenpegel_1": {
+            "hz31_5": 69.4,
+            "hz63": 72.1,
+            "hz125": 76.5,
+            "hz250": 70.0,
+            "hz500": 67.1,
+            "hz1000": 62.8,
+            "hz2000": 56.9,
+            "hz4000": 51.7,
+            "hz8000": 43.7,
+            "summiert": 68.8
+          },
+          "lwa": {
+            "hz31_5": 40.0,
+            "hz63": 55.9,
+            "hz125": 70.4,
+            "hz250": 71.4,
+            "hz500": 73.9,
+            "hz1000": 72.8,
+            "hz2000": 68.1,
+            "hz4000": 62.7,
+            "hz8000": 52.6,
+            "summiert": 78.8
+          },
+          "korrekturwert_1": 10.0,
+          "korrekturwert_2": 0,
+          "korrekturwert_3": 0,
+          "korrekturwert_4": 0,
+          "korrekturwert_5": 0
+        }
+      }
+    ],
+    "abteilung": "",
+    "lage": { "gk_rechts": 522664.875, "gk_hoch": 5407989.5, "hoehe": 0.0 },
+    "liegt_an_fassade": true,
+    "anlage": "Fortluft Waschmaschine",
+    "messinstitut": "Kurz und Fischer GmbH",
+    "image": "Lagerhalle_02_20210408.jpg",
+    "bemerkung": "",
+    "name": "Lagerhalle_02",
+    "roof": "a0473f59-647d-4e8e-976f-8b860bf06124"
+  },
+  {
+    "bearbeiter": "KUF\\ma",
+    "kostenstelle": "",
+    "messungen": [
+      {
+        "messposition_1": {
+          "messpositionpegelreihe_set": [
+            {
+              "fremdpegel": {
+                "hz31_5": 0,
+                "hz63": 0,
+                "hz125": 0,
+                "hz250": 0,
+                "hz500": 0,
+                "hz1000": 0,
+                "hz2000": 0,
+                "hz4000": 0,
+                "hz8000": 0
+              },
+              "gesamtpegel": {
+                "hz31_5": 0,
+                "hz63": 0,
+                "hz125": 0,
+                "hz250": 0,
+                "hz500": 0,
+                "hz1000": 0,
+                "hz2000": 0,
+                "hz4000": 0,
+                "hz8000": 0
+              },
+              "metainfo_fremdpegel": {
+                "datum": "2021-04-08",
+                "file_no": "N/A",
+                "overview_path": "NOR140_1405890"
+              },
+              "metainfo_gesamtpegel": {
+                "datum": "2021-04-08",
+                "file_no": "N/A",
+                "overview_path": "NOR140_1405890"
+              }
+            }
+          ]
+        },
+        "emittent": 0,
+        "typ": "Au\u00dferhalb einer Kreisfl\u00e4che",
+        "emittent_geometrie": {
+          "geo_1": 0.25,
+          "geo_2": 0.0,
+          "geo_3": 0.0,
+          "geo_4": 0.0
+        },
+        "messung_geometrie": {
+          "geo_xy": 0.125,
+          "geo_h": 0.0,
+          "k_2_a": 0.0,
+          "k_omega": 0.0
+        },
+        "auswertung": {
+          "lwlin": {
+            "hz31_5": 0,
+            "hz63": 0,
+            "hz125": 0,
+            "hz250": 0,
+            "hz500": 0,
+            "hz1000": 0,
+            "hz2000": 0,
+            "hz4000": 0,
+            "hz8000": 0,
+            "summiert": 0
+          },
+          "anlagenpegel_1": {
+            "hz31_5": 0,
+            "hz63": 0,
+            "hz125": 0,
+            "hz250": 0,
+            "hz500": 0,
+            "hz1000": 0,
+            "hz2000": 0,
+            "hz4000": 0,
+            "hz8000": 0,
+            "summiert": 0
+          },
+          "lwa": {
+            "hz31_5": 0,
+            "hz63": 0,
+            "hz125": 0,
+            "hz250": 0,
+            "hz500": 0,
+            "hz1000": 0,
+            "hz2000": 0,
+            "hz4000": 0,
+            "hz8000": 0,
+            "summiert": 0
+          },
+          "korrekturwert_1": 0.0,
+          "korrekturwert_2": 0,
+          "korrekturwert_3": 0,
+          "korrekturwert_4": 0,
+          "korrekturwert_5": 0
+        }
+      }
+    ],
+    "abteilung": "",
+    "lage": { "gk_rechts": 522664.875, "gk_hoch": 5407988.5, "hoehe": 0.0 },
+    "liegt_an_fassade": true,
+    "anlage": "Nachstr\u00f6m\u00f6ffnung Waschmaschine",
+    "messinstitut": "Kurz und Fischer GmbH",
+    "image": "Lagerhalle_03_20210408.jpg",
+    "bemerkung": "Quelle irrelevant weil kein eigener Ventilator",
+    "name": "Lagerhalle_03",
+    "roof": "a0473f59-647d-4e8e-976f-8b860bf06124"
+  },
+  {
+    "bearbeiter": "KUF\\hg",
+    "kostenstelle": "",
+    "messungen": [],
+    "abteilung": "",
+    "lage": { "gk_rechts": 522666.04, "gk_hoch": 5407980.47, "hoehe": 0.0 },
+    "liegt_an_fassade": true,
+    "anlage": "Innenpegel Lagerhalle",
+    "messinstitut": "Kurz und Fischer GmbH",
+    "image": "",
+    "bemerkung": "Innenpegel Lagerhalle ca 60 bis 65 dB(A), deshalb irrelevant",
+    "name": "Lagerhalle_04",
+    "roof": "a0473f59-647d-4e8e-976f-8b860bf06124"
+  },
+  {
+    "bearbeiter": "KUF\\ma",
+    "kostenstelle": "",
+    "messungen": [
+      {
+        "messposition_1": {
+          "messpositionpegelreihe_set": [
+            {
+              "fremdpegel": {
+                "hz31_5": 0,
+                "hz63": 0,
+                "hz125": 0,
+                "hz250": 0,
+                "hz500": 0,
+                "hz1000": 0,
+                "hz2000": 0,
+                "hz4000": 0,
+                "hz8000": 0
+              },
+              "gesamtpegel": {
+                "hz31_5": 69.6662512056868,
+                "hz63": 76.1404319029563,
+                "hz125": 72.0867832190015,
+                "hz250": 72.6299347244813,
+                "hz500": 82.5677376539186,
+                "hz1000": 92.5284957637285,
+                "hz2000": 100.078066451419,
+                "hz4000": 105.395642345206,
+                "hz8000": 101.454895803892
+              },
+              "metainfo_fremdpegel": {
+                "datum": "2021-04-28",
+                "file_no": "N/A",
+                "overview_path": "NOR140_1405890"
+              },
+              "metainfo_gesamtpegel": {
+                "datum": "2021-04-28",
+                "file_no": "0001",
+                "overview_path": "NOR140_1405890"
+              }
+            }
+          ]
+        },
+        "emittent": 0,
+        "typ": "Au\u00dferhalb einer eckigen Fl\u00e4che",
+        "emittent_geometrie": {
+          "geo_1": 0.8,
+          "geo_2": 0.25,
+          "geo_3": 0.0,
+          "geo_4": 0.0
+        },
+        "messung_geometrie": {
+          "geo_xy": 0.125,
+          "geo_h": 1.0,
+          "k_2_a": 0.0,
+          "k_omega": 6.0
+        },
+        "auswertung": {
+          "lwlin": {
+            "hz31_5": 74.9,
+            "hz63": 81.3,
+            "hz125": 77.3,
+            "hz250": 77.8,
+            "hz500": 87.8,
+            "hz1000": 97.7,
+            "hz2000": 105.3,
+            "hz4000": 110.6,
+            "hz8000": 106.7,
+            "summiert": 113.1
+          },
+          "anlagenpegel_1": {
+            "hz31_5": 69.7,
+            "hz63": 76.1,
+            "hz125": 72.1,
+            "hz250": 72.6,
+            "hz500": 82.6,
+            "hz1000": 92.5,
+            "hz2000": 100.1,
+            "hz4000": 105.4,
+            "hz8000": 101.5,
+            "summiert": 108.4
+          },
+          "lwa": {
+            "hz31_5": 35.5,
+            "hz63": 55.1,
+            "hz125": 61.2,
+            "hz250": 69.2,
+            "hz500": 84.6,
+            "hz1000": 97.7,
+            "hz2000": 106.5,
+            "hz4000": 111.6,
+            "hz8000": 105.6,
+            "summiert": 113.6
+          },
+          "korrekturwert_1": 5.2,
+          "korrekturwert_2": 0,
+          "korrekturwert_3": 0,
+          "korrekturwert_4": 0,
+          "korrekturwert_5": 0
+        }
+      }
+    ],
+    "abteilung": "",
+    "lage": { "gk_rechts": 522603.90625, "gk_hoch": 5407966.0, "hoehe": 0.0 },
+    "liegt_an_fassade": true,
+    "anlage": "Sprinkleralarm",
+    "messinstitut": "Kurz und Fischer GmbH",
+    "image": "Lagerhalle _05_20210428.jpg",
+    "bemerkung": "",
+    "name": "Lagerhalle _05",
+    "roof": "a0473f59-647d-4e8e-976f-8b860bf06124"
+  },
+  {
+    "bearbeiter": "KUF\\ma",
+    "kostenstelle": "",
+    "messungen": [
+      {
+        "messposition_1": {
+          "messpositionpegelreihe_set": [
+            {
+              "fremdpegel": {
+                "hz31_5": 0,
+                "hz63": 0,
+                "hz125": 0,
+                "hz250": 0,
+                "hz500": 0,
+                "hz1000": 0,
+                "hz2000": 0,
+                "hz4000": 0,
+                "hz8000": 0
+              },
+              "gesamtpegel": {
+                "hz31_5": 100.202013209132,
+                "hz63": 102.609793739421,
+                "hz125": 109.148585119896,
+                "hz250": 104.678034008078,
+                "hz500": 89.0439040004226,
+                "hz1000": 87.3170792008136,
+                "hz2000": 85.2869337015546,
+                "hz4000": 86.1479114082823,
+                "hz8000": 69.2852496164051
+              },
+              "metainfo_fremdpegel": {
+                "datum": "2021-04-28",
+                "file_no": "N/A",
+                "overview_path": "NOR140_1405890"
+              },
+              "metainfo_gesamtpegel": {
+                "datum": "2021-04-28",
+                "file_no": "0002",
+                "overview_path": "NOR140_1405890"
+              }
+            }
+          ]
+        },
+        "emittent": 0,
+        "typ": "Au\u00dferhalb einer Kreisfl\u00e4che",
+        "emittent_geometrie": {
+          "geo_1": 0.1,
+          "geo_2": 0.0,
+          "geo_3": 0.0,
+          "geo_4": 0.0
+        },
+        "messung_geometrie": {
+          "geo_xy": 0.1,
+          "geo_h": 0.5,
+          "k_2_a": 0.0,
+          "k_omega": 6.0
+        },
+        "auswertung": {
+          "lwlin": {
+            "hz31_5": 99.2,
+            "hz63": 101.6,
+            "hz125": 108.1,
+            "hz250": 103.7,
+            "hz500": 88.0,
+            "hz1000": 86.3,
+            "hz2000": 84.3,
+            "hz4000": 85.1,
+            "hz8000": 68.3,
+            "summiert": 110.5
+          },
+          "anlagenpegel_1": {
+            "hz31_5": 100.2,
+            "hz63": 102.6,
+            "hz125": 109.1,
+            "hz250": 104.7,
+            "hz500": 89.0,
+            "hz1000": 87.3,
+            "hz2000": 85.3,
+            "hz4000": 86.1,
+            "hz8000": 69.3,
+            "summiert": 97.4
+          },
+          "lwa": {
+            "hz31_5": 59.8,
+            "hz63": 75.4,
+            "hz125": 92.0,
+            "hz250": 95.1,
+            "hz500": 84.8,
+            "hz1000": 86.3,
+            "hz2000": 85.5,
+            "hz4000": 86.1,
+            "hz8000": 67.2,
+            "summiert": 96.4
+          },
+          "korrekturwert_1": -1.0,
+          "korrekturwert_2": 0,
+          "korrekturwert_3": 0,
+          "korrekturwert_4": 0,
+          "korrekturwert_5": 0
+        }
+      }
+    ],
+    "abteilung": "",
+    "lage": { "gk_rechts": 522603.18, "gk_hoch": 5407958.3, "hoehe": 0.0 },
+    "liegt_an_fassade": true,
+    "anlage": "Abgas NEA",
+    "messinstitut": "Kurz und Fischer GmbH",
+    "image": "Lagerhalle _06_20210428.jpg",
+    "bemerkung": "",
+    "name": "Lagerhalle _06",
+    "roof": "a0473f59-647d-4e8e-976f-8b860bf06124"
+  },
+  {
+    "bearbeiter": "KUF\\ma",
+    "kostenstelle": "",
+    "messungen": [
+      {
+        "messposition_1": {
+          "messpositionpegelreihe_set": [
+            {
+              "fremdpegel": {
+                "hz31_5": 0,
+                "hz63": 0,
+                "hz125": 0,
+                "hz250": 0,
+                "hz500": 0,
+                "hz1000": 0,
+                "hz2000": 0,
+                "hz4000": 0,
+                "hz8000": 0
+              },
+              "gesamtpegel": {
+                "hz31_5": 87.1917994780905,
+                "hz63": 94.7141546040592,
+                "hz125": 92.5861407973409,
+                "hz250": 91.4821046969144,
+                "hz500": 85.9229817582389,
+                "hz1000": 83.3276956813449,
+                "hz2000": 81.0504998732709,
+                "hz4000": 77.8962991347015,
+                "hz8000": 69.1815396197792
+              },
+              "metainfo_fremdpegel": {
+                "datum": "2021-04-28",
+                "file_no": "N/A",
+                "overview_path": "NOR140_1405890"
+              },
+              "metainfo_gesamtpegel": {
+                "datum": "2021-04-28",
+                "file_no": "0003",
+                "overview_path": "NOR140_1405890"
+              }
+            }
+          ]
+        },
+        "emittent": 0,
+        "typ": "Au\u00dferhalb einer Kreisfl\u00e4che",
+        "emittent_geometrie": {
+          "geo_1": 0.25,
+          "geo_2": 0.0,
+          "geo_3": 0.0,
+          "geo_4": 0.0
+        },
+        "messung_geometrie": {
+          "geo_xy": 0.125,
+          "geo_h": 0.2,
+          "k_2_a": 0.0,
+          "k_omega": 3.0
+        },
+        "auswertung": {
+          "lwlin": {
+            "hz31_5": 82.0,
+            "hz63": 89.5,
+            "hz125": 87.4,
+            "hz250": 86.3,
+            "hz500": 80.7,
+            "hz1000": 78.1,
+            "hz2000": 75.9,
+            "hz4000": 72.7,
+            "hz8000": 64.0,
+            "summiert": 93.6
+          },
+          "anlagenpegel_1": {
+            "hz31_5": 87.2,
+            "hz63": 94.7,
+            "hz125": 92.6,
+            "hz250": 91.5,
+            "hz500": 85.9,
+            "hz1000": 83.3,
+            "hz2000": 81.1,
+            "hz4000": 77.9,
+            "hz8000": 69.2,
+            "summiert": 89.1
+          },
+          "lwa": {
+            "hz31_5": 42.6,
+            "hz63": 63.3,
+            "hz125": 71.3,
+            "hz250": 77.7,
+            "hz500": 77.5,
+            "hz1000": 78.1,
+            "hz2000": 77.1,
+            "hz4000": 73.7,
+            "hz8000": 62.9,
+            "summiert": 83.9
+          },
+          "korrekturwert_1": -5.2,
+          "korrekturwert_2": 0,
+          "korrekturwert_3": 0,
+          "korrekturwert_4": 0,
+          "korrekturwert_5": 0
+        }
+      }
+    ],
+    "abteilung": "",
+    "lage": { "gk_rechts": 522597.84375, "gk_hoch": 5407958.0, "hoehe": 0.0 },
+    "liegt_an_fassade": true,
+    "anlage": "Au\u00dfenluft NEA",
+    "messinstitut": "Kurz und Fischer GmbH",
+    "image": "Lagerhalle _07_20210428.jpg",
+    "bemerkung": "4,5 m \u00fcber Boden",
+    "name": "Lagerhalle _07",
+    "roof": "a0473f59-647d-4e8e-976f-8b860bf06124"
+  },
+  {
+    "bearbeiter": "KUF\\ma",
+    "kostenstelle": "",
+    "messungen": [
+      {
+        "messposition_1": {
+          "messpositionpegelreihe_set": [
+            {
+              "fremdpegel": {
+                "hz31_5": 0,
+                "hz63": 0,
+                "hz125": 0,
+                "hz250": 0,
+                "hz500": 0,
+                "hz1000": 0,
+                "hz2000": 0,
+                "hz4000": 0,
+                "hz8000": 0
+              },
+              "gesamtpegel": {
+                "hz31_5": 76.8244384599299,
+                "hz63": 69.951426262507,
+                "hz125": 60.3247341974665,
+                "hz250": 57.6655212453122,
+                "hz500": 55.9903796022242,
+                "hz1000": 52.6116542266515,
+                "hz2000": 49.2337257678518,
+                "hz4000": 49.3810895491712,
+                "hz8000": 48.3479143758552
+              },
+              "metainfo_fremdpegel": {
+                "datum": "2021-04-28",
+                "file_no": "N/A",
+                "overview_path": "NOR140_1405890"
+              },
+              "metainfo_gesamtpegel": {
+                "datum": "2021-04-28",
+                "file_no": "0004",
+                "overview_path": "NOR140_1405890"
+              }
+            }
+          ]
+        },
+        "emittent": 0,
+        "typ": "Quadermessung an 1 reflektierenden Ebene",
+        "emittent_geometrie": {
+          "geo_1": 1.85,
+          "geo_2": 0.9,
+          "geo_3": 1.05,
+          "geo_4": 0.0
+        },
+        "messung_geometrie": {
+          "geo_xy": 0.5,
+          "geo_h": 0.0,
+          "k_2_a": 0.0,
+          "k_omega": 0.0
+        },
+        "auswertung": null
+      },
+      {
+        "messposition_1": {
+          "messpositionpegelreihe_set": [
+            {
+              "fremdpegel": {
+                "hz31_5": 0,
+                "hz63": 0,
+                "hz125": 0,
+                "hz250": 0,
+                "hz500": 0,
+                "hz1000": 0,
+                "hz2000": 0,
+                "hz4000": 0,
+                "hz8000": 0
+              },
+              "gesamtpegel": {
+                "hz31_5": 75.6014858081522,
+                "hz63": 70.0180432459292,
+                "hz125": 60.6111375330389,
+                "hz250": 58.9053497057093,
+                "hz500": 56.0827358102463,
+                "hz1000": 52.714360808291,
+                "hz2000": 49.3635966969481,
+                "hz4000": 50.227118584819,
+                "hz8000": 50.1716330528169
+              },
+              "metainfo_fremdpegel": {
+                "datum": "2021-04-28",
+                "file_no": "N/A",
+                "overview_path": "NOR140_1405890"
+              },
+              "metainfo_gesamtpegel": {
+                "datum": "2021-04-28",
+                "file_no": "0005",
+                "overview_path": "NOR140_1405890"
+              }
+            }
+          ]
+        },
+        "emittent": 0,
+        "typ": "Quadermessung an 1 reflektierenden Ebene",
+        "emittent_geometrie": {
+          "geo_1": 1.85,
+          "geo_2": 0.9,
+          "geo_3": 1.05,
+          "geo_4": 0.0
+        },
+        "messung_geometrie": {
+          "geo_xy": 0.5,
+          "geo_h": 0.0,
+          "k_2_a": 0.0,
+          "k_omega": 0.0
+        },
+        "auswertung": {
+          "lwlin": {
+            "hz31_5": 89.3,
+            "hz63": 83.0,
+            "hz125": 73.5,
+            "hz250": 71.3,
+            "hz500": 69.0,
+            "hz1000": 65.7,
+            "hz2000": 62.3,
+            "hz4000": 62.8,
+            "hz8000": 62.4,
+            "summiert": 90.4
+          },
+          "anlagenpegel_1": {
+            "hz31_5": 76.3,
+            "hz63": 70.0,
+            "hz125": 60.5,
+            "hz250": 58.3,
+            "hz500": 56.0,
+            "hz1000": 52.7,
+            "hz2000": 49.3,
+            "hz4000": 49.8,
+            "hz8000": 49.4,
+            "summiert": 59.0
+          },
+          "lwa": {
+            "hz31_5": 49.9,
+            "hz63": 56.8,
+            "hz125": 57.4,
+            "hz250": 62.7,
+            "hz500": 65.8,
+            "hz1000": 65.7,
+            "hz2000": 63.5,
+            "hz4000": 63.8,
+            "hz8000": 61.3,
+            "summiert": 72.0
+          },
+          "korrekturwert_1": 13.0,
+          "korrekturwert_2": 0,
+          "korrekturwert_3": 0,
+          "korrekturwert_4": 0,
+          "korrekturwert_5": 0
+        }
+      }
+    ],
+    "abteilung": "",
+    "lage": { "gk_rechts": 522674.61, "gk_hoch": 5408027.57, "hoehe": 0.0 },
+    "liegt_an_fassade": true,
+    "anlage": "K\u00fchlaggregat Mieter 1",
+    "messinstitut": "Kurz und Fischer GmbH",
+    "image": "Lagerhalle _08_20210428.jpg",
+    "bemerkung": "",
+    "name": "Lagerhalle _08",
+    "roof": "a0473f59-647d-4e8e-976f-8b860bf06124"
+  },
+  {
+    "bearbeiter": "KUF\\ma",
+    "kostenstelle": "",
+    "messungen": [
+      {
+        "messposition_1": {
+          "messpositionpegelreihe_set": [
+            {
+              "fremdpegel": {
+                "hz31_5": 0,
+                "hz63": 0,
+                "hz125": 0,
+                "hz250": 0,
+                "hz500": 0,
+                "hz1000": 0,
+                "hz2000": 0,
+                "hz4000": 0,
+                "hz8000": 0
+              },
+              "gesamtpegel": {
+                "hz31_5": 75.6014858081522,
+                "hz63": 70.0180432459292,
+                "hz125": 60.6111375330389,
+                "hz250": 58.9053497057093,
+                "hz500": 56.0827358102463,
+                "hz1000": 52.714360808291,
+                "hz2000": 49.3635966969481,
+                "hz4000": 50.227118584819,
+                "hz8000": 50.1716330528169
+              },
+              "metainfo_fremdpegel": {
+                "datum": "2021-04-28",
+                "file_no": "N/A",
+                "overview_path": "NOR140_1405890 Oktav"
+              },
+              "metainfo_gesamtpegel": {
+                "datum": "2021-04-28",
+                "file_no": "0005",
+                "overview_path": "NOR140_1405890 Oktav"
+              }
+            }
+          ]
+        },
+        "emittent": 0,
+        "typ": "Quadermessung an 1 reflektierenden Ebene",
+        "emittent_geometrie": {
+          "geo_1": 1.85,
+          "geo_2": 0.9,
+          "geo_3": 1.05,
+          "geo_4": 0.0
+        },
+        "messung_geometrie": {
+          "geo_xy": 0.5,
+          "geo_h": 0.0,
+          "k_2_a": 0.0,
+          "k_omega": 0.0
+        },
+        "auswertung": {
+          "lwlin": {
+            "hz31_5": 88.6,
+            "hz63": 83.0,
+            "hz125": 73.6,
+            "hz250": 71.9,
+            "hz500": 69.1,
+            "hz1000": 65.7,
+            "hz2000": 62.4,
+            "hz4000": 63.2,
+            "hz8000": 63.2,
+            "summiert": 89.9
+          },
+          "anlagenpegel_1": {
+            "hz31_5": 75.6,
+            "hz63": 70.0,
+            "hz125": 60.6,
+            "hz250": 58.9,
+            "hz500": 56.1,
+            "hz1000": 52.7,
+            "hz2000": 49.4,
+            "hz4000": 50.2,
+            "hz8000": 50.2,
+            "summiert": 59.2
+          },
+          "lwa": {
+            "hz31_5": 49.2,
+            "hz63": 56.8,
+            "hz125": 57.5,
+            "hz250": 63.3,
+            "hz500": 65.9,
+            "hz1000": 65.7,
+            "hz2000": 63.6,
+            "hz4000": 64.2,
+            "hz8000": 62.1,
+            "summiert": 72.2
+          },
+          "korrekturwert_1": 13.0,
+          "korrekturwert_2": 0,
+          "korrekturwert_3": 0,
+          "korrekturwert_4": 0,
+          "korrekturwert_5": 0
+        }
+      }
+    ],
+    "abteilung": "",
+    "lage": { "gk_rechts": 522676.84375, "gk_hoch": 5408027.5, "hoehe": 0.0 },
+    "liegt_an_fassade": true,
+    "anlage": "K\u00fchlaggregat Mieter 2",
+    "messinstitut": "Kurz und Fischer GmbH",
+    "image": "Lagerhalle _09_20210428.jpg",
+    "bemerkung": "",
+    "name": "Lagerhalle _09",
+    "roof": "a0473f59-647d-4e8e-976f-8b860bf06124"
+  },
+  {
+    "bearbeiter": "KUF\\ma",
+    "kostenstelle": "",
+    "messungen": [
+      {
+        "messposition_1": {
+          "messpositionpegelreihe_set": [
+            {
+              "fremdpegel": {
+                "hz31_5": 0,
+                "hz63": 0,
+                "hz125": 0,
+                "hz250": 0,
+                "hz500": 0,
+                "hz1000": 0,
+                "hz2000": 0,
+                "hz4000": 0,
+                "hz8000": 0
+              },
+              "gesamtpegel": {
+                "hz31_5": 76.8244384599299,
+                "hz63": 69.951426262507,
+                "hz125": 60.3247341974665,
+                "hz250": 57.6655212453122,
+                "hz500": 55.9903796022242,
+                "hz1000": 52.6116542266515,
+                "hz2000": 49.2337257678518,
+                "hz4000": 49.3810895491712,
+                "hz8000": 48.3479143758552
+              },
+              "metainfo_fremdpegel": {
+                "datum": "2021-04-28",
+                "file_no": "N/A",
+                "overview_path": "NOR140_1405890 Oktav"
+              },
+              "metainfo_gesamtpegel": {
+                "datum": "2021-04-28",
+                "file_no": "0004",
+                "overview_path": "NOR140_1405890 Oktav"
+              }
+            }
+          ]
+        },
+        "emittent": 0,
+        "typ": "Quadermessung an 1 reflektierenden Ebene",
+        "emittent_geometrie": {
+          "geo_1": 1.85,
+          "geo_2": 0.9,
+          "geo_3": 1.05,
+          "geo_4": 0.0
+        },
+        "messung_geometrie": {
+          "geo_xy": 0.5,
+          "geo_h": 0.0,
+          "k_2_a": 0.0,
+          "k_omega": 0.0
+        },
+        "auswertung": {
+          "lwlin": {
+            "hz31_5": 89.8,
+            "hz63": 83.0,
+            "hz125": 73.3,
+            "hz250": 70.7,
+            "hz500": 69.0,
+            "hz1000": 65.6,
+            "hz2000": 62.2,
+            "hz4000": 62.4,
+            "hz8000": 61.3,
+            "summiert": 90.8
+          },
+          "anlagenpegel_1": {
+            "hz31_5": 76.8,
+            "hz63": 70.0,
+            "hz125": 60.3,
+            "hz250": 57.7,
+            "hz500": 56.0,
+            "hz1000": 52.6,
+            "hz2000": 49.2,
+            "hz4000": 49.4,
+            "hz8000": 48.3,
+            "summiert": 58.8
+          },
+          "lwa": {
+            "hz31_5": 50.4,
+            "hz63": 56.8,
+            "hz125": 57.2,
+            "hz250": 62.1,
+            "hz500": 65.8,
+            "hz1000": 65.6,
+            "hz2000": 63.4,
+            "hz4000": 63.4,
+            "hz8000": 60.2,
+            "summiert": 71.8
+          },
+          "korrekturwert_1": 13.0,
+          "korrekturwert_2": 0,
+          "korrekturwert_3": 0,
+          "korrekturwert_4": 0,
+          "korrekturwert_5": 0
+        }
+      }
+    ],
+    "abteilung": "",
+    "lage": { "gk_rechts": 522679.53125, "gk_hoch": 5408027.5, "hoehe": 0.0 },
+    "liegt_an_fassade": true,
+    "anlage": "K\u00fchlaggregat Mieter 3",
+    "messinstitut": "Kurz und Fischer GmbH",
+    "image": "Lagerhalle _10_20210428.jpg",
+    "bemerkung": "",
+    "name": "Lagerhalle _10",
+    "roof": "a0473f59-647d-4e8e-976f-8b860bf06124"
+  }
+]

@@ -2,9 +2,9 @@ import { createMap, createMapper, forMember, mapFrom, mapWith } from '@automappe
 import { afterMap } from '@automapper/core/lib/mapping-configurations/after-map';
 
 import { PojosMetadataMap, pojos } from '@automapper/pojos';
-import { PouchBuilding, PouchEmittent, PouchKoordinaten, PouchKoordinatenHoehe, PouchMap, PouchPlant, PouchRoof } from 'src/models/pouch-api';
+import { PouchAuswertung, PouchAuswertungspegelreihe, PouchBuilding, PouchEmittent, PouchGeometrieEmittent, PouchGeometrieMessung, PouchKoordinaten, PouchKoordinatenHoehe, PouchMap, PouchMessgeraet, PouchMessposition, PouchMesspunktAnAnlage, PouchMessung, PouchMetainfo, PouchPegelreihe, PouchPlant, PouchProject, PouchRoof } from 'src/models/pouch-api';
 import {
-  Pegelreihe, MesswertereiheDTO, MesspositionDTO,
+  Pegelreihe, MesswertereiheDTO,
   MesspositionEditViewModel,
   messwertereiheFactory, Messung, geometrieEmittentFactory, geometrieMessungFactory,
   Plant,
@@ -24,7 +24,11 @@ import {
   Projekt,
   metainfoFactory,
   Auswertungspegelreihe,
-  Messgeraet
+  Messgeraet,
+  Luftschadstoffe,
+  LuftschadstoffMessung,
+  LuftschadstoffGenehmigung,
+  luftschadstoffeFactory
 } from 'src/models/v1';
 
 import {
@@ -56,6 +60,7 @@ export function createUserMetadata() {
     hz8000: Number
   });
 
+
   PojosMetadataMap.create<PegelreiheAPI>('PegelreiheAPI', {
     hz31_5: Number,
     hz63: Number,
@@ -72,17 +77,22 @@ export function createUserMetadata() {
     id: Number
   })
 
+  PojosMetadataMap.create<MesspunktAnAnlage>('MesspunktAnAnlage', {
+    fremdpegel: 'Pegelreihe',
+    gesamtpegel: 'Pegelreihe',
 
-  PojosMetadataMap.create<Messung>('Messung', {
+    metainfoFremdpegel: 'Metainfo',
+    metainfoGesamtpegel: 'Metainfo',
     id: String,
-    type: String,
-    messpositionen: 'MesspositionEditViewModel'
+
+    fremdpegelVorhanden: Boolean
   })
+
 
   PojosMetadataMap.create<MesspositionEditViewModel>('MesspositionEditViewModel', {
     // messwertereihen: ''
     id: String,
-    messwertereihen: 'MesswertreiheDiscriminator'
+    messwertereihen: 'MesspunktAnAnlage', // 'MesswertreiheDiscriminator'
   })
 
   PojosMetadataMap.create<MesspositionAPI>('MesspositionAPI', {
@@ -110,18 +120,17 @@ export function createUserMetadata() {
   })
 
   PojosMetadataMap.create<Messung>('Messung', {
-    id: Number,
+    id: String,
     datum: String,
     type: String,
-    messverfahren: String
+    messverfahren: String,
+    messpositionen: 'MesspositionEditViewModel',
+    geometrie_emittent: 'GeometrieEmittent',
+    geometrie_messung: 'GeometrieMessung',
+    auswertung: 'AuswertungDefault',
+
   })
 
-  PojosMetadataMap.create<AuswertungDefault>('Auswertung', {
-    id: String,
-    lwa: 'Auswertungspegelreihe',
-    lwlin: 'Auswertungspegelreihe',
-    anlagenpegel: 'Pegelreihe'
-  })
 
   PojosMetadataMap.create<EinPunktAuswertung>('EinPunktAuswertungAPI', {
     id: String,
@@ -191,7 +200,10 @@ export function createUserMetadata() {
 
   PojosMetadataMap.create<GeometrieEmittent>('GeometrieEmittent', {
     id: String,
-    geo1: Number
+    geo1: Number,
+    geo2: Number,
+    geo3: Number,
+    geo4: Number
   })
 
   PojosMetadataMap.create<GeometrieEmittentAPI>('GeometrieEmittentAPI', {
@@ -201,8 +213,8 @@ export function createUserMetadata() {
 
   PojosMetadataMap.create<KoordinatenHoehe>('KoordinatenHoeheAPI', {
     id: String,
-    gk_hoch: Number,
-    gk_rechts: Number,
+    gkhoch: Number,
+    gkrechts: Number,
     hoehe: Number
   })
 
@@ -253,6 +265,7 @@ export function createUserMetadata() {
     in_betrieb: Boolean,
     bemerkung: String,
     abteilung: String,
+    luftschadstoffe: 'Luftschadstoffe'
   })
 
   PojosMetadataMap.create<PouchEmittent>('PouchEmittent', {
@@ -268,6 +281,7 @@ export function createUserMetadata() {
     fuerMessungVormerken: Boolean,
     inBetrieb: Boolean,
     bemerkung: String,
+    luftschadstoffe: 'Luftschadstoffe'
     // lage: 'PouchKoordinatenHoehe'
   })
 
@@ -284,6 +298,19 @@ export function createUserMetadata() {
     x10: Number,
     x11: Number,
     x12: Number
+  }),
+
+    PojosMetadataMap.create<Luftschadstoffe>('Luftschadstoffe', {
+      messungen: ['Luftschadstoffmessung'],
+      genehmigungen: ['Luftschadstoffgenehmigung']
+    })
+
+  PojosMetadataMap.create<LuftschadstoffMessung>('Luftschadstoffmessung', {
+    id: String,
+  })
+
+  PojosMetadataMap.create<LuftschadstoffGenehmigung>('Luftschadstoffgenehmigung', {
+
   })
 
   PojosMetadataMap.create<Georeferenzierung>('Georeferenzierung', {
@@ -343,6 +370,143 @@ export function createUserMetadata() {
   PojosMetadataMap.create<Roof>('Roof', {
     name: String,
   })
+
+  PojosMetadataMap.create<Messgeraet>('Messgeraet', {
+    name: String,
+    id: String,
+    hz31_5: Number,
+    hz63: Number, hz125: Number,
+    hz250: Number,
+    hz500: Number,
+    hz1000: Number,
+    hz2000: Number,
+    hz4000: Number,
+    hz8000: Number,
+  })
+
+  PojosMetadataMap.create<PouchMessgeraet>('PouchMessgeraet', {
+    name: String,
+    id: String,
+    hz31_5: Number,
+    hz63: Number, hz125: Number,
+    hz250: Number,
+    hz500: Number,
+    hz1000: Number,
+    hz2000: Number,
+    hz4000: Number,
+    hz8000: Number,
+  })
+
+  PojosMetadataMap.create<PouchMessung>('PouchMessung', {
+    datum: Number,
+    id: String,
+    geometrie_emittent: 'PouchGeometrieEmittent',
+    geometrie_messung: 'PouchGeometrieMessung',
+    messpositionen: 'PouchMessposition',
+    auswertung: 'PouchAuswertung',
+    type: String,
+    messverfahren: String
+  })
+
+  PojosMetadataMap.create<GeometrieMessung>('GeometrieMessung', {
+    geoh: Number,
+    geoxy: Number,
+    k2a: Number,
+    komega: Number
+  })
+
+  PojosMetadataMap.create<PouchGeometrieMessung>('PouchGeometrieMessung', {
+    geoh: Number,
+    geoxy: Number,
+    k2a: Number,
+    komega: Number
+  })
+
+  PojosMetadataMap.create<PouchGeometrieEmittent>('PouchGeometrieEmittent', {
+    geo1: Number,
+    geo2: Number,
+    geo3: Number,
+    geo4: Number
+  })
+
+  PojosMetadataMap.create<PouchMessposition>('PouchMessposition', {
+    id: String,
+    messwertereihen: 'PouchMesspunktAnAnlage'
+  })
+
+  PojosMetadataMap.create<AuswertungDefault>('AuswertungDefault', {
+    id: String,
+    lwa: 'Auswertungspegelreihe',
+    lwlin: 'Auswertungspegelreihe',
+    mittelungspegel_gesamt: ['Pegelreihe'],
+    mittelungspegel_fremd: ['Pegelreihe'],
+    anlagenpegel: ['Pegelreihe'],
+    korrekturwerte: [Number]
+  })
+
+  PojosMetadataMap.create<PouchAuswertung>('PouchAuswertung', {
+    id: String,
+    lwa: 'PouchAuswertungspegelreihe',
+    lwlin: 'PouchAuswertungspegelreihe',
+    mittelungspegel_gesamt: ['PouchPegelreihe'],
+    mittelungspegel_fremd: ['PouchPegelreihe'],
+    anlagenpegel: ['PouchPegelreihe'],
+    korrekturwerte: [Number]
+  })
+
+
+
+
+  PojosMetadataMap.create<MesspunktAnAnlage>('PouchMesspunktAnAnlage', {
+    fremdpegel: 'PouchPegelreihe',
+    gesamtpegel: 'PouchPegelreihe',
+
+    metainfoFremdpegel: 'PouchMetainfo',
+    metainfoGesamtpegel: 'PouchMetainfo',
+    id: String,
+
+    fremdpegelVorhanden: Boolean
+  })
+
+  PojosMetadataMap.create<PouchPegelreihe>('PouchPegelreihe', {
+    hz31_5: Number,
+    hz63: Number,
+    hz125: Number,
+    hz250: Number,
+    hz500: Number,
+    hz1000: Number,
+    hz2000: Number,
+    hz4000: Number,
+    hz8000: Number
+  });
+
+  PojosMetadataMap.create<PouchAuswertungspegelreihe & PouchPegelreihe>('PouchAuswertungspegelreihe', {
+    hz31_5: Number,
+    hz63: Number,
+    hz125: Number,
+    hz250: Number,
+    hz500: Number,
+    hz1000: Number,
+    hz2000: Number,
+    hz4000: Number,
+    hz8000: Number,
+    summiert: Number
+  })
+
+  PojosMetadataMap.create<PouchMetainfo>('PouchMetainfo', {
+    name_messfile: String,
+    messdatum: String,
+    overviewfile: String,
+    messgeraet: String,
+  })
+
+  PojosMetadataMap.create<Metainfo>('Metainfo', {
+    name_messfile: String,
+    messdatum: String,
+    overviewfile: String,
+    messgeraet: String,
+  })
+
 
 
 }
@@ -423,7 +587,7 @@ createMap<MetainfoApi, Metainfo>(mapper, 'MetainfoApi', 'Metainfo',
   forMember(src => src.name_messfile, mapFrom(dest => dest.file_no)),
   forMember(src => src.id, mapFrom(dest => `${dest.id}`)),
   forMember(src => src.messdatum, mapFrom(dest => dest.datum)),
-  forMember(src => src.name_overviewfile, mapFrom(dest => dest.overview_path)),
+  forMember(src => src.overviewfile, mapFrom(dest => dest.overview_path)),
   forMember(src => src.messgeraet, mapFrom(dest => dest.messgeraet))
 
 )
@@ -431,7 +595,7 @@ createMap<Metainfo, MetainfoApi>(mapper, 'Metainfo', 'MetainfoApi',
   forMember(src => src.id, mapFrom(dest => mapId4Backend(dest.id))),
   forMember(src => src.file_no, mapFrom(dest => dest.name_messfile)),
   forMember(src => src.datum, mapFrom(dest => '2022-09-12')),
-  forMember(src => src.overview_path, mapFrom(dest => dest.name_overviewfile)),
+  forMember(src => src.overview_path, mapFrom(dest => dest.overviewfile)),
   forMember(src => src.messgeraet, mapFrom(dest => dest.messgeraet)),
 )
 createMap<Roof, RoofApi>(mapper, 'Roof', 'RoofApi',
@@ -453,9 +617,11 @@ createMap<RoofApi, Roof>(mapper, 'RoofApi', 'Roof',
 
 createMap<Building, BuildingAPI>(mapper, 'Building', 'BuildingApi',
   forMember(dest => dest.id, mapFrom(src => src.idAtBackend)),
-  forMember(dest => dest.plant, mapFrom(src => {
+  /*
+  forMember(dest => dest.plant, mapFrom(src =>
     src.parent
-  })))
+  )
+  )*/)
 
 createMap<BuildingAPI, Building>(mapper, 'BuildingApi', 'Building',
   forMember(src => src.id, mapFrom(src => `${src.id}`)),
@@ -506,14 +672,14 @@ createMap<KoordinatenApi, Koordinaten>(mapper, 'KoordinatenApi', 'Koordinaten',
 )
 
 createMap<Koordinaten, KoordinatenHoehe>(mapper, 'Koordinaten', 'KoordinatenHoehe',
-  forMember(dest => dest.gk_hoch, mapFrom(src => src.gk_hoch)),
-  forMember(dest => dest.gk_rechts, mapFrom(src => src.gk_rechts)),
+  forMember(dest => dest.gkhoch, mapFrom(src => src.gk_hoch)),
+  forMember(dest => dest.gkrechts, mapFrom(src => src.gk_rechts)),
   forMember(dest => dest.hoehe, mapFrom(src => 0))
 )
 
 createMap<KoordinatenHoehe, Koordinaten>(mapper, 'KoordinatenHoehe', 'Koordinaten',
-  forMember(dest => dest.gk_hoch, mapFrom(src => src.gk_hoch)),
-  forMember(dest => dest.gk_rechts, mapFrom(src => src.gk_rechts))
+  forMember(dest => dest.gk_hoch, mapFrom(src => src.gkhoch)),
+  forMember(dest => dest.gk_rechts, mapFrom(src => src.gkrechts))
 )
 
 
@@ -585,7 +751,8 @@ export function getIdFromString(src: string | null | undefined) {
 createMap<Plant, Werk>(mapper, 'Plant', 'Werk',
 
   forMember(dest => dest.map, mapFrom(src => null)),
-  forMember(dest => dest.project, mapFrom(src => src.project_id)))
+  //forMember(dest => dest.project, mapFrom(src => src.project_id))
+)
 
 
 createMap<Werk, Plant>(mapper, 'Werk', 'Plant',
@@ -593,7 +760,7 @@ createMap<Werk, Plant>(mapper, 'Werk', 'Plant',
   forMember(dest => dest.map, mapFrom(src => null)),
   forMember(src => src.header, mapFrom(() => 'werk')),
   forMember(src => src.body, mapFrom(() => 'werk')),
-  forMember(dest => dest.project_id, mapFrom(src => src.project)),
+  // forMember(dest => dest.project_id, mapFrom(src => src.project)),
   forMember(src => src.children, mapFrom(() => []))
 )
 
@@ -630,8 +797,8 @@ createMap<MessgeraetApi, Messgeraet>(mapper, 'MessgeraetApi', 'Messgeraet',
 )
 
 createMap<EmittentDetails, KoordinatenHoehe>(mapper, 'EmittentDetails', 'KoordinatenHoeheAPI',
-  forMember(dest => dest.gk_rechts, mapFrom((src) => src.gkrechts)),
-  forMember(dest => dest.gk_hoch, mapFrom((src) => src.gkhoch)),
+  forMember(dest => dest.gkrechts, mapFrom((src) => src.gkrechts)),
+  forMember(dest => dest.gkhoch, mapFrom((src) => src.gkhoch)),
   forMember(dest => dest.hoehe, mapFrom((src) => src.hoehe)))
 
 
@@ -644,8 +811,8 @@ createMap<EmittentDetail, EmittentDetails>(mapper, 'EmittentDetailsAPI', 'Emitte
       .concat(src.vier_punkt_messungen.map(i => mapper.map<VierPunktMessung, Messung>(i, 'VierPunktMessungAPI', 'Messung')))
       .concat(src.fuenf_punkt_messungen.map(i => mapper.map<FuenfPunktMessung, Messung>(i, 'FuenfPunktMessungAPI', 'Messung')))
   )),
-  forMember(dest => dest.gkrechts, mapFrom(src => src.lage?.gk_rechts)),
-  forMember(dest => dest.gkhoch, mapFrom(src => src.lage?.gk_hoch)),
+  forMember(dest => dest.gkrechts, mapFrom(src => src.lage?.gkrechts)),
+  forMember(dest => dest.gkhoch, mapFrom(src => src.lage?.gkhoch)),
   forMember(dest => dest.hoehe, mapFrom(src => src.lage?.hoehe)),
   forMember(dest => dest.picture, mapFrom(src => src.image)),
   forMember(dest => dest.id, mapFrom(src => `${src.id}`)),
@@ -682,7 +849,7 @@ createMap<EinPunktMessung, Messung>(mapper, 'EinPunktMessungAPI', 'Messung',
   forMember(dest => dest.datum, mapFrom(src => '2023-01-09T15:00:00.601Z')),
   forMember(dest => dest.geometrie_messung, mapWith('GeometrieMessung', 'GeometrieMessungAPI', src => src.messung_geometrie)),
   forMember(dest => dest.geometrie_emittent, mapWith('GeometrieEmittent', 'GeometrieEmittentAPI', src => src.emittent_geometrie)),
-  forMember(dest => dest.auswertung, mapWith('Auswertung', 'EinPunktAuswertungAPI', src => src.auswertung)),
+  forMember(dest => dest.auswertung, mapWith('AuswertungDefault', 'EinPunktAuswertungAPI', src => src.auswertung)),
   forMember(dest => dest.messpositionen, mapFrom(
     (src) => {
       const r = mapper.map<MesspositionAPI, MesspositionEditViewModel>(src.messposition_1, 'MesspositionAPI', 'MesspoistionEditViewModel')
@@ -695,12 +862,12 @@ createMap<EinPunktMessung, Messung>(mapper, 'EinPunktMessungAPI', 'Messung',
 
 
 
-createMap<EinPunktAuswertung, AuswertungDefault>(mapper, 'EinPunktAuswertungAPI', 'Auswertung',
+createMap<EinPunktAuswertung, AuswertungDefault>(mapper, 'EinPunktAuswertungAPI', 'AuswertungDefault',
   forMember(dest => dest.anlagenpegel, mapFrom(src => [{ ...mapper.map<PegelreiheAPI, Pegelreihe>(src.anlagenpegel_1, 'PegelreiheAPI', 'Pegelreihe'), korrektur: src.korrekturwert_1 }])),
   forMember(dest => dest.id, mapFrom(src => `${src.id}`)),
 )
 
-createMap<AuswertungDefault, EinPunktAuswertung>(mapper, 'Auswertung', 'EinPunktAuswertungAPI',
+createMap<AuswertungDefault, EinPunktAuswertung>(mapper, 'AuswertungDefault', 'EinPunktAuswertungAPI',
   forMember(dest => dest.id, mapFrom(src => mapId4Backend(src.id))),
   forMember(dest => dest.korrekturwert_1, mapFrom(src => src.anlagenpegel[0].korrektur)),
   forMember(dest => dest.anlagenpegel_1, mapWith('PegelreiheAPI', 'Pegelreihe', src => src.anlagenpegel[0])))
@@ -740,7 +907,7 @@ createMap<Messung, EinPunktMessung>(mapper, 'Messung', 'EinPunktMessungAPI',
   forMember(dest => dest.emittent_geometrie, mapWith('GeometrieEmittentAPI', 'GeometrieEmittent', src => src.geometrie_emittent)),
   forMember(dest => dest.messung_geometrie, mapWith('GeometrieMessungAPI', 'GeometrieMessung', src => src.geometrie_messung)),
   forMember(dest => dest.typ, mapFrom(src => src.messverfahren)),
-  forMember(dest => dest.auswertung, mapWith('EinPunktAuswertungAPI', 'Auswertung', src => src.auswertung)),
+  forMember(dest => dest.auswertung, mapWith('EinPunktAuswertungAPI', 'AuswertungDefault', src => src.auswertung)),
 
 )
 
@@ -755,7 +922,7 @@ createMap<Messung, KaminMessung>(mapper, 'Messung', 'KaminMessungAPI',
   forMember(dest => dest.emittent_geometrie, mapWith('GeometrieEmittentAPI', 'GeometrieEmittent', src => src.geometrie_emittent)),
   forMember(dest => dest.messung_geometrie, mapWith('GeometrieMessungAPI', 'GeometrieMessung', src => src.geometrie_messung)),
   forMember(dest => dest.typ, mapFrom(src => src.messverfahren)),
-  forMember(dest => dest.auswertung, mapWith('EinPunktAuswertungAPI', 'Auswertung', src => src.auswertung)),)
+  forMember(dest => dest.auswertung, mapWith('EinPunktAuswertungAPI', 'AuswertungDefault', src => src.auswertung)),)
 
 createMap<KaminMessung, Messung>(mapper, 'KaminMessungAPI', 'Messung',
   forMember(dest => dest.type, mapFrom(() => 'Kamin')),
@@ -763,7 +930,7 @@ createMap<KaminMessung, Messung>(mapper, 'KaminMessungAPI', 'Messung',
   forMember(dest => dest.datum, mapFrom(src => '2023-01-09T15:00:00.601Z')),
   forMember(dest => dest.geometrie_messung, mapWith('GeometrieMessung', 'GeometrieMessungAPI', src => src.messung_geometrie)),
   forMember(dest => dest.geometrie_emittent, mapWith('GeometrieEmittent', 'GeometrieEmittentAPI', src => src.emittent_geometrie)),
-  forMember(dest => dest.auswertung, mapWith('Auswertung', 'EinPunktAuswertungAPI', src => src.auswertung)),
+  forMember(dest => dest.auswertung, mapWith('AuswertungDefault', 'EinPunktAuswertungAPI', src => src.auswertung)),
   forMember(dest => dest.messpositionen, mapFrom(
     (src) => {
       const a1 = mapper.map<MesspositionAPI, MesspositionEditViewModel>(src.messposition_a1, 'MesspositionAPI', 'MesspoistionEditViewModel')
@@ -787,7 +954,7 @@ createMap<Messung, VierPunktMessung>(mapper, 'Messung', 'VierPunktMessungAPI',
   forMember(dest => dest.emittent_geometrie, mapWith('GeometrieEmittentAPI', 'GeometrieEmittent', src => src.geometrie_emittent)),
   forMember(dest => dest.messung_geometrie, mapWith('GeometrieMessungAPI', 'GeometrieMessung', src => src.geometrie_messung)),
   forMember(dest => dest.typ, mapFrom(src => src.messverfahren)),
-  forMember(dest => dest.auswertung, mapWith('EinPunktAuswertungAPI', 'Auswertung', src => src.auswertung)),
+  forMember(dest => dest.auswertung, mapWith('EinPunktAuswertungAPI', 'AuswertungDefault', src => src.auswertung)),
 )
 createMap<VierPunktMessung, Messung>(mapper, 'VierPunktMessungAPI', 'Messung',
   forMember(dest => dest.type, mapFrom(() => '4P')),
@@ -795,7 +962,7 @@ createMap<VierPunktMessung, Messung>(mapper, 'VierPunktMessungAPI', 'Messung',
   forMember(dest => dest.datum, mapFrom(src => '2023-01-09T15:00:00.601Z')),
   forMember(dest => dest.geometrie_messung, mapWith('GeometrieMessung', 'GeometrieMessungAPI', src => src.messung_geometrie)),
   forMember(dest => dest.geometrie_emittent, mapWith('GeometrieEmittent', 'GeometrieEmittentAPI', src => src.emittent_geometrie)),
-  forMember(dest => dest.auswertung, mapWith('Auswertung', 'EinPunktAuswertungAPI', src => src.auswertung)),
+  forMember(dest => dest.auswertung, mapWith('AuswertungDefault', 'EinPunktAuswertungAPI', src => src.auswertung)),
   forMember(dest => dest.messpositionen, mapFrom(
     (src) => {
       const a1 = mapper.map<MesspositionAPI, MesspositionEditViewModel>(src.messposition_1, 'MesspositionAPI', 'MesspoistionEditViewModel')
@@ -818,7 +985,7 @@ createMap<FuenfPunktMessung, Messung>(mapper, 'FuenfPunktMessungAPI', 'Messung',
   forMember(dest => dest.datum, mapFrom(src => '2023-01-09T15:00:00.601Z')),
   forMember(dest => dest.geometrie_messung, mapWith('GeometrieMessung', 'GeometrieMessungAPI', src => src.messung_geometrie)),
   forMember(dest => dest.geometrie_emittent, mapWith('GeometrieEmittent', 'GeometrieEmittentAPI', src => src.emittent_geometrie)),
-  forMember(dest => dest.auswertung, mapWith('Auswertung', 'EinPunktAuswertungAPI', src => src.auswertung)),
+  forMember(dest => dest.auswertung, mapWith('AuswertungDefault', 'EinPunktAuswertungAPI', src => src.auswertung)),
   forMember(dest => dest.messpositionen, mapFrom(
     (src) => {
       const a1 = mapper.map<MesspositionAPI, MesspositionEditViewModel>(src.messposition_1, 'MesspositionAPI', 'MesspoistionEditViewModel')
@@ -860,18 +1027,6 @@ createMap<MesspunktAnAnlage, MesspositionPegelreiheSerializerV2>(mapper, 'Messpo
 createMap<Pegelreihe, PegelreiheAPI>(mapper, 'Pegelreihe', 'PegelreiheAPI')
 createMap<PegelreiheAPI, Pegelreihe>(mapper, 'PegelreiheAPI', 'Pegelreihe')
 
-
-createMap<Pegelreihe, MesswertereiheDTO>(
-  mapper,
-  'Messwertereihe',
-  'MesswertereiheDTO2',
-  forMember(
-    (destination) => destination.additional,
-    mapFrom(() => 'YYY')),
-  forMember(
-    (destination) => destination.hz63,
-    mapFrom((source) => source.hz63))
-)
 
 createMap<Pegelreihe, Pegelreihe>(
   mapper, 'Messwertereihe', 'Messwertereihe'
@@ -949,8 +1104,10 @@ createMap<PouchRoof, Roof>(mapper, 'PouchRoof', 'Roof',
 createMap<Emittent, PouchEmittent>(mapper, 'Emittent', 'PouchEmittent',
   forMember(src => src.name, mapFrom(dest => dest.name)),
   forMember(src => src.id, mapFrom(dest => dest.id)),
-  forMember(src => src.descriminator, mapFrom(() => 'emittent')),
-  forMember(src => src.lage, mapWith('PouchKoordinatenHoehe', 'KoordinatenHoehe', src => src.koordinaten))
+  forMember(src => src.discriminator, mapFrom(() => 'emittent')),
+  forMember(src => src.lage, mapWith('PouchKoordinatenHoehe', 'KoordinatenHoehe', src => src.koordinaten)),
+  forMember(src => src.messungen, mapFrom(() => [])),
+  forMember(src => src.luftschadstoffe, mapFrom(() => luftschadstoffeFactory.build()))
 )
 
 createMap<PouchEmittent, Emittent>(mapper, 'PouchEmittent', 'Emittent',
@@ -958,7 +1115,8 @@ createMap<PouchEmittent, Emittent>(mapper, 'PouchEmittent', 'Emittent',
   forMember(src => src.id, mapFrom(dest => dest.id)),
   forMember(src => src.header, mapFrom(() => 'emittent')),
   forMember(src => src.body, mapFrom(() => 'emittent')),
-  forMember(src => src.koordinaten, mapWith('KoordinatenHoehe', 'PouchKoordinatenHoehe', src => src.lage))
+  forMember(src => src.koordinaten, mapWith('KoordinatenHoehe', 'PouchKoordinatenHoehe', src => src.lage)),
+  forMember(src => src.messungen, mapFrom(() => [])),
 )
 
 createMap<KarteDetails, PouchMap>(mapper, 'KarteDetails', 'PouchMap',
@@ -980,63 +1138,101 @@ createMap<PouchKoordinaten, Koordinaten>(mapper, 'PouchKoordinaten', 'Koordinate
 )
 
 createMap<KoordinatenHoehe, PouchKoordinatenHoehe>(mapper, 'KoordinatenHoehe', 'PouchKoordinatenHoehe',
-  forMember(dest => dest.gkhoch, mapFrom(src => src.gk_hoch)),
-  forMember(dest => dest.gkrechts, mapFrom(src => src.gk_rechts)),
+  forMember(dest => dest.gkhoch, mapFrom(src => src.gkhoch)),
+  forMember(dest => dest.gkrechts, mapFrom(src => src.gkrechts)),
   forMember(dest => dest.hoehe, mapFrom(src => src.hoehe))
 
 )
 
 createMap<PouchKoordinatenHoehe, KoordinatenHoehe>(mapper, 'PouchKoordinatenHoehe', 'KoordinatenHoehe',
-  forMember(dest => dest.gk_hoch, mapFrom(src => src.gkhoch)),
-  forMember(dest => dest.gk_rechts, mapFrom(src => src.gkrechts)),
+  forMember(dest => dest.gkhoch, mapFrom(src => src.gkhoch)),
+  forMember(dest => dest.gkrechts, mapFrom(src => src.gkrechts)),
   forMember(dest => dest.hoehe, mapFrom(src => src.hoehe))
 )
 
+createMap<EmittentDetails, PouchKoordinatenHoehe>(mapper, 'EmittentDetails', 'PouchKoordinatenHoehe',
+  forMember(dest => dest.gkhoch, mapFrom(src => src.gkhoch)),
+  forMember(dest => dest.gkrechts, mapFrom(src => src.gkrechts)),
+  forMember(dest => dest.hoehe, mapFrom(src => src.hoehe))
+)
+
+createMap<PouchKoordinatenHoehe, EmittentDetails>(mapper, 'PouchKoordinatenHoehe', 'EmittentDetails',
+  forMember(dest => dest.gkhoch, mapFrom(src => src.gkhoch)),
+  forMember(dest => dest.gkrechts, mapFrom(src => src.gkrechts)),
+  forMember(dest => dest.hoehe, mapFrom(src => src.hoehe))
+)
+
+
 createMap<PouchEmittent, EmittentDetails>(mapper, 'PouchEmittent', 'EmittentDetails',
   forMember(dest => dest.name, mapFrom(src => src.name)),
+  forMember(dest => dest.gkhoch, mapFrom(src => src.lage.gkhoch)),
+  forMember(dest => dest.gkrechts, mapFrom(src => src.lage.gkrechts)),
+  forMember(dest => dest.hoehe, mapFrom(src => src.lage.hoehe)),
   forMember(dest => dest.id, mapFrom(src => src.id)),
   forMember(dest => dest.bearbeiter, mapFrom(src => src.bearbeiter)),
   forMember(dest => dest.liegt_an_fassade, mapFrom(src => src.liegtAnFassade)),
   forMember(dest => dest.fuer_messung_vormerken, mapFrom(src => src.fuerMessungVormerken)),
-  forMember(dest => dest.in_betrieb, mapFrom(src => src.inBetrieb))
+  forMember(dest => dest.in_betrieb, mapFrom(src => src.inBetrieb)),
+  forMember(dest => dest.messungen, mapFrom(src => src.messungen.map(i => mapper.map(i, 'PouchMessung', 'Messung'))))
 
 )
 
 createMap<EmittentDetails, PouchEmittent>(mapper, 'EmittentDetails', 'PouchEmittent',
-  forMember(dest => dest.lage, mapWith('PouchKoordinatenHoehe', 'KoordinatenHoehe', src => src)),
+  forMember(dest => dest.lage, mapWith('PouchKoordinatenHoehe', 'EmittentDetails', src => src)),
   forMember(dest => dest.name, mapFrom(src => src.name)),
   forMember(dest => dest.id, mapFrom(src => src.id)),
   forMember(dest => dest.bearbeiter, mapFrom(src => src.bearbeiter)),
   forMember(dest => dest.liegtAnFassade, mapFrom(src => src.liegt_an_fassade)),
   forMember(dest => dest.fuerMessungVormerken, mapFrom(src => src.fuer_messung_vormerken)),
-  forMember(dest => dest.inBetrieb, mapFrom(src => src.in_betrieb))
-)
-/*
-
-createMap<Messposition, MesspositionDTO>(
-  mapper,
-  'Messposition',
-  'MesspositionDTO'
+  forMember(dest => dest.inBetrieb, mapFrom(src => src.in_betrieb)),
+  forMember(dest => dest.messungen, mapFrom(src => src.messungen.map(i => mapper.map(i, 'Messung', 'PouchMessung')))),
+  forMember(dest => dest.discriminator, mapFrom(src => 'emittent')),
 )
 
-const srcMessposition = messpositionFactory.build()
+createMap<Messung, PouchMessung>(mapper, 'Messung', 'PouchMessung',
+  forMember(dest => dest.datum, mapFrom(src => new Date(src.datum).getTime()))
+)
+createMap<PouchMessung, Messung>(mapper, 'PouchMessung', 'Messung',
+  forMember(dest => dest.datum, mapFrom(src => new Date(src.datum).toISOString()))
+)
 
-console.log(srcMessposition)
-const srcMesswertereihe = messwertereiheFactory.build()
+createMap<Messgeraet, PouchMessgeraet>(mapper, 'Messgeraet', 'PouchMessgeraet')
+createMap<PouchMessgeraet, Messgeraet>(mapper, 'PouchMessgeraet', 'Messgeraet')
 
-const dto_messposition = mapper.map<Messposition, MesspositionDTO>(
-  srcMessposition,
-  'Messposition', // this needs to match what we passed in PojosMetadataMap.create()
-  'MesspositionDTO' // this needs to match what we passed in PojosMetadataMap.create()
-);
+createMap<Projekt, PouchProject>(mapper, 'Projekt', 'PouchProject',
+  forMember(dest => dest.name, mapFrom(src => src.name)),
+  forMember(dest => dest.id, mapFrom(src => src.id)),
+  forMember(dest => dest.dbName, mapFrom(src => src.dbName))
+)
+
+createMap<PouchProject, Projekt>(mapper, 'PouchProject', 'Projekt',
+  forMember(dest => dest.name, mapFrom(src => src.name))
+  , forMember(dest => dest.id, mapFrom(src => src.id)),
+  forMember(dest => dest.dbName, mapFrom(src => src.dbName))
+)
+
+createMap<MesspositionEditViewModel, PouchMessposition>(mapper, 'MesspositionEditViewModel', 'PouchMessposition')
+createMap<PouchMessposition, MesspositionEditViewModel>(mapper, 'PouchMessposition', 'MesspositionEditViewModel')
+
+createMap<PouchGeometrieEmittent, GeometrieEmittent>(mapper, 'PouchGeometrieEmittent', 'GeometrieEmittent')
+createMap<GeometrieEmittent, PouchGeometrieEmittent>(mapper, 'GeometrieEmittent', 'PouchGeometrieEmittent')
+
+createMap<PouchGeometrieMessung, GeometrieMessung>(mapper, 'PouchGeometrieMessung', 'GeometrieMessung')
+createMap<GeometrieMessung, PouchGeometrieMessung>(mapper, 'GeometrieMessung', 'PouchGeometrieMessung')
+
+createMap<PouchMesspunktAnAnlage, MesspunktAnAnlage>(mapper, 'PouchMesspunktAnAnlage', 'MesspunktAnAnlage')
+createMap<MesspunktAnAnlage, PouchMesspunktAnAnlage>(mapper, 'MesspunktAnAnlage', 'PouchMesspunktAnAnlage')
+
+createMap<PouchPegelreihe, Pegelreihe>(mapper, 'PouchPegelreihe', 'Pegelreihe')
+createMap<Pegelreihe, PouchPegelreihe>(mapper, 'Pegelreihe', 'PouchPegelreihe')
+
+createMap<Metainfo, PouchMetainfo>(mapper, 'Metainfo', 'PouchMetainfo',)
+createMap<PouchMetainfo, Metainfo>(mapper, 'PouchMetainfo', 'Metainfo')
+
+createMap<AuswertungDefault, PouchAuswertung>(mapper, 'AuswertungDefault', 'PouchAuswertung',)
+createMap<PouchAuswertung, AuswertungDefault>(mapper, 'PouchAuswertung', 'AuswertungDefault')
+
+createMap<PouchAuswertungspegelreihe, Auswertungspegelreihe>(mapper, 'PouchAuswertungspegelreihe', 'Auswertungspegelreihe')
+createMap<Auswertungspegelreihe, PouchAuswertungspegelreihe>(mapper, 'Auswertungspegelreihe', 'PouchAuswertungspegelreihe')
 
 
-
-console.log(srcMessposition, dto_messposition)
-const dto_messwertereiheDTO = mapper.map<Pegelreihe, MesswertereiheDTO>(
-  srcMesswertereihe,
-  'Messwertereihe', // this needs to match what we passed in PojosMetadataMap.create()
-  'MesswertereiheDTO2' // this needs to match what we passed in PojosMetadataMap.create()
-);
-console.log(srcMesswertereihe, dto_messwertereiheDTO)
-*/

@@ -1,8 +1,7 @@
 <template>
   <div>Karte {{ karte?.id }} von {{ mapOwner }}</div>
 
-  <div><q-btn label="Refresh" @click="refresh" /><q-btn label="Zoom zurücksetzen" @click="resetZoom" /><q-btn
-      label="Disable" @click="disablePanZoom" /></div>
+  <div><q-btn label="Zoom zurücksetzen" @click="resetZoom" /><q-btn label="Disable" @click="disablePanZoom" /></div>
   <div class="row">
     Markergröße:
     <q-slider v-model="pointSize" :min="0" :max="50" class="col-3" />
@@ -48,6 +47,10 @@
   <div v-if="false">
 
     {{ pointsOnMap }}
+  </div>
+  <div v-if="true">
+
+    {{ rectsOnMap }}
   </div>
 </template>
 
@@ -149,7 +152,7 @@ export default defineComponent({
     function handleContextMenuAdd() {
       console.log(store.karteMainPageZuordnung)
       if (store.karteMainPageZuordnung?.body == 'dach') {
-        emit('add-emittent', { koordinaten: { gk_rechts: lastClickedPosition.value.gk_rechts, gk_hoch: lastClickedPosition.value.gk_hoch } })
+        emit('add-emittent', { koordinaten: { gkrechts: lastClickedPosition.value.gk_rechts, gkhoch: lastClickedPosition.value.gk_hoch } })
 
       } else {
 

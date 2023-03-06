@@ -1,12 +1,14 @@
 <template>
   <!--
-  <q-select v-model="messung" :options="messungen" option-label="type" />
+<q-select v-model="messung" :options="messungen" option-label="type" />
   -->
   <q-btn label="Messwerte auswerten" @click="evaluateMesswerte" />
   <q-btn label="Bericht erstellen" @click="createExcelReport" />
   <div>Bezeichnung Messverfahren {{ messung?.messverfahren }}</div>
   <div v-if="store.developmentMode">{{ store.messung2edit }}</div>
-
+  <div v-if="messung">
+    <q-input type="date" v-model="messung.datum" label="Messdatum" />
+  </div>
   <q-tabs v-model="tab">
     <q-tab name="messwerte" label="Messwerte" />
     <q-tab name="auswertung" label="Auswertung" :disable="messung?.auswertung == null" />
@@ -22,8 +24,9 @@
         <q-btn label="Übertragen" @click="uebetrageMessgeraet" dense class="col-1" />
         <q-input type="date" label="Messdatum" v-model="defaultMessdatum" class="col-2" />
         <q-btn label="Übertragen" @click="uebetrageMessdatum" dense class="col-1" />
-        <q-input label="Overview-File" v-model="defaultOverviewfile" class="col-2" />
-        <q-btn label="Übertragen" @click="uebetrageMessdatum" dense class="col-1" />
+        <q-select label="Overview-File" v-model="defaultOverviewfile" :options="overviews" option-label="filename"
+          class="col-2" />
+        <q-btn label="Übertragen" @click="uebetrageOverview" dense class="col-1" />
         <q-btn label="Messwerte auslesen" @click="uebetrageMesswerte" />
       </div>
 
@@ -57,8 +60,6 @@
       <document-overview />
     </q-tab-panel>
   </q-tab-panels>
-
-
 </template>
 
 <script lang="ts">
@@ -78,6 +79,7 @@ export default defineComponent({
     const store = useKatasterStore()
     const tab = ref('messwerte')
     const messgeraete = computed(() => store.messgeraete)
+    const overviews = computed(() => store.overviews)
     const defaultMessgeraet = ref(store.messgeraete.length > 0 ? store.messgeraete[0] : null)
     const defaultMessdatum = ref('2023-01-02')
     const defaultOverviewfile = ref('Overview117')
@@ -130,6 +132,25 @@ export default defineComponent({
 
 
     }
+
+    function uebetrageOverview() {
+      if (messung.value != null) {
+        for (const k of messung.value.messpositionen.keys()) {
+          const val = messung.value.messpositionen[k]
+          if (val != null) {
+
+            for (const mp of val.messwertereihen) {
+              mp.metainfoFremdpegel.overviewfile = defaultOverviewfile.value
+              mp.metainfoGesamtpegel.overviewfile = defaultOverviewfile.value
+            }
+          }
+
+        }
+      }
+
+
+    }
+
 
     function uebetrageMessdatum() {
       if (messung.value != null) {
@@ -266,11 +287,13 @@ export default defineComponent({
       console.log('createExcelReport')
     }
     return {
+      uebetrageOverview,
       uebetrageMesswerte,
       uebetrageMessdatum, uebetrageMessgeraet, messgeraete, orderedMesspositionenKvps, onAddMesswertereiheRequest,
       onRemoveMesswertereiheRequest, tab, messung, evaluateMesswerte, createExcelReport,
       messungen, defaultMessgeraet, defaultMessdatum, store, defaultOverviewfile,
-      handlePasteRequest
+      handlePasteRequest,
+      overviews,
     }
 
   }

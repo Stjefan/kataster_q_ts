@@ -1,33 +1,45 @@
 <template>
   <q-page padding>
     <!-- content -->
+    <FormKit type="form" @submit="anotherShow" v-if="false">
+      <FormKit type="file" label="Bilddatei" accept=".bmp,.png" name="image" />
+    </FormKit>
     <div>
       {{ karteOwner }}
     </div>
+    <q-btn label="Speichern" @click="transfer2store" />
     <div class="row">
       <q-input type="file" v-model="imgFile" class="col-2" />
       <q-btn label="Karte anzeigen" @click="showImage" />
     </div>
-    <q-btn label="Undo" @click="undo" />
-    <q-btn label="Redo" @click="redo" />
-    <q-btn label="Speichern" @click="transfer2store" />
-    <q-btn label="Refresh" @click="refresh" />
+
+    <div class="row">
+      <q-btn label="Undo" @click="undo" />
+      <q-btn label="Redo" @click="redo" />
+    </div>
+
     <q-btn label="Georeferenzieren" @click="georeferenzieren" />
     <div class="row">
 
       <div style="background-color: lightgray; height: 50vh; overflow: hidden" class="col-5">
-        <div id="zoomPan" style="
-            height: 2000px;
-            min-width: 2000px;
-            background-color: darkgray;">
+        <div id="zoomPan"
+          style="
+                                                                                                          height: 2000px;
+                                                                                                          min-width: 2000px;
+                                                                                                          background-color: darkgray;">
           <img :src="url" style="position: absolute" fit="none" position="0 0" id="myimage" />
-          <svg style="
-              height: 200%;
-              width: 200%;
-              pointer-events: all;
-              position: absolute;" fit="none" position="0 0" @mousedown="showClickPosition">
-            <circle :cx="b.pixel_x" :cy="b.pixel_y" r="5" v-for="b in pointsOnMap" :key="b.id"
-              :style="{ fill: 'red' }" />
+          <svg
+            style="
+                                                                                                            height: 200%;
+                                                                                                            width: 200%;
+                                                                                                            pointer-events: all;
+                                                                                                            position: absolute;"
+            fit="none" position="0 0" @mousedown="showClickPosition">
+            <circle :cx="b.pixel_x" :cy="b.pixel_y" r="5" v-for="b in pointsOnMap" :key="b.id" :style="{ fill: 'red' }" />
+            <line x1="10" y1="10" x2="10" y2="110" stroke="blue" />
+            <line x1="10" y1="10" x2="110" y2="10" stroke="black" />
+            <line x1="10" y1="10" :x2="vector1[0]" :y2="vector1[1]" stroke="yellow" />
+            <line x1="10" y1="10" :x2="vector2[0]" :y2="vector2[1]" stroke="green" />
           </svg>
 
 
@@ -155,6 +167,21 @@ export default defineComponent({
           Object.assign(karte.georeferenzierung!, createGeoreferenzierung(pointsOnMap.value, img))
 
         }
+
+        const r1 = px_2_gk({ px_x: 110, px_y: 10 }, karte!.georeferenzierung!)
+        const r2 = px_2_gk({ px_x: 10, px_y: 110 }, karte!.georeferenzierung!)
+        const r3 = px_2_gk({ px_x: 10, px_y: 10 }, karte!.georeferenzierung!)
+
+        const m = get_gk_2_px_matrix(karte!.georeferenzierung!)
+        const pk1 = gk_2_px(r1, m)
+        const pk2 = gk_2_px(r2, m)
+        const pk3 = gk_2_px(r3, m)
+        console.log('Berechnet PX r1', r1, pk1)
+        console.log('Berechnet PX r2', r2, pk2)
+        console.log('Berechnet PX r3', r3, pk3)
+        vector1.value = [r1.gk_rechts - r3.gk_rechts + 10, r1.gk_rechts - r3.gk_hoch + 10]
+        vector2.value = [r2.gk_rechts - r3.gk_rechts + 10, r2.gk_hoch - r3.gk_hoch + 10]
+        console.log(vector1.value, vector2.value)
       }
 
 
@@ -239,10 +266,22 @@ export default defineComponent({
       deep: true,
     })
 
+    const vector1 = ref([100, 0])
+    const vector2 = ref([0, 100])
+
 
 
     const imgFile = ref([] as (Blob | null)[])
+    function anotherShow(event: any) {
+      console.log(event)
+      url.value = URL.createObjectURL(event!.image[0]!.file!);
+      imgFile.value = event!.image[0]!.file!
+
+    }
     return {
+      vector1,
+      vector2,
+      anotherShow,
       transfer2store,
 
       showImage,

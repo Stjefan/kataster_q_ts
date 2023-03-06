@@ -1,5 +1,6 @@
 <template>
   <div>Korrekturen</div>
+  {{ auswertung?.korrekturwerte }}
   <div>Winkelfehler</div>
   <div>Mittelungspegel</div>
   <q-table :rows="mittelungspegel" :hide-bottom="true" :columns="colsShared" />

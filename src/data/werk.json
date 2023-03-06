@@ -1,0 +1,51 @@
+[
+  {
+    "id": "566faf38-dbd8-4892-9ad7-374a137140d9",
+    "name": "FA Rems",
+    "map": {
+      "pfad": "\u00dcbersicht.JPG",
+      "e_ol_hoch": 4508164.66,
+      "e_ol_rechts": 522222.91,
+      "e_or_hoch": 4508166.92,
+      "e_or_rechts": 522855.77,
+      "e_ur_hoch": 4507845.57,
+      "e_ur_rechts": 522856.92,
+      "e_ul_hoch": 4507843.3,
+      "e_ul_rechts": 522224.06,
+      "px_a": 53.0,
+      "py_a": 105.0,
+      "px_b": 1048.0,
+      "py_b": 420.0,
+      "gk_r_a": 522249.2,
+      "gk_h_a": 4508113.0,
+      "gk_r_b": 522740.2,
+      "gk_h_b": 4507960.0,
+      "IM_X_orig": 1284.0,
+      "IM_Y_orig": 652.0,
+      "georeferenzierung": {
+        "referenzierungspunkt_set": [
+          {
+            "pixel_x": 53.0,
+            "pixel_y": 105.0,
+            "koordinaten": { "gk_rechts": 522249.2, "gk_hoch": 4508113.0 }
+          },
+          {
+            "pixel_x": 1048.0,
+            "pixel_y": 420.0,
+            "koordinaten": { "gk_rechts": 522740.2, "gk_hoch": 4507960.0 }
+          }
+        ],
+        "x00": 522198.1896258894,
+        "x01": 0.40426899242598113,
+        "x02": 0.28175350011475786,
+        "x10": 4508085.484691301,
+        "x11": -0.28175350011475786,
+        "x12": 0.40426899242598113,
+        "upper_left": { "gk_rechts": 522222.91, "gk_hoch": 4508164.66 },
+        "upper_right": { "gk_rechts": 522855.77, "gk_hoch": 4508166.92 },
+        "lower_right": { "gk_rechts": 522856.92, "gk_hoch": 4507845.57 },
+        "lower_left": { "gk_rechts": 522224.06, "gk_hoch": 4507843.3 }
+      }
+    }
+  }
+]

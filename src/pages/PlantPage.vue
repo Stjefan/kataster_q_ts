@@ -6,6 +6,9 @@
         <q-btn label="Neues Werk  " @click="init" />
         <q-btn icon="autorenew" @click="refresh" />
         <q-btn label="Emittenten download" @click="longLastingTask" />
+        <q-btn label="Import" @click="store.loadJson" />
+        <q-btn label="Replicate" @click="store.replicateDatabase" />
+        <!--
         <q-btn label="Pouch-Fun" @click="store.funWithPouch" />
         <q-btn label="Filter" @click="store.filterWithPouch" />
         <q-btn label="Baumstruktur" @click="store.funWithBaumstruktur" />
@@ -14,13 +17,14 @@
         <q-btn label="Backup" @click="store.funWithBackup" />
         <q-btn label="funWithAttachment" @click="store.funWithAttachment" />
         <q-btn label="loadMap" @click="store.loadMapFromPouch" />
+        -->
         <plant-overview :uebersichtTreeNodes="treeNodes" @createChildDialog="createEntityDialog" @removeNode="remove"
           v-model:expanded="treeNodesExpanded" />
       </q-scroll-area>
       <div class="col-8">
 
-        <map-view @addEmittent="handleAddEmittent" @selectNodeRequest="handleSelectNodeRequest"
-          v-if="store.karteMainPage" style="height: 70vh" />
+        <map-view @addEmittent="handleAddEmittent" @selectNodeRequest="handleSelectNodeRequest" v-if="store.karteMainPage"
+          style="height: 70vh" />
       </div>
     </div>
 
@@ -52,8 +56,11 @@ export default defineComponent({
     })
 
     async function refresh() {
-      await store.init()
-      treeNodesExpanded.value = []
+      if (store.project != null) {
+        await store.changeProject(store.project)
+        treeNodesExpanded.value = []
+      }
+
     }
     function init() {
       /*
@@ -75,7 +82,7 @@ export default defineComponent({
       }).onOk((data: string) => {
         // console.log('>>>> OK, received', data)
         console.log(data)
-        store.createPlantBackend(plantFactory.build({ name: data, project_id: getIdFromString(store.project?.id) }))
+        store.createPlantBackend(plantFactory.build({ name: data }))
       }).onCancel(() => {
         // console.log('>>>> Cancel')
       }).onDismiss(() => {
@@ -84,7 +91,7 @@ export default defineComponent({
     }
     function create(_args: any) {
 
-      console.log(_args)
+      console.log(_args, _args.data.koordinaten)
 
       switch (_args.target.body) {
         case 'werk':

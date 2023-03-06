@@ -1,6 +1,7 @@
 
 import * as Factory from 'factory.ts';
 import { random } from 'lodash';
+import { v4 as uuidv4 } from 'uuid'
 export interface Pegelreihe {
   [state: string]: unknown
 
@@ -21,8 +22,40 @@ export interface Pegelreihe {
 const USE_DEVELOPMENT_DATA = false
 
 export interface OverviewFile {
-  id: number
+  id: string
   upload: string
+}
+
+export interface LuftschadstoffGenehmigung {
+  id: string
+  name: string
+  gueltig_ab: string | null
+  gueltig_bis: string | null
+  file: Blob | null,
+  genehmigungsdatum: string | null
+  aktenzeichen: string | null
+}
+
+export interface LuftschadstoffMessung {
+  id: string,
+  bemerkung: string
+  datum: string | null
+  abluftkonzentration: number | null,
+  grenzwert: number | null,
+  massenstrom: number | null,
+  file: Blob | null,
+  geruchsrelevanz: boolean | null
+  gemessenerAbluftvolumenstrom: number | null  //"m³"),
+  genehmigterAbluftvolumenstrom: number | null // "m³"),
+  austrittsgeschwindigkeitAbluft: number | null// "m/s"),
+  ableitbedingungenErfüllt: boolean | null//true),
+  abgastemperatur: number | null// "°C"),
+  austrittsfläche: number | null//  "m²"),
+}
+
+export interface Luftschadstoffe {
+  genehmigungen: LuftschadstoffGenehmigung[]
+  messungen: LuftschadstoffMessung[]
 }
 
 export interface Korrekturwert {
@@ -123,7 +156,8 @@ export interface Koordinaten {
 
 export interface Projekt {
   name: string,
-  id: string
+  id: string,
+  dbName: string
 }
 
 export interface Vorlage {
@@ -162,6 +196,8 @@ export interface AuswertungDefault {
   mittelungspegel_gesamt: Pegelreihe[]
   mittelungspegel_fremd: Pegelreihe[]
   anlagenpegel: (Pegelreihe & Anlagenpegelreihe)[]
+
+  korrekturwerte: number[]
 
   lwlin: Pegelreihe & Auswertungspegelreihe
   lwa: Pegelreihe & Auswertungspegelreihe,
@@ -222,7 +258,7 @@ export interface Georeferenzierungspunkt {
 export interface Metainfo {
   name_messfile: string
   messdatum: string
-  name_overviewfile: string
+  overviewfile: string
   messgeraet: string | null | undefined
   id: string
 }
@@ -317,7 +353,7 @@ export interface Plant {
   header: string
   body: string
   map: KarteDetails
-  project_id: number,
+  // project_id: number,
   idAtBackend: number | null,
 }
 
@@ -348,13 +384,16 @@ export interface Emittent {
   header: string
   body: string
   koordinaten: Koordinaten
-  parent: string
+  parent: string,
+  messungen: Messung[],
 }
 
 export interface EmittentFilterresult {
   id: string,
   name: string
   koordinaten: Koordinaten
+  gkrechts: number | null,
+  gkhoch: number | null,
   parent: string
   idAtBackend: number | null,
   checked: boolean
@@ -381,7 +420,8 @@ export interface EmittentDetails {
   fuer_messung_vormerken: boolean,
   liegt_an_fassade: boolean,
 
-  idAtBackend: number | null
+  idAtBackend: number | null,
+  luftschadstoffe: Luftschadstoffe
 
 }
 
@@ -406,7 +446,7 @@ export interface PointOnMap {
   pixel_x: number
   pixel_y: number
   id: string,
-  idCorrespondingEmittent: number | null
+  idCorrespondingEmittent: string | null
 }
 
 export interface RectOnMap {
@@ -467,7 +507,7 @@ const messpositionFactory = Factory.Sync.makeFactory<Messposition>({
 });
 */
 const _messungFactory = Factory.Async.makeFactoryWithRequired<Messung, 'type'>({
-  id: Factory.Async.each((i) => `${i}`),
+  id: Factory.Async.each((i) => uuidv4()),
   datum: Factory.Async.each(() => new Date().toISOString()),
   messpositionen: Factory.Async.each(() => []),
   geometrie_messung: Factory.Async.each(() => geometrieMessungFactory.build()),
@@ -484,7 +524,7 @@ const messungFactory = _messungFactory.transform(obj => {
 
     case '1P':
       obj.messpositionen.push(messpositionEditViewModelFactory.build())
-      obj.messverfahren = ein_punkt_messverfahren[random(0, ein_punkt_messverfahren.length - 1)]
+      //obj.messverfahren = obj.messverfahren
       return obj
     /*
     case '2P':
@@ -497,7 +537,7 @@ const messungFactory = _messungFactory.transform(obj => {
       obj.messpositionen.push(messpositionEditViewModelFactory.build())
       obj.messpositionen.push(messpositionEditViewModelFactory.build())
       obj.messpositionen.push(messpositionEditViewModelFactory.build())
-      obj.messverfahren = drei_punkt_messverfahren[random(0, drei_punkt_messverfahren.length - 1)]
+      //obj.messverfahren = drei_punkt_messverfahren[random(0, drei_punkt_messverfahren.length - 1)]
       return obj
 
     case '4P':
@@ -505,7 +545,7 @@ const messungFactory = _messungFactory.transform(obj => {
       obj.messpositionen.push(messpositionEditViewModelFactory.build())
       obj.messpositionen.push(messpositionEditViewModelFactory.build())
       obj.messpositionen.push(messpositionEditViewModelFactory.build())
-      obj.messverfahren = vier_punkt_messverfahren[random(0, vier_punkt_messverfahren.length - 1)]
+      //obj.messverfahren = vier_punkt_messverfahren[random(0, vier_punkt_messverfahren.length - 1)]
       return obj
     case '5P':
       obj.messpositionen.push(messpositionEditViewModelFactory.build())
@@ -513,7 +553,7 @@ const messungFactory = _messungFactory.transform(obj => {
       obj.messpositionen.push(messpositionEditViewModelFactory.build())
       obj.messpositionen.push(messpositionEditViewModelFactory.build())
       obj.messpositionen.push(messpositionEditViewModelFactory.build())
-      obj.messverfahren = fuenf_punkt_messverfahren[random(0, fuenf_punkt_messverfahren.length - 1)]
+      //obj.messverfahren = fuenf_punkt_messverfahren[random(0, fuenf_punkt_messverfahren.length - 1)]
       return obj
   }
 })
@@ -560,7 +600,7 @@ const koordinatenFactory = Factory.Sync.makeFactory<Koordinaten>({
   idAtBackend: null
 })
 
-const plantFactory = Factory.Sync.makeFactoryWithRequired<Plant, 'project_id'>({
+const plantFactory = Factory.Sync.makeFactory<Plant>({
   id: Factory.each((i) => `P${i}`),
   name: Factory.each((i) => `${i}`),
   children: Factory.each(() => buildingFactory.buildList(Math.max(1, Math.floor(Math.random() * 4)), { parent: 'P4' })),
@@ -595,7 +635,8 @@ const emittentFactory = Factory.Sync.makeFactoryWithRequired<Emittent, 'parent'>
   name: Factory.each((i) => `${i}`),
   header: 'emittent',
   body: 'emittent',
-  koordinaten: Factory.each(() => koordinatenFactory.build())
+  koordinaten: Factory.each(() => koordinatenFactory.build()),
+  messungen: Factory.each(() => [])
 })
 
 
@@ -604,7 +645,7 @@ const metainfoFactory = Factory.Sync.makeFactory<Metainfo>({
   messgeraet: Factory.each((i) => null),
   messdatum: '2022-01-01',
   id: Factory.each((i) => `E${i}`),
-  name_overviewfile: 'xyz'
+  overviewfile: 'xyz'
 
 })
 
@@ -678,13 +719,15 @@ export const emittentDetailsFactory = Factory.Sync.makeFactory<EmittentDetails>(
   hoehe: 3,
   bemerkung: '',
   messungen: Factory.Sync.each(() => []),
-  idAtBackend: null
+  idAtBackend: null,
+  luftschadstoffe: Factory.Sync.each(() => luftschadstoffeFactory.build())
 })
 
 export const filterResultFactory = Factory.Sync.makeFactory<EmittentFilterresult>({
   id: Factory.each((i) => `E${i}`),
   name: Factory.each((i) => `${i}`),
-
+  gkhoch: null,
+  gkrechts: null,
   koordinaten: Factory.each(() => koordinatenFactory.build()),
   idAtBackend: null,
   parent: 'X10',
@@ -707,17 +750,19 @@ const auswertungFactory = Factory.Sync.makeFactory<AuswertungDefault>({
   anlagenpegel: Factory.each(() => anlagenpegelFactory.buildList(2)),
   mittelungspegel_gesamt: Factory.each(() => messwertereiheFactory.buildList(2)),
   mittelungspegel_fremd: Factory.each(() => messwertereiheFactory.buildList(2)),
-  id: Factory.each((i) => `A${i}`)
+  id: Factory.each((i) => `A${i}`),
+  korrekturwerte: Factory.each(() => [])
 })
 
 const projectFactory = Factory.Sync.makeFactory<Projekt>({
   name: Factory.each((i) => `Projekt ${i}`),
-  id: Factory.each((i) => `M${i}`)
+  id: Factory.each((i) => uuidv4()),
+  dbName: Factory.each((i) => `P${i}`)
 })
 
 const messgeraetFactory = Factory.Sync.makeFactory<Messgeraet>({
   name: Factory.each((i) => `Messgerät ${i}`),
-  id: Factory.each((i) => `M${i}`),
+  id: Factory.each((i) => uuidv4()),
   offsetLines: 3,
   seriennummer: 'NOR118_5989863',
   idAtBackend: null,
@@ -745,9 +790,42 @@ const korrekturwertFactory = Factory.Sync.makeFactory<Korrekturwert>({
   bemerkungen: []
 })
 
+const genehmigungFactory = Factory.Sync.makeFactory<LuftschadstoffGenehmigung>({
+  id: Factory.each((i) => uuidv4()),
+  name: 'X',
+  genehmigungsdatum: Factory.each((i) => new Date().toISOString()),
+  aktenzeichen: 'XY',
+  gueltig_ab: Factory.each((i) => new Date().toISOString()),
+  gueltig_bis: Factory.each((i) => new Date().toISOString()),
+  file: null
+})
 
+const luftschaffMessungFactory = Factory.Sync.makeFactory<LuftschadstoffMessung>({
+  id: Factory.each((i) => uuidv4()),
+  bemerkung: 'Y',
+  datum: Factory.each((i) => new Date().toISOString()),
+  abluftkonzentration: null,
+  grenzwert: null,
+  massenstrom: null,
+  geruchsrelevanz: null,
+  gemessenerAbluftvolumenstrom: null,  //"m³"),
+  genehmigterAbluftvolumenstrom: null, // "m³"),
+  austrittsgeschwindigkeitAbluft: null,// "m/s"),
+  ableitbedingungenErfüllt: null,//true),
+  abgastemperatur: null,// "°C"),
+  austrittsfläche: null,//  "m²"),
+  file: null
+})
+const luftschadstoffeFactory = Factory.Sync.makeFactory<Luftschadstoffe>({
+  genehmigungen: Factory.each((i) => []),
+  messungen: Factory.each((i) => []),
+})
 
 export {
+  uuidv4,
+  luftschaffMessungFactory,
+  genehmigungFactory,
+  luftschadstoffeFactory,
   korrekturwertFactory,
   projectFactory,
   vorlageFactory,

@@ -1,4 +1,4 @@
-
+import { Luftschadstoffe } from 'src/models/v1'
 export interface PouchPlant {
   id: string,
   name: string,
@@ -26,9 +26,9 @@ export interface PouchRoof {
 export interface PouchEmittent {
   id: string,
   name: string,
-  descriminator: string
+  discriminator: string
   roof: string
-  lage: PouchKoordinaten,
+  lage: PouchKoordinatenHoehe,
 
   bemerkung: string
   messungen: PouchMessung[]
@@ -44,16 +44,17 @@ export interface PouchEmittent {
   inBetrieb: boolean,
   fuerMessungVormerken: boolean,
   liegtAnFassade: boolean,
+  luftschadstoffe: Luftschadstoffe
 }
 
 export interface PouchMessung {
   id: string,
-  datum: string,
+  datum: number,
 
   geometrie_emittent: PouchGeometrieEmittent,
   geometrie_messung: PouchGeometrieMessung
 
-  messpositionen: Messposition[]
+  messpositionen: PouchMessposition[]
 
   auswertung: PouchAuswertung | null
 
@@ -72,6 +73,9 @@ export interface PouchAnlagenpegelreihe {
 }
 
 export interface PouchAuswertung {
+  korrekturwerte: number[]
+  winkelfehler: number
+
   mittelungspegel_gesamt: PouchPegelreihe[]
   mittelungspegel_fremd: PouchPegelreihe[]
   anlagenpegel: (PouchPegelreihe & PouchAnlagenpegelreihe)[]
@@ -96,12 +100,12 @@ export interface PouchPegelreihe {
 
 }
 
-export interface MesspunktAnAnlage {
+export interface PouchMesspunktAnAnlage {
   fremdpegel: PouchPegelreihe
   gesamtpegel: PouchPegelreihe
 
-  metainfoFremdpegel: Metainfo
-  metainfoGesamtpegel: Metainfo
+  metainfoFremdpegel: PouchMetainfo
+  metainfoGesamtpegel: PouchMetainfo
   id: string
 
   fremdpegelVorhanden: boolean
@@ -109,8 +113,8 @@ export interface MesspunktAnAnlage {
 }
 
 
-export interface Messposition {
-  messwertereihen: (MesspunktAnAnlage)[]
+export interface PouchMessposition {
+  messwertereihen: (PouchMesspunktAnAnlage)[]
   id: string
   // geometrie_emittent: GeometrieEmittent,
   // geometrie_messung: GeometrieMessung
@@ -141,10 +145,10 @@ export interface Georeferenzierungspunkt {
   id: string
 }
 
-export interface Metainfo {
+export interface PouchMetainfo {
   name_messfile: string
   messdatum: string
-  name_overviewfile: string
+  overviewfile: string
   messgeraet: string | null | undefined
   id: string
 }
@@ -176,8 +180,8 @@ export interface PouchMap {
   georeferenzierung?: Georeferenzierung
   id: string
 
-  zuordnung: string | null,
-  discriminator: string | null,
+  roof: string | null,
+  plant: string | null,
   image: Blob | null
 
 }
@@ -194,5 +198,24 @@ export interface PouchKoordinatenHoehe {
 }
 
 export interface PouchMessgeraet {
-  name: string
+  name: string,
+  id: string
+  offsetLines: number
+  seriennummer: string
+  idAtBackend: number | null
+  hz31_5: number | null;
+  hz63: number | null
+  hz125: number | null
+  hz250: number | null
+  hz500: number | null
+  hz1000: number | null
+  hz2000: number | null
+  hz4000: number | null
+  hz8000: number | null
+}
+
+export interface PouchProject {
+  id: string,
+  name: string,
+  dbName: string
 }
