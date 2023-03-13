@@ -26,7 +26,7 @@
   <q-btn label="Änderungen speichern" @click="$emit('save')" />
 
   <div class="row">
-    <q-select label="Messfile" v-model="file2find" :options="store.overviews" option-label="upload" class="col-5" />
+    <q-select label="Messfile" v-model="file2find" :options="store.overviews" option-label="filename" class="col-5" />
     <q-input label="Messfile" v-model="nameTestmessfile" class="col-2" />
     <q-btn label="test" @click="test" class="col-2" />
   </div>
@@ -62,7 +62,7 @@ export default defineComponent({
     async function test() {
       if (file2find.value) {
         console.log(file2find.value)
-        const myBlob = await store.getOverviewfile()
+        const myBlob = await store.getOverviewfile(file2find.value.id)
         const result = await readMessfileInOverview(myBlob, nameTestmessfile.value, fieldsInMessfile.value, props.offsetLines)
         // const workbook = new ExcelJS.Workbook();
         // await workbook.xlsx.load(myBlob);

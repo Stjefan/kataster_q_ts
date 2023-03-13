@@ -44,7 +44,7 @@
 
 <script lang="ts">
 import { defineComponent, ref, computed } from 'vue'
-import { ascendingFrequences, auswertungFactory, Building, EmittentDetails, emittentDetailsFactory, MesspunktAnAnlage, Messung, messungFactory, Roof, Vorlage, vorlageFactory } from 'src/models/v1'
+import { anlagenpegelFactory, Anlagenpegelreihe, ascendingFrequences, auswertungFactory, Building, EmittentDetails, emittentDetailsFactory, MesspunktAnAnlage, Messung, messungFactory, Roof, Vorlage, vorlageFactory } from 'src/models/v1'
 // import VorlageDetails from 'src/components/VorlageDetails.vue'
 import { useKatasterStore } from '../stores/kataster-store'
 import { token } from '@formkit/utils';
@@ -70,13 +70,14 @@ export default defineComponent({
 
 
     const options = [
-      'Name',
-      'Lage',
-      'Höhe',
-      'Breite',
-      'Länge',
-      'Dach',
-      'Gebäude'
+      { label: 'Name', value: { type: 'single', name: 'Name' } },
+      { label: 'GK-Rechts', value: { type: 'single', name: 'GK-Rechts' } },
+      { label: 'GK-Hoch', value: { type: 'single', name: 'GK-Hoch' } },
+      { label: 'Breite', value: { type: 'single', name: 'Breite' } },
+      { label: 'Länge', value: { type: 'single', name: 'Länge' } },
+      { label: 'Dach', value: { type: 'single', name: 'Dach' } },
+      { label: 'Gebäude', value: { type: 'single', name: 'Gebäude' } },
+
     ]
 
     const s1 = {
@@ -146,19 +147,19 @@ export default defineComponent({
           field: 'anlagenpegel',
           column: 3,
           row: 17,
-          space: 1
+          space: 2
         },
         {
           field: 'fremdpegel',
           column: 3,
           row: 18,
-          space: 1
+          space: 2
         },
         {
           field: 'gesamtpegel',
           column: 3,
           row: 18,
-          space: 1
+          space: 2
         },
         ]
 
@@ -174,6 +175,8 @@ export default defineComponent({
       const messung = await messungFactory.build({ type: '4P' })
       const emittent = emittentDetailsFactory.build()
       messung!.auswertung = auswertungFactory.build()
+      messung!.auswertung.anlagenpegel.push(anlagenpegelFactory.build())
+      messung!.auswertung.anlagenpegel.push(anlagenpegelFactory.build())
       api.get('http://localhost:8080/13135EZW-SQKataster_EXCEL-Master.xlsx', { responseType: 'arraybuffer', })
         .then(async (doc: any) => {
           console.log(doc);
@@ -289,12 +292,17 @@ export default defineComponent({
                 for (const r of resultGetter) {
                   let propCounter = 0
                   for (const f of ascendingFrequences(r!)) {
-                    console.log(f)
+                    console.log('Inserting ', f, ' in ', g.row + rowCounter, g.column + propCounter)
 
                     sheet.getCell(g.row + rowCounter, g.column + propCounter).value = f
                     propCounter++
                   }
+                  if (g.name == 'anlagenpegel') {
+                    sheet.getCell(g.row + rowCounter, g.column + propCounter).value = (r as unknown as Anlagenpegelreihe).korrektur
+                    propCounter++
+                  }
                   rowCounter += g.space! + 1
+                  console.log('Rows', rowCounter)
 
 
                 }
@@ -317,29 +325,6 @@ export default defineComponent({
             }
           }
 
-
-          // sheet.getCell(1, 1).value = emittent.name
-
-          // sheet.getCell(15, 1).value = 'Fck it'
-
-          // sheet.getCell(17, 1).value = 'Blabla'
-          // if (messung != null) {
-          //   const prop = [(i: MesspunktAnAnlage) => i.gesamtpegel, (i: MesspunktAnAnlage) => i.fremdpegel]
-          //   for (const kvp of messung.messpositionen.entries()) {
-          //     let counter = 1
-          //     let propCounter = 0
-          //     for (const p of prop) {
-
-
-          //       for (const f of ascendingFrequences(p(kvp[1].messwertereihen[0]))) {
-          //         console.log(f)
-          //         sheet.getCell(1 + kvp[0] + propCounter, counter).value = f
-          //         counter++
-          //       }
-          //       propCounter++
-          //     }
-          //   }
-          // }
 
           const buf = await workbook.xlsx.writeBuffer();
 

@@ -39,13 +39,20 @@ const routes: RouteRecordRaw[] = [
       }
     },
     {
+      path: 'fun', component: () => import('pages/PlaygroundEmittent.vue'), name: 'rollercoaster', meta: {
+        // auth: true
+      }
+    },
+    {
       path: 'messgeraete', component: () => import('pages/MessgeraeteList.vue'), name: 'messgeraete', meta: {
         // auth: true
       }
     },
     { path: 'vorlagen', component: () => import('pages/VorlagenList.vue'), name: 'vorlagen' },
     { path: 'filter', component: () => import('pages/FilterPage.vue'), name: 'filter' },
+    { path: 'chatgpt1', component: () => import('pages/ChatGPTP1.vue'), name: 'chatgpt1' },
     { path: 'overviews', component: () => import('pages/MessfilesPage.vue'), name: 'overviews' }],
+
   },
 
   // Always leave this as last one,

@@ -35,8 +35,8 @@ export default boot(async ({ app, router }) => {
   // for use inside Vue files (Options API) through this.$axios and this.$api
 
   app.config.errorHandler = (err, vm, info) => {
-    Notify.create('Danger, Will Robinson! Danger!')
-    console.log(err)
+    window.alert(err)
+    console.error(err)
     throw err
   }
 

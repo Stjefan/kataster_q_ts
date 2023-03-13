@@ -3,7 +3,7 @@ import { getIdFromString, mapper } from 'src/mappings/mapper';
 import {
   luftschadstoffeFactory,
   Building, Emittent, EmittentDetails, emittentDetailsFactory,
-  KarteDetails, karteDetailsFactory, Messgeraet, messgeraetFactory, Messung, messwertereiheFactory, metainfoFactory, OverviewFile, Plant, plantFactory, PointOnMap, Projekt, RectOnMap, Roof, Vorlage, vorlageFactory
+  KarteDetails, karteDetailsFactory, Messgeraet, messgeraetFactory, Messung, messwertereiheFactory, metainfoFactory, OverviewFile, Plant, plantFactory, PointOnMap, Projekt, RectOnMap, Roof, Vorlage, vorlageFactory, Luftschadstoffe
 } from 'src/models/v1';
 
 import { MessgeraetApi, Building as BuildingApi, EmittentDetail, KarteApi, Werk, Roof as RoofApi, Emittent as EmittentApi, Project as ProjectApi, TreeNodeApi } from 'src/models/api'
@@ -24,6 +24,7 @@ import buildingJSON from 'C:/Repos/django-server/mydjangoserver/kataster/scripts
 import roofJSON from 'C:/Repos/django-server/mydjangoserver/kataster/scripts/mannheim/roof.json'
 import emittentJSON from 'C:/Repos/django-server/mydjangoserver/kataster/scripts/mannheim/emittent.json'
 import mapJSON from 'C:/Repos/django-server/mydjangoserver/kataster/scripts/mannheim/map.json'
+
 
 
 PouchDB.plugin(find);
@@ -109,6 +110,11 @@ function setUpDb(name: string) {
       plural: 'messgeraete',
     },
 
+    {
+      singular: 'article',
+      plural: 'articles',
+    },
+
 
 
   ]);
@@ -120,7 +126,6 @@ function setUpDb(name: string) {
 let relDB: PouchDB.RelDatabase
 
 import * as _ from 'lodash'
-import { useStorage } from '@vueuse/core';
 import { PouchBuilding, PouchEmittent, PouchMessgeraet, PouchPlant, PouchProject, PouchRoof } from 'src/models/pouch-api';
 export const useKatasterStore = defineStore('kataster', {
   state: () => ({
@@ -150,6 +155,7 @@ export const useKatasterStore = defineStore('kataster', {
   }),
   getters: {
     doubleCount: (state) => state.counter * 2,
+    getDb: () => relDB
   },
   actions: {
     async replicateDatabase() {
@@ -168,7 +174,7 @@ export const useKatasterStore = defineStore('kataster', {
       for (let i = 0; i < allEmittents.length; i += batchSize)
         await Promise.all(allEmittents.slice(i, i + batchSize).map(i => api.get(`/emittent/details/${i.id}`).then(response => relDB.rel.save(
           'emittent',
-          { ...response.data, id: uuidv4(), descriminator: 'emittent' }
+          { ...response.data, id: uuidv4(), discriminator: 'emittent' }
         )))).then(
           docs => console.log(docs)
 
@@ -253,7 +259,7 @@ export const useKatasterStore = defineStore('kataster', {
                 } else {
                   api.get(`/emittent/details/${e.id}`).then(response => relDB.rel.save(
                     'emittent',
-                    { ...response.data, id: uuidv4(), descriminator: 'emittent', roof: id_roof }
+                    { ...response.data, id: uuidv4(), discriminator: 'emittent', roof: id_roof }
                   ))
                 }
 
@@ -504,26 +510,35 @@ export const useKatasterStore = defineStore('kataster', {
 
     },
 
+
     async readRevisions(args: Emittent) {
       // this.currentArchive = (await relDB.rel.find('emittentBackup')).emittentsBackups
-      const docs = await relDB.find({
-        selector: {
-          // 'data.discriminator': 'emittentsBackup',
-          // 'data.backsUp': args.id
-        }
-      })
-      const docs2 = await relDB.find({
-        selector: {
-          'data.discriminator': 'emittentBackup',
-          'data.backsUp': args.id
-        }
-      })
-      const docs3 = await relDB.rel.parseRelDocs('emittentBackup', docs2.docs)
-      console.log(docs3.emittentsBackups)
-      console.log(docs2)
-      console.log(docs)
-      this.currentArchive = docs3.emittentsBackups
+      // const docs = await relDB.find({
+      //   selector: {
+      //     // 'data.discriminator': 'emittentsBackup',
+      //     // 'data.backsUp': args.id
+      //   }
+      // })
+      // const docs2 = await relDB.find({
+      //   selector: {
+      //     'data.discriminator': 'emittentBackup',
+      //     'data.backsUp': args.id
+      //   }
+      // })
+      // const docs3 = await relDB.rel.parseRelDocs('emittentBackup', docs2.docs)
+      // console.log(docs3.emittentsBackups)
+      // console.log(docs2)
+      // console.log(docs)
+      // this.currentArchive = docs3.emittentsBackups
+
+      const doc = await relDB.get(relDB.rel.makeDocID({ type: 'emittent', 'id': args.id }), { revs_info: true })
+      if (doc != null && doc._revs_info && doc._revs_info?.length) {
+        const lastVersion = await relDB.get(relDB.rel.makeDocID({ type: 'emittent', 'id': args.id }), { rev: doc._revs_info[1].rev })
+        console.log(doc, lastVersion)
+      }
+
       /*
+
       api.get(`/revision/${args.id}/`).then(response => {
         console.log(response.data)
         this.currentArchive = response.data
@@ -532,9 +547,12 @@ export const useKatasterStore = defineStore('kataster', {
 
     },
 
-    revertRevisions(args: Emittent) {
+    revertRevisions(backup: EmittentDetails) {
       // const doc = (await relDB.rel.find('emittentBackup', id)).emittentBackup[0]
       // const del = (await relDB.rel.del('emittentBackup', doc))
+
+      console.log('bachkup', backup)
+
 
 
 
@@ -546,35 +564,26 @@ export const useKatasterStore = defineStore('kataster', {
     },
 
     async setEmittentDetailsFromEmittent(args: Emittent) {
-      if (false) {
-        const w_bar = await api.get(`/emittent/details/${args.id}`).then(response => response.data)
 
-        const e_bar = mapper.map<EmittentDetail, EmittentDetails>(w_bar, 'EmittentDetailsAPI', 'EmittentDetails')
-
-        this.emittent = e_bar // emittentDetailsFactory.build({ name: args.name })
-        console.log('emittent', this.emittent, args, w_bar)
-        this.emittentSource = args
-      } else {
-
-        const e = emittentDetailsFactory.build()
-        const emittent = (await relDB.rel.find('emittent', args.id)).emittents[0]
-        console.log('emittentPouch', emittent)
-        const r = mapper.map<PouchEmittent, EmittentDetails>(emittent, 'PouchEmittent', 'EmittentDetails')
-        this.emittent = { ...e, ...r, id: args.id } // emittentDetailsFactory.build({ name: args.name })
-        if (emittent.attachments?.image) {
-          this.emittent.picture = URL.createObjectURL((await relDB.rel.getAttachment('emittent', args.id, 'image')) as Blob)
-        }
-
-        console.log('emittent', this.emittent, args, { ...e, ...r, id: args.id }, 'ausDb', emittent)
-        this.emittentSource = args
-
+      const e = emittentDetailsFactory.build()
+      const emittent = (await relDB.rel.find('emittent', args.id)).emittents[0]
+      console.log('emittentPouch', emittent)
+      const r = mapper.map<PouchEmittent, EmittentDetails>(emittent, 'PouchEmittent', 'EmittentDetails')
+      this.emittent = { ...e, ...r, id: args.id } // emittentDetailsFactory.build({ name: args.name })
+      if (emittent.attachments?.image) {
+        this.emittent.picture = URL.createObjectURL((await relDB.rel.getAttachment('emittent', args.id, 'image')) as Blob)
       }
+
+      console.log('emittent', this.emittent, args, { ...e, ...r, id: args.id }, 'ausDb', emittent)
+      this.emittentSource = args
+
+
     },
 
     showReversion(arg: EmittentDetail) {
       console.log(arg)
-      const e_bar = mapper.map<EmittentDetail, EmittentDetails>(arg, 'EmittentDetailsAPI', 'EmittentDetails')
-      this.emittent = e_bar // emittentDetailsFactory.build({ name: args.name })
+      // const e_bar = mapper.map<EmittentDetail, EmittentDetails>(arg, 'EmittentDetailsAPI', 'EmittentDetails')
+      // this.emittent = e_bar // emittentDetailsFactory.build({ name: args.name })
     },
 
 
@@ -657,31 +666,21 @@ export const useKatasterStore = defineStore('kataster', {
       */
     },
     async createPlantBackend(arg: Plant) {
-      if (false) {
-        const p_bar = mapper.map<Plant, Werk>(arg, 'Plant', 'Werk')
-        p_bar.project = 6
-        api.post('/werk/', p_bar).then(res => {
-          console.log(res.data)
-          const p_tilde = mapper.map<Werk, Plant>(res.data, 'Werk', 'Plant')
-          console.log(p_tilde)
-          this.plants.push(p_tilde)
-        }).catch(errorHandler)
 
-      } else {
-        const p_bar = mapper.map<Plant, PouchPlant>(arg, 'Plant', 'PouchPlant')
+      const p_bar = mapper.map<Plant, PouchPlant>(arg, 'Plant', 'PouchPlant')
 
-        p_bar.id = uuidv4()
+      p_bar.id = uuidv4()
 
-        console.log(p_bar)
+      console.log(p_bar)
 
-        const result_plant = await relDB.rel.save('plant', p_bar)
+      const result_plant = await relDB.rel.save('plant', p_bar)
 
-        const p_tilde = mapper.map<PouchPlant, Plant>(p_bar, 'PouchPlant', 'Plant')
-        console.log(p_tilde)
-        this.plants.push(p_tilde)
+      const p_tilde = mapper.map<PouchPlant, Plant>(p_bar, 'PouchPlant', 'Plant')
+      console.log(p_tilde)
+      this.plants.push(p_tilde)
 
 
-      }
+
 
     },
     async removePlantBackend(arg: Plant) {
@@ -951,13 +950,18 @@ export const useKatasterStore = defineStore('kataster', {
 
     },
 
-    async saveLuftschadstoffe(luftschadstoffe: any) {
+    async saveLuftschadstoffe(luftschadstoffe: Luftschadstoffe) {
       console.log('Pushing this data:', luftschadstoffe)
       if (this.emittentSource?.id != null) {
         const emittent = (await relDB.rel.find('emittent', this.emittentSource.id)).emittents[0]
         // const emittentPlain = (await relDB.get(this.emittentSource.id))
         console.log('Aus db:', emittent, 'Original', this.emittentSource, 'Plain')
+        console.log(luftschadstoffe.messungen[0], emittent.luftschadstoffe.messungen[0], _.isEqual(luftschadstoffe.messungen[0], emittent.luftschadstoffe.messungen[0]))
+        console.log('Intersection', _.intersectionWith(emittent.luftschadstoffe.messungen, luftschadstoffe.messungen, _.isEqual))
+
         emittent.luftschadstoffe = luftschadstoffe
+
+
         await relDB.rel.save('emittent', { ...emittent, id: emittent.id, rev: emittent.rev, })
         console.log('Nach 1. save')
         /*
@@ -1014,6 +1018,7 @@ export const useKatasterStore = defineStore('kataster', {
 
       console.log(roofs, buildings)
       */
+      console.log('Query on Plants', conditionsOnPlant)
       const mergedQueryPlant = Object.keys(conditionsOnPlant).length ? { ...conditionsOnPlant } : {}
       const plants = await relDB.find({
         selector: {
@@ -1021,10 +1026,11 @@ export const useKatasterStore = defineStore('kataster', {
           ...mergedQueryPlant,
         }
       })
+      console.log('Plants', plants)
 
 
       const mergedQueryBuilding = Object.keys(conditionsOnPlant).length ?
-        { 'data.building': { '$in': plants.docs.map(i => relDB.rel.parseDocID(i._id).id), ...conditionsOnBuilding } } : { ...conditionsOnBuilding }
+        { 'data.plant': { '$in': plants.docs.map(i => relDB.rel.parseDocID(i._id).id), ...conditionsOnBuilding } } : { ...conditionsOnBuilding }
 
 
       const buildings = await relDB.find({

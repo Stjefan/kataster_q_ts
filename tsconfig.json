@@ -5,6 +5,6 @@
     "baseUrl": "."
   },
   "experimentalDecorators": true,
-    "emitDecoratorMetadata": true,
-    "skipLibCheck": true
+  "emitDecoratorMetadata": true,
+  "skipLibCheck": true
 }

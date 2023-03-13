@@ -184,6 +184,40 @@ export interface Messgeraet {
 
 }
 
+export function createExpectedCols(m: Messgeraet) {
+  const result = []
+  if (m.hz31_5) {
+    result.push(excelFieldImportFactory.build({ maps_to: 'hz31_5', col: m.hz31_5, name: 'hz31_5' }))
+  }
+  if (m.hz63) {
+    result.push(excelFieldImportFactory.build({ maps_to: 'hz63', col: m.hz63, name: 'hz63' }))
+  }
+  if (m.hz125) {
+    result.push(excelFieldImportFactory.build({ maps_to: 'hz125', col: m.hz125, name: 'hz125' }))
+  }
+  if (m.hz250) {
+    result.push(excelFieldImportFactory.build({ maps_to: 'hz250', col: m.hz250, name: 'hz250' }))
+  }
+  if (m.hz500) {
+    result.push(excelFieldImportFactory.build({ maps_to: 'hz500', col: m.hz500, name: 'hz500' }))
+  }
+  if (m.hz1000) {
+    result.push(excelFieldImportFactory.build({ maps_to: 'hz1000', col: m.hz1000, name: 'hz1000' }))
+  }
+  if (m.hz2000) {
+    result.push(excelFieldImportFactory.build({ maps_to: 'hz2000', col: m.hz2000, name: 'hz2000' }))
+  }
+  if (m.hz4000) {
+    result.push(excelFieldImportFactory.build({ maps_to: 'hz4000', col: m.hz4000, name: 'hz4000' }))
+  }
+  if (m.hz8000) {
+    result.push(excelFieldImportFactory.build({ maps_to: 'hz8000', col: m.hz8000, name: 'hz8000' }))
+  }
+  return result
+}
+// const expectedCols = ['hz31_5', 'hz63', 'hz125', 'hz250', 'hz500', 'hz1000', 'hz2000', 'hz4000', 'hz8000'].map((i, ix) => excelFieldImportFactory.build({ maps_to: i, col: myMessgeraet, name: i }))
+
+
 export interface Auswertungspegelreihe {
   summiert: number
 }

@@ -38,6 +38,8 @@
 
         <q-route-tab to="emittent" exact label="Emittent" :disable="store.emittent == null" />
         <q-route-tab to="playground" exact label="Dev" />
+        <q-route-tab :to="{ name: 'rollercoaster' }" label="Dev2" />
+        <q-route-tab :to="{ name: 'chatgpt1' }" label="chatgpt1" />
         <!--
         <q-tab @click="blabla" label="Auth" />
 -->

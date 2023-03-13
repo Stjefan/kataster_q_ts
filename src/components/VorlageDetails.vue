@@ -6,7 +6,7 @@
   <q-btn label="Vorlage löschen" @click="$emit('remove')" />
   <q-btn label="Änderungen speichern" @click="$emit('save')" />
   <q-btn label="TEST" @click="test" />
-  <q-btn label="TEST2" @click="test2" />
+  <q-btn label="Erstellen" @click="create" />
 </template>
 
 <script lang="ts">
@@ -14,7 +14,7 @@ import { api } from 'src/boot/axios'
 import { defineComponent } from 'vue'
 import ExcelJS from 'exceljs'
 import { saveAs } from 'file-saver';
-import { emittentDetailsFactory, messungFactory, auswertungFactory, ascendingFrequences, Messung, MesspunktAnAnlage, Emittent, EmittentDetails, Building } from 'src/models/v1';
+import { emittentDetailsFactory, messungFactory, auswertungFactory, ascendingFrequences, Messung, MesspunktAnAnlage, Emittent, EmittentDetails, Building, messpositionEditViewModelFactory, vorlageFactory } from 'src/models/v1';
 
 import { useKatasterStore } from 'src/stores/kataster-store';
 export default defineComponent({
@@ -25,6 +25,10 @@ export default defineComponent({
 
     const emittent = emittentDetailsFactory.build()
 
+    async function create() {
+      store.createExcelTemplateBackend(vorlageFactory.build())
+    }
+
     async function test() {
 
       const p0 = store.plants[0]
@@ -32,6 +36,8 @@ export default defineComponent({
       const d0 = store.plants[0].children[0].children[0]
 
       const messung = await messungFactory.build({ type: '4P' })
+      messung?.messpositionen.push(messpositionEditViewModelFactory.build())
+      messung?.messpositionen.push(messpositionEditViewModelFactory.build())
 
       const auswertung = auswertungFactory.build()
 
@@ -130,13 +136,10 @@ export default defineComponent({
         });
     }
 
-    function test2() {
-      api.get('container/').then(response => console.log(response))
 
-    }
     return {
       test,
-      test2
+      create
     }
   }
 

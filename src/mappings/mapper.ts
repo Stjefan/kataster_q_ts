@@ -2,7 +2,7 @@ import { createMap, createMapper, forMember, mapFrom, mapWith } from '@automappe
 import { afterMap } from '@automapper/core/lib/mapping-configurations/after-map';
 
 import { PojosMetadataMap, pojos } from '@automapper/pojos';
-import { PouchAuswertung, PouchAuswertungspegelreihe, PouchBuilding, PouchEmittent, PouchGeometrieEmittent, PouchGeometrieMessung, PouchKoordinaten, PouchKoordinatenHoehe, PouchMap, PouchMessgeraet, PouchMessposition, PouchMesspunktAnAnlage, PouchMessung, PouchMetainfo, PouchPegelreihe, PouchPlant, PouchProject, PouchRoof } from 'src/models/pouch-api';
+import { PouchEmittentBackup, PouchAuswertung, PouchAuswertungspegelreihe, PouchBuilding, PouchEmittent, PouchGeometrieEmittent, PouchGeometrieMessung, PouchKoordinaten, PouchKoordinatenHoehe, PouchMap, PouchMessgeraet, PouchMessposition, PouchMesspunktAnAnlage, PouchMessung, PouchMetainfo, PouchPegelreihe, PouchPlant, PouchProject, PouchRoof } from 'src/models/pouch-api';
 import {
   Pegelreihe, MesswertereiheDTO,
   MesspositionEditViewModel,
@@ -266,6 +266,11 @@ export function createUserMetadata() {
     bemerkung: String,
     abteilung: String,
     luftschadstoffe: 'Luftschadstoffe'
+  })
+
+  PojosMetadataMap.create<PouchEmittentBackup>('PouchEmittent', {
+    backsUp: String,
+    data: 'PouchEmittent'
   })
 
   PojosMetadataMap.create<PouchEmittent>('PouchEmittent', {
@@ -1069,14 +1074,14 @@ createMap<PouchPlant, Plant>(mapper, 'PouchPlant', 'Plant',
 createMap<Plant, PouchPlant>(mapper, 'Plant', 'PouchPlant',
   forMember(src => src.name, mapFrom(dest => dest.name)),
   forMember(src => src.id, mapFrom(dest => dest.id)),
-  forMember(src => src.descriminator, mapFrom(() => 'plant')),
+  forMember(src => src.discriminator, mapFrom(() => 'plant')),
   // forMember(src => src.map, mapWith('KarteDetails', 'KarteApi', src => src.map)),
 )
 
 createMap<Building, PouchBuilding>(mapper, 'Building', 'PouchBuilding',
   forMember(src => src.name, mapFrom(dest => dest.name)),
   forMember(src => src.id, mapFrom(dest => dest.id)),
-  forMember(src => src.descriminator, mapFrom(() => 'building')),
+  forMember(src => src.discriminator, mapFrom(() => 'building')),
 )
 
 createMap<PouchBuilding, Building>(mapper, 'PouchBuilding', 'Building',
@@ -1090,7 +1095,7 @@ createMap<PouchBuilding, Building>(mapper, 'PouchBuilding', 'Building',
 createMap<Roof, PouchRoof>(mapper, 'Roof', 'PouchRoof',
   forMember(src => src.name, mapFrom(dest => dest.name)),
   forMember(src => src.id, mapFrom(dest => dest.id)),
-  forMember(src => src.descriminator, mapFrom(() => 'roof')),
+  forMember(src => src.discriminator, mapFrom(() => 'roof')),
 )
 
 createMap<PouchRoof, Roof>(mapper, 'PouchRoof', 'Roof',

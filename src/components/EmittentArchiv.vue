@@ -50,7 +50,8 @@ export default {
       store.readRevisions(store.emittentSource)
     }
     function ladeVersion(target) {
-      store.showReversion(target.data)
+      console.log('ladeVersion', target)
+      store.showReversion(target)
       // console.log(target.data)
     }
 

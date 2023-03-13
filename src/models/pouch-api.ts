@@ -2,7 +2,7 @@ import { Luftschadstoffe } from 'src/models/v1'
 export interface PouchPlant {
   id: string,
   name: string,
-  descriminator: string
+  discriminator: string
   map: PouchMap
 }
 
@@ -11,7 +11,7 @@ export interface PouchBuilding {
   id: string,
   name: string,
   plant: string,
-  descriminator: string
+  discriminator: string
 }
 
 export interface PouchRoof {
@@ -19,8 +19,13 @@ export interface PouchRoof {
   name: string,
   building: string
   map: PouchMap
-  descriminator: string
+  discriminator: string
 
+}
+
+export interface PouchEmittentBackup {
+  backsUp: string,
+  data: PouchEmittent,
 }
 
 export interface PouchEmittent {

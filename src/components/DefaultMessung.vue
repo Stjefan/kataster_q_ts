@@ -82,7 +82,7 @@ export default defineComponent({
     const overviews = computed(() => store.overviews)
     const defaultMessgeraet = ref(store.messgeraete.length > 0 ? store.messgeraete[0] : null)
     const defaultMessdatum = ref('2023-01-02')
-    const defaultOverviewfile = ref('Overview117')
+    const defaultOverviewfile = ref(store.overviews.length ? store.overviews[0] : null)
     const correspondingEmitten = computed(() => store.emittent)
 
     const messungen = ref(
@@ -137,11 +137,11 @@ export default defineComponent({
       if (messung.value != null) {
         for (const k of messung.value.messpositionen.keys()) {
           const val = messung.value.messpositionen[k]
-          if (val != null) {
+          if (val != null && defaultOverviewfile.value != null) {
 
             for (const mp of val.messwertereihen) {
-              mp.metainfoFremdpegel.overviewfile = defaultOverviewfile.value
-              mp.metainfoGesamtpegel.overviewfile = defaultOverviewfile.value
+              mp.metainfoFremdpegel.overviewfile = defaultOverviewfile.value.id
+              mp.metainfoGesamtpegel.overviewfile = defaultOverviewfile.value.id
             }
           }
 
