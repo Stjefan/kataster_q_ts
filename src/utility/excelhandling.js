@@ -32,4 +32,16 @@ export async function readMessfileInOverview(
   return result;
 }
 
+export async function createExcelReport(excelBlob) {
+  const workbook = new ExcelJS.Workbook();
+  await workbook.xlsx.load(excelBlob);
+  const sheet = workbook.getWorksheet('Test');
+  const row = sheet.getRow(10);
+  row.getCell(1).value = 'Hello';
+  row.getCell(5).value = 96;
 
+  const buf = await workbook.xlsx.writeBuffer();
+  const resultAsBlob = new Blob([buf]);
+
+  return resultAsBlob;
+}

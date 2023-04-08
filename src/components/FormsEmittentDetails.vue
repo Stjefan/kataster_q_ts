@@ -22,39 +22,40 @@
     <FormKit type="checkbox" label="In Betrieb" name="inBetrieb" />
     <FormKit type="checkbox" label="Zur Messung vormerken" name="zurMessungVorgmerkt" />
     <FormKit type="checkbox" label="an Fassade" name="liegtAnFassade" />
-
-    <FormKit type="list" v-model="values" id="form-messungen" name="messungen">
-      <FormKit v-for="key in items" :key="key" type="group" label="Group">
-        <div class="row">
-          <forms-schallmessung />
-          <!--
+    <div v-if="false">
+      <FormKit type="list" v-model="values" id="form-messungen" name="messungen">
+        <FormKit v-for="key in items" :key="key" type="group" label="Group">
+          <div class="row">
+            {{ key }}
+            <!--<forms-schallmessung />-->
+            <!--
           <FormKit type="text" name="id" label="ID" :disabled="true" />
           <FormKit type="text" name="type" label="Messverfahren" :disabled="true" />
           <FormKit type="date" name="datum" label="Messdatum" :disabled="true" />
           -->
-          <FormKit type="button" :data-key="key" href="#" @click="removeItem" label="Entfernen" />
+            <FormKit type="button" :data-key="key" href="#" @click="removeItem" label="Entfernen" />
 
-        </div>
+          </div>
 
+        </FormKit>
       </FormKit>
-    </FormKit>
-    <button @click.prevent="addItem">Messung hinzufügen</button>
-
+      <button @click.prevent="addItem">Messung hinzufügen</button>
+    </div>
   </FormKit>
 </template>
 
 <script lang="ts">
 import { getNode } from '@formkit/core'
 import { mapper } from 'src/mappings/mapper'
-import { uuidv4 } from 'src/models/v1'
+import { Messung, messungFactory, uuidv4 } from 'src/models/v1'
 import { useKatasterStore } from 'src/stores/kataster-store'
 import { defineComponent, ref, computed } from 'vue'
 import { castNumber } from 'src/utility/errorHandling'
-import FormsSchallmessung from './FormsSchallmessung.vue'
+// import FormsSchallmessung from './FormsSchallmessung.vue'
 import * as _ from 'lodash'
 export default defineComponent({
   // name: 'ComponentName'
-  components: { FormsSchallmessung },
+  components: {},
   setup() {
     const form = ref(null as any)
     const store = useKatasterStore()
@@ -155,7 +156,7 @@ export default defineComponent({
     }
 
     async function addItem() {
-      const val = { typ: '1P', id: uuidv4() }
+      const val = (await messungFactory.build({ type: '1P' })) as Messung
       values.value.push(val)
 
       const node1 = getNode('form-messungen');
@@ -197,7 +198,10 @@ export default defineComponent({
 
       const mapped = mapper.map<any, any>(selectedItem.value, 'EmittentDetailsForm', 'EmittentDetailsForm')
 
+
       console.log(selectedItem.value, mapped,)
+
+      console.log('Mapped messungen', mapped.messungen)
 
       form.value = mapped
       const node1 = getNode('form-emittent');
@@ -208,13 +212,28 @@ export default defineComponent({
 
       await node1?.isSettled;
 
-      values.value = []
+      // values.value = mapped
+      items.value = mapped.messungen.map((i: any) => i.id)
+      try {
+        const imageMap = await store.getDb.rel.getAttachment('emittent', selectedItem.value.id, 'image')
+        console.log(imageMap)
+        // imagePreviewUrl.value = URL.createObjectURL(imageMap as Blob);
 
-      const imageMap = await store.getDb.rel.getAttachment('emittent', selectedItem.value.id, 'image')
-      console.log(imageMap)
-      // imagePreviewUrl.value = URL.createObjectURL(imageMap as Blob);
+        form.value.image = [{ name: selectedItem.value.filename, file: imageMap }]
 
-      form.value.image = [{ name: selectedItem.value.filename, file: imageMap }]
+      } catch (e: any) {
+        if (e.name == 'not_found') {
+
+
+        } else {
+          form.value.image = []
+        }
+
+      }
+
+
+
+
     }
 
 

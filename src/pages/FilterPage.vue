@@ -5,6 +5,28 @@
     <condition-component :options="options" v-for="(c, idx) in conditions" :key="idx" @remove="removeCondition(idx)"
       ref="conditionComponent" />
     <q-btn label="Filtern" @click="buildQuery" />
+    <div>
+      {{ condition1 }}
+      <br />
+      {{ conditionList }}
+    </div>
+
+    <form-kit type="form" @submit="handleSubmit">
+      <form-kit type="list" v-model="conditionList">
+        <form-kit type="group" name="condition" v-model="condition1">
+          <form-kit type="select" :options="processedOptions" name="field" />
+          <div v-if="condition1.field?.type == 'string'">
+            <form-kit type="select" :options="stringOptions" name="comperator" v-model="condition1.comperator" />
+            <form-kit type="text" name="comperatorArgument" v-model="condition1.comperatorArgument" />
+          </div>
+          <div v-else-if="condition1.field?.type == 'date'">
+            <form-kit type="select" :options="dateOptions" name="comperator" v-model="condition1.comperator" />
+            <form-kit type="date" name="comperatorArgument" v-model="condition1.comperatorArgument" />
+          </div>
+          <form-kit type="button" label="+" />
+        </form-kit>
+      </form-kit>
+    </form-kit>
     <q-table :rows="filteredEmittents" :columns="cols">
       <template v-slot:body-cell-edit="props">
         <q-td>
@@ -25,7 +47,7 @@
 import ConditionComponent from 'src/components/ConditionComponent.vue';
 import FilterErgebnis from 'src/components/FilterErgebnis.vue';
 import { useKatasterStore } from 'src/stores/kataster-store';
-import { defineComponent, ref, } from 'vue'
+import { computed, defineComponent, ref, } from 'vue'
 import { useRouter } from 'vue-router';
 import { api } from 'src/boot/axios';
 import { ein_punkt_messverfahren, filterResultFactory, vier_punkt_messverfahren } from 'src/models/v1';
@@ -38,11 +60,16 @@ export default defineComponent({
     function addCondition() {
       conditions.value.push(1);
     }
+    function handleSubmit(args: any) {
+      console.log(args)
+    }
     const filteredEmittents = ref([] as any[])
     function removeCondition(args: any) {
       console.log(args);
       conditions.value.splice(args, 1);
     }
+
+
     const conditions = ref([1]);
     const options = [
       { label: 'Name', field: 'data.name', type: 'string' },
@@ -110,6 +137,16 @@ export default defineComponent({
       },
       */
     ];
+
+    const stringOptions = [{ label: 'entspricht', value: 1, }, { label: 'enthält', value: 2 }]
+    const dateOptions = [{ label: 'vor', value: 1 }]
+
+    const processedOptions = computed(() => {
+      return options.map(i => ({
+        label: i.label, value: i
+      }))
+
+    })
 
     const conditionComponent: any = ref(null);
 
@@ -191,7 +228,14 @@ export default defineComponent({
 
     }
 
-    return { filteredEmittents, options, conditions, addCondition, removeCondition, buildQuery, conditionComponent, cols, handleEdit }
+    const condition1 = ref({})
+
+    const conditionList = ref([])
+
+    return {
+      conditionList, condition1, filteredEmittents, options, conditions, addCondition, removeCondition, buildQuery, conditionComponent, cols, handleEdit, handleSubmit, processedOptions,
+      stringOptions, dateOptions
+    }
 
   }
 })

@@ -43,7 +43,7 @@ import { mapper } from 'src/mappings/mapper';
 import { excelTemplateFactory, uuidv4 } from 'src/models/v1';
 import { useKatasterStore } from 'src/stores/kataster-store';
 import { defineComponent, ref } from 'vue'
-import { }
+
 import * as _ from 'lodash'
 
 interface VorlageForm {

@@ -1,20 +1,20 @@
 <template>
   <q-page padding>
     <!-- content -->
-    {{ store.overviews }}
-    <q-select :options="store.overviews" v-model="selectedOverview" option-label="filename" map-options />
-
-    <q-input label="Overview-Upload" v-model="upload" type="file" />
-    <q-btn label="Hochladen" @click="push2server" />
-    <q-btn label="Löschen" @click="deleteSelected" />
+    <forms-overview />
   </q-page>
 </template>
 
 <script lang="ts">
 import { defineComponent, ref } from 'vue'
 import { useKatasterStore } from 'src/stores/kataster-store';
+import FormsOverview from 'src/components/FormsOverview.vue';
 export default defineComponent({
   // name: 'PageName'
+  components: {
+    FormsOverview,
+
+  },
   setup() {
     const store = useKatasterStore()
 

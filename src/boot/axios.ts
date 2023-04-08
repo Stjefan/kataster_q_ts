@@ -8,7 +8,7 @@ import { GesturePlugin } from '@vueuse/gesture'
 import { plugin, defaultConfig } from '@formkit/vue'
 import { createFloatingLabelsPlugin } from '@formkit/addons'
 import '@formkit/addons/css/floatingLabels'
-
+import { createMultiStepPlugin } from '@formkit/addons'
 import { createI18n } from 'vue-i18n'
 
 declare module '@vue/runtime-core' {
@@ -81,6 +81,7 @@ export default boot(async ({ app, router }) => {
       createFloatingLabelsPlugin({
         useAsDefault: false, // defaults to false
       }),
+      createMultiStepPlugin()
     ],
   }))
   const store = useKatasterStore()

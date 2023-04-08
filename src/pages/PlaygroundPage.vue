@@ -11,7 +11,7 @@
 </template>
 
 <script lang="ts">
-import CreateUpdateProjectForm from 'src/components/CreateUpdateProjectForm.vue'
+import CreateUpdateProjectForm from 'src/components/FormsProject.vue'
 import VorlageDetails from 'src/components/VorlageDetails.vue'
 import { uuidv4 } from 'src/models/v1'
 import { defineComponent } from 'vue'

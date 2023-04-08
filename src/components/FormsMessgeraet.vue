@@ -1,9 +1,10 @@
 <template>
   <div>Details zu Messgerät</div>
   {{ mode }}
-  <button @click="readDocs">Read</button>
+  <FormKit type="button" @click="readDocs" label="Read" />
   <q-select v-model="option" :options="options" option-label="name" />
-  <button @click="editSelected">Bearbeiten</button>
+  <FormKit type="button" @click="createEmpty" label="Neu" />
+  <FormKit type="button" @click="editSelected" label="Bearbeiten" />
   <FormKit type="form" @submit="handleSubmit" id="form-emittent" v-model="item" option-label="name">
     <FormKit type="text" label="Bezeichnung" name="name" validation="required" />
     <FormKit type="text" label="Seriennummer" name="seriennummer" />
@@ -28,8 +29,21 @@ import { defineComponent, ref } from 'vue'
 export default defineComponent({
   // name: 'ComponentName'
   setup() {
-    function handleSubmit(args: any) {
+    async function handleSubmit(args: any) {
       console.log(args)
+      const mapped = mapper.map(item.value, 'MessgeraetForm', 'PouchMessgeraet',)
+      let saveResult
+      if (args.id) {
+        console.log('Bereits vorhanden')
+        const bisherDocs = await store.getDb.rel.find('messgeraet', args.id)
+        const bisher = bisherDocs.messgeraete[0]
+        saveResult = await store.getDb.rel.save('messgeraet', { ...bisher, ...mapped })
+      } else {
+        saveResult = await store.getDb.rel.save('messgeraet', { ...mapped })
+      }
+
+      readDocs()
+
 
     }
 
@@ -80,6 +94,11 @@ export default defineComponent({
 
     }
 
+    function createEmpty() {
+      item.value = {}
+
+    }
+
     async function createDoc() {
       console.log('create', item.value)
 
@@ -109,6 +128,7 @@ export default defineComponent({
       option,
       item,
       mode,
+      createEmpty,
     }
   }
 })

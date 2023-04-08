@@ -88,6 +88,14 @@ export interface PouchAuswertung {
   lwlin: PouchPegelreihe & PouchAuswertungspegelreihe
   lwa: PouchPegelreihe & PouchAuswertungspegelreihe,
   id: string,
+
+  report: ExportedReport | null
+}
+
+export interface ExportedReport {
+  erstelltAm: string
+  id: string
+  file: PouchFileReference
 }
 
 export interface PouchPegelreihe {
@@ -228,7 +236,8 @@ export interface PouchMessgeraet {
 export interface PouchProject {
   id: string,
   name: string,
-  dbName: string
+  dbName: string,
+  projektnummer: string
 }
 
 export interface PouchFeldExcelBericht {
@@ -289,4 +298,14 @@ export interface PouchLuftschadstoffgenehmigung {
   gueltigAb: number | null
   name: string | null
   genehmigungsdatum: number | null
+}
+
+export abstract class PouchController<T> {
+  abstract list(): T[]
+  abstract retrieve(id: string): T
+  abstract update(id: string, args: T): T
+  abstract create(args: T): any
+  abstract delete(id: string): any
+
+
 }

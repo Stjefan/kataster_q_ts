@@ -1,14 +1,7 @@
 <template>
   <q-page padding>
     <!-- content -->
-    <div>Aktuelle Auswahl:</div>
-    {{ store.project?.name }}
-    <q-select v-model="selectedProject" :options="projects" option-label="name" />
-    <q-btn label="Projekt auswählen" @click="chooseProject" :disable="selectedProject == null" />
-    <q-btn label="Neues Projekt erstellen" @click="create" />
-    <project-details v-model:name="selectedProject.name" v-if="selectedProject" @save="aktualisieren"
-      @remove="remove" />
-    {{ store.project }}
+    <create-update-project-form />
   </q-page>
 </template>
 
@@ -18,9 +11,10 @@ import ProjectDetails from 'src/components/ProjectDetails.vue';
 import { projectFactory } from 'src/models/v1'
 import { useKatasterStore } from 'src/stores/kataster-store';
 import { useQuasar } from 'quasar';
+import CreateUpdateProjectForm from 'src/components/FormsProject.vue';
 export default defineComponent({
   // name: 'PageName'
-  components: { ProjectDetails },
+  components: { CreateUpdateProjectForm },
   setup() {
     const $q = useQuasar()
 

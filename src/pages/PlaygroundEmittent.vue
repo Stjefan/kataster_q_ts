@@ -1,210 +1,127 @@
 <template>
-  <q-page padding>
-    <!-- content -->
-    <div v-for="val in values" :key="val.id">
-      <q-input type="text" :disable="true" v-model="val.id" />
-      <q-file v-model="val.file" />
-      <q-btn label="Anzeigen" @click="showPdf(val)" />
-      <div v-if="val.bisher">
-        bisher: {{ val.filename }}
-      </div>
-
-      <q-btn label="-" @click="deleteItem(val.id)" />
-    </div>
-    <q-btn label="+" @click="addItem" />
-    <br />
-    <q-btn label="Commit" @click="saveValues" />
-    <br />
-    <button @click="loadEmittent">Load</button>
-    <button @click="funWithEmittent">Get Attachements</button>
-    <button @click="putAttachements">Put Attachements</button>
-    <button @click="loadSpecificDoc">specificDoc</button>
-    <br />
-    {{ values }}
-    <luftschadstoffe-component v-if="false" />
-    <br />
-    <p>Eröffnen Sie eine PDF-Datei <a :href="exampleUrl">zum Beispiel</a>.</p>
-    <iframe :src="exampleUrl"></iframe>
-  </q-page>
+  <q-select v-model="vorlage" :options="vorlagen" option-label="name" />
+  <q-btn label="xlsx-Bericht erstellen" @click="createXlsxReport" />
+  <q-select v-model="report" :options="reports" option-label="filename" />
+  <q-btn label="Bericht ansehen" @click="showXlsxReport" />
+  <forms-auswertung />
 </template>
 
 <script lang="ts">
 import { getNode } from '@formkit/core'
-import LuftschadstoffeComponent from 'src/components/LuftschadstoffeComponent.vue'
 import { uuidv4 } from 'src/models/v1'
 import { useKatasterStore } from 'src/stores/kataster-store'
-import { defineComponent, ref } from 'vue'
+import { computed, defineComponent, ref } from 'vue'
+import { getRandomNumber } from 'src/utility/errorHandling'
+
+import FormsAuswertung from 'src/components/FormsAuswertung.vue'
 export default defineComponent({
-  components: { LuftschadstoffeComponent },
+  components: { FormsAuswertung },
   // name: 'PageName'
   setup() {
     const store = useKatasterStore()
 
-    const formContent = ref({})
+    const messgeraete = computed(() => store.messgeraete.map(i => ({ label: i.name, value: i.id })))
+    const messgeraet = ref(null as any)
 
-    const values = ref([{ id: uuidv4(), blub: 'Gogo', bisher: null, file: null }, { id: uuidv4(), bisher: null, file: null }] as any[])
-    const items = ref([uuidv4(), uuidv4()])
-    const name = ref('')
+    const overviews = computed(() => store.overviews.map(i => ({ label: i.filename, value: i.id })))
+    const overview = ref(null as any)
 
-    async function loadSpecificDoc() {
-      const result = (await store.getDb.rel.find('article', article_id)).articles[0]
+    const vorlagen = computed(() => store.vorlagen)
+    const vorlage = ref(null as any)
 
-      console.log(result)
-      items.value = result.permissions.map((i: any) => i.id)
-      const node1 = getNode('form-1');
-      await node1?.isSettled;
-      console.log('Push now');
+    const reports = ref([] as any[])
+    const report = ref(null as any)
+
+    function createXlsxReport() {
+      const r = { id: uuidv4() } as any
+      r.filename = `report_${r.id}.xlsx`
+      r.created = Date.now()
+      reports.value.push(r)
+    }
+
+    function showXlsxReport() {
+      console.log(report.value)
+    }
 
 
-      values.value = result.permissions.map((i: any) => ({ id: i.id, bisher: result.attachments[i.id], filename: i.filename })) //[{ id: uuidv4() }, { id: uuidv4() }]
+
+    const cols = [{ label: 'ID', field: 'id', name: 'col1' }, { label: 'Nowhere', name: 'col2', field: 'name' }, { label: 'Nowhere', name: 'col3', }]
+
+    function submitHandler(args: any) {
+      console.log(args)
+
+    }
+
+    async function addItem() {
+      const val = { id: uuidv4(), fremdpegelVorhanden: false }
+      rows.value.push(val)
+
+      // const node1 = getNode('form-messungen');
+      //console.log('node1', node1)
+      //console.log(getNode('blabla'))
+      //await node1?.isSettled;
+
+      //items.value.push(val.id)
+    }
+
+    function removeItem(e: any) {
+      e.preventDefault()
+      const key = e.target.getAttribute('data-key')
+      console.log(rows.value, key)
+
+      const idx = values.value.findIndex(item => item.id == key)
+
+      rows.value = rows.value.filter(item => item.id != key)
+      console.log(rows.value)
+    }
 
 
-      // console.log(result.attachments['1ef88960-e3ab-4789-bc39-727824f6a552'])
-      result.permissions.forEach(async (element: any) => {
-        try {
-          const a = await store.getDb.rel.getAttachment('article', article_id, element.id)
-          console.log(a)
-        } catch (ex) {
-          console.log(element.id, 'not found')
+    const items = ref([])
+    const rows = ref([{ id: uuidv4(), fremdpegelVorhanden: false }])
+    const values = ref([{ id: uuidv4(), 'gesamtpegel.hz31_5': 32.3, 'gesamtpegel.hz63': 12.456 }, { id: uuidv4() }, { id: uuidv4() }])
+
+    function readDocs() {
+      values.value = []
+      const arrOfFrequenzen = [
+        'hz31_5',
+        'hz63',
+        'hz125',
+        'hz250',
+        'hz500',
+        'hz1000',
+        'hz2000',
+        'hz4000',
+        'hz8000',
+      ];
+      const funArr = [{ id: uuidv4() }, { id: uuidv4() }] as any[]
+      for (let f of funArr) {
+        for (let i of arrOfFrequenzen) {
+          f[`gesamtpegel.${i}`] = getRandomNumber()
         }
-      });
-
-      // console.log(a)
-      console.log(values.value)
-
-
-
-
-
-    }
-
-
-    async function saveValues() {
-      console.log(values.value)
-      const result = (await store.getDb.rel.find('article', article_id)).articles[0]
-
-
-      const obj = values.value.filter((i: any) => i.file != null).reduce((o: any, i: any) => ({
-        ...o, [`${i.id}`]: {
-          data: i.file,
-          content_type: i.file.type
-        }
-      }), {})
-
-      console.log('biserh')
-
-      console.log('New attachments-obj', obj)
-
-      // console.log(result)
-
-
-
-      const base = await store.getDb.get(store.getDb.rel.makeDocID({ type: 'article', 'id': article_id }))
-
-
-
-      const data2save = { ...(base as any).data, permissions: values.value.map((i: any) => ({ id: i.id, filename: i.file?.name ?? i.filename })) }
-      let myAttachments = obj
-      console.log('base', base, '2svae', data2save)
-      if (base._attachments != null) {
-        values.value.forEach(i => {
-          if (i.id != null && i.file == null) {
-            console.log(base._attachments![i.id])
-            myAttachments = { ...myAttachments, [i.id]: base._attachments![i.id] }
-          }
-        })
       }
-
-      console.log(myAttachments)
-
-
-      const putResult = await store.getDb.put({
-        _id: base._id, //store.getDb.rel.makeDocID({ type: 'article', 'id': 'cd6e70c8-42be-411e-8c77-ed2c50b0c93d' }),
-        _rev: base._rev,
-        _attachments: myAttachments,
-        data: data2save
-      });
-      console.log('putResult', putResult)
-
-    }
-
-    const article_id = '7554044f-fbbd-482a-b886-91ef74058002'
-
-    async function loadEmittent() {
-      console.log('loading...')
-      // store.getDb.rel.makeDocID({ type: 'article', 'id': 'cd6e70c8-42be-411e-8c77-ed2c50b0c93d' }
-      const result = (await store.getDb.rel.find('article', article_id)).articles[0]
-
-      console.log(result)
-
-    }
-
-    async function funWithEmittent() {
-      console.log(await store.getDb.rel.save('article', {
-        id: uuidv4(),
-        name: 'X', ads: [{
-          name: 'a',
-          id: uuidv4()
-        }, {
-          name: 'b',
-          id: uuidv4()
-        }]
-      }))
-
-
-    }
-
-    async function putAttachements() {
-      const result = (await store.getDb.rel.find('article'))
-      console.log(result)
-
-    }
-
-    const exampleUrl = ref('')
-
-    async function showPdf(value: any) {
-      if (value.file != null) {
-        exampleUrl.value = URL.createObjectURL(value.file as Blob)
-
-      } else {
-        const a = await store.getDb.rel.getAttachment('article', article_id, value.id)
-        console.log(a)
-        exampleUrl.value = URL.createObjectURL(a as Blob)
-      }
-
-
-    }
-
-    const addItem = () => {
-      // items.value.push(uuidv4())
-      values.value.push({ id: uuidv4(), blub: 'Gogo', bisher: null, file: null })
-    }
-
-    const deleteItem = (e: any) => {
-      //e.preventDefault()
-      //const key = e.target.getAttribute('data-key')
-      //console.log(items.value, key)
-      // console.log([...items.value])
-      // items.value = items.value.filter(item => item !== key)
-      // console.log([...items.value])
-      values.value = values.value.filter(item => item.id !== e)
+      // rows.value = [fun]
+      rows.value = funArr.map(i => ({ id: i.id, fremdpegelVorhanden: false }))
+      values.value = funArr
     }
 
     return {
-      saveValues,
-      addItem,
-      deleteItem,
-      putAttachements,
-      funWithEmittent,
-      formContent,
-      name,
-      loadEmittent,
+      readDocs,
       values,
-      items,
-      loadSpecificDoc,
-      showPdf,
-      exampleUrl
+      submitHandler,
+      rows,
+      cols,
+      addItem,
+      removeItem,
+      messgeraete,
+      overviews,
+      vorlagen,
+      vorlage,
+      reports,
+      report,
+      createXlsxReport,
+      showXlsxReport
     }
+
 
 
 

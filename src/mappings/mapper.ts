@@ -1,4 +1,4 @@
-import { CamelCaseNamingConvention, createMap, createMapper, extend, forMember, mapFrom, mapWith, namingConventions } from '@automapper/core';
+import { CamelCaseNamingConvention, createMap, createMapper, extend, forMember, mapFrom, mapWith, mapWithArguments, namingConventions } from '@automapper/core';
 import { afterMap } from '@automapper/core/lib/mapping-configurations/after-map';
 
 import { PojosMetadataMap, pojos } from '@automapper/pojos';
@@ -12,7 +12,7 @@ import {
 
 
 import {
-  SchallmessungForm,
+  SchallmessungForm, MesswertereiheForm,
   LuftschadstoffeForm, GenehmigungForm, KarteForm, KoordinatenForm, GeoreferenzierungForm, GeoreferenzierungspunktForm, ProjectForm, MessgeraetForm, OverviewForm, FormFeldExcelBericht, FormPositionFeldExcelBericht, FormVorlageExcelbericht, EmittentDetailsForm
 } from 'src/models/forms'
 import {
@@ -78,6 +78,38 @@ export function createUserMetadata() {
     messverfahren: String,
 
   })
+
+  PojosMetadataMap.create<MesswertereiheForm>('MesswertereiheForm', {
+    fremdpegelVorhanden: Boolean,
+    gesamtpegel__hz31_5: Number,
+    gesamtpegel__hz63: Number,
+    gesamtpegel__hz125: Number,
+    gesamtpegel__hz250: Number,
+    gesamtpegel__hz500: Number,
+    gesamtpegel__hz1000: Number,
+    gesamtpegel__hz2000: Number,
+    gesamtpegel__hz4000: Number,
+    gesamtpegel__hz8000: Number,
+    gesamtpegel__messfile: String,
+    gesamtpegel__messgeraet: String,
+    gesamtpegel__overview: String,
+
+    fremdpegel__hz31_5: Number,
+    fremdpegel__hz63: Number,
+    fremdpegel__hz125: Number,
+    fremdpegel__hz250: Number,
+    fremdpegel__hz500: Number,
+    fremdpegel__hz1000: Number,
+    fremdpegel__hz2000: Number,
+    fremdpegel__hz4000: Number,
+    fremdpegel__hz8000: Number,
+    fremdpegel__messfile: String,
+    fremdpegel__messgeraet: String,
+    fremdpegel__overview: String,
+
+    id: String
+  })
+
 
   PojosMetadataMap.create<EmittentDetailsForm>('EmittentDetailsForm', {
     id: String,
@@ -734,6 +766,51 @@ function conditionalDate2String(arg: number | null) {
 
 }
 
+createMap<MesswertereiheForm, MesspunktAnAnlage>(mapper, 'MesswertereiheForm', 'MesspunktAnAnlage',
+  forMember(dest => dest.gesamtpegel, mapWith('Pegelreihe', 'MesswertereiheFormGesamt', src => src)),
+  forMember(dest => dest.fremdpegel, mapWith('Pegelreihe', 'MesswertereiheFormFremd', src => src)),
+  forMember(dest => dest.metainfoGesamtpegel, mapWith('Metainfo', 'MesswertereiheFormGesamt', src => src)),
+  forMember(dest => dest.metainfoFremdpegel, mapWith('Metainfo', 'MesswertereiheFormFremd', src => src)),
+)
+
+createMap<MesswertereiheForm, Metainfo>(mapper, 'MesswertereiheFormGesamt', 'Metainfo',
+  forMember(dest => dest.messgeraet, mapFrom(src => src.gesamtpegel__messgeraet)),
+  forMember(dest => dest.overviewfile, mapFrom(src => src.gesamtpegel__overview)),
+  forMember(dest => dest.name_messfile, mapFrom(src => src.gesamtpegel__messfile))
+)
+
+createMap<MesswertereiheForm, Metainfo>(mapper, 'MesswertereiheFormFremd', 'Metainfo',
+  forMember(dest => dest.messgeraet, mapFrom(src => src.fremdpegel__messgeraet)),
+  forMember(dest => dest.overviewfile, mapFrom(src => src.fremdpegel__overview)),
+  forMember(dest => dest.name_messfile, mapFrom(src => src.fremdpegel__messfile))
+)
+
+
+
+
+createMap<MesswertereiheForm, Pegelreihe>(mapper, 'MesswertereiheFormGesamt', 'Pegelreihe',
+  forMember(dest => dest.hz31_5, mapFrom(src => src.gesamtpegel__hz31_5)),
+  forMember(dest => dest.hz63, mapFrom(src => src.gesamtpegel__hz63)),
+  forMember(dest => dest.hz125, mapFrom(src => src.gesamtpegel__hz125)),
+  forMember(dest => dest.hz250, mapFrom(src => src.gesamtpegel__hz250)),
+  forMember(dest => dest.hz500, mapFrom(src => src.gesamtpegel__hz500)),
+  forMember(dest => dest.hz1000, mapFrom(src => src.gesamtpegel__hz1000)),
+  forMember(dest => dest.hz2000, mapFrom(src => src.gesamtpegel__hz2000)),
+  forMember(dest => dest.hz4000, mapFrom(src => src.gesamtpegel__hz4000)),
+  forMember(dest => dest.hz8000, mapFrom(src => src.gesamtpegel__hz8000)),
+)
+
+createMap<MesswertereiheForm, Pegelreihe>(mapper, 'MesswertereiheFormFremd', 'Pegelreihe',
+  forMember(dest => dest.hz31_5, mapFrom(src => src.fremdpegel__hz31_5)),
+  forMember(dest => dest.hz63, mapFrom(src => src.fremdpegel__hz63)),
+  forMember(dest => dest.hz125, mapFrom(src => src.fremdpegel__hz125)),
+  forMember(dest => dest.hz250, mapFrom(src => src.fremdpegel__hz250)),
+  forMember(dest => dest.hz500, mapFrom(src => src.fremdpegel__hz500)),
+  forMember(dest => dest.hz1000, mapFrom(src => src.fremdpegel__hz1000)),
+  forMember(dest => dest.hz2000, mapFrom(src => src.fremdpegel__hz2000)),
+  forMember(dest => dest.hz4000, mapFrom(src => src.fremdpegel__hz4000)),
+  forMember(dest => dest.hz8000, mapFrom(src => src.fremdpegel__hz8000)),
+)
 createMap<SchallmessungForm, PouchMessung>(mapper, 'SchallmessungForm', 'PouchMessung')
 createMap<PouchMessung, SchallmessungForm>(mapper, 'PouchMessung', 'SchallmessungForm')
 createMap<SchallmessungForm, SchallmessungForm>(mapper, 'SchallmessungForm', 'SchallmessungForm')

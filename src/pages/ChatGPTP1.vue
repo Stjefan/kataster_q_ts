@@ -17,7 +17,10 @@
     {{ objects }}
     <br />
     -->
-    <forms-schadstoffmessung />
+    <!--
+    <forms-schadstoffmessung />-->
+    <forms-schallmessung />
+    <forms-xlsx-report />
   </q-page>
 </template>
 
@@ -35,9 +38,14 @@ interface FormPerson extends Person {
 import { defineComponent, ref, watch } from 'vue'
 import * as _ from 'lodash'
 import { options } from '@formkit/inputs'
-import FormsSchadstoffmessung from 'src/components/FormsSchadstoffmessung.vue'
+// import FormsSchadstoffmessung from 'src/components/FormsSchadstoffmessung.vue'
+import FormsSchallmessung from 'src/components/FormsSchallmessung.vue'
+import FormsXlsxReport from 'src/components/FormsXlsxReport.vue'
 export default defineComponent({
-  components: { FormsSchadstoffmessung },
+  components: {
+    // FormsSchadstoffmessung,
+    FormsSchallmessung, FormsXlsxReport
+  },
   // name: 'PageName'
 
   setup() {

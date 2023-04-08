@@ -210,6 +210,7 @@ export function berechneKorrekturQuader1(
   // Winkelfehler-Berechnung nach 'F. Probst: Bestimmung des Schallleistungspegels von Industrieschallquellen [...]', Projekt 10716
   const oberflächeReferenzquader = lw_before_logarithm;
   const messabstand = messung_geometrie.geoxy;
+  console.log(a, b, c)
   const winkelfehler =
     1.2805 * Math.log10(Math.pow(oberflächeReferenzquader / messabstand, 2)) -
     0.0107;

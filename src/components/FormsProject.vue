@@ -1,10 +1,10 @@
 <template>
-  <button @click="createDoc">Create</button>
-  <button @click="updateDoc">Update</button>
+  <button @click="createDoc">Neues Projekt anlegen</button>
 
   <button @click="readDocs">Read</button>
   <q-select v-model="option" :options="options" option-label="name" />
-  <button @click="editSelected">Edit</button>
+  <FormKit type="button" @click="editSelected" label="Daten laden" />
+  <FormKit type="button" @click="editSelected" label="Allgemeine Angaben bearbeiten" />
   <FormKit type="form" name="x" @submit="submitItem" v-model="item">
     <FormKit type="text" label="ID" name="id" :disabled="true" />
     <FormKit type="text" label="Name" name="name" validation="required" />
@@ -46,23 +46,45 @@ export default defineComponent({
       options.value = mappedArr
     }
 
-    async function updateDoc() {
-      if (item.value != null) {
-        const docs = await store.getMasterDb.rel.find('project', item.value.id)
-        const fromDb = docs.projects[0]
-        const mapped = mapper.map(item.value, 'ProjectForm', 'PouchProject',)
-        console.log(mapped)
-
-        await store.getMasterDb.rel.save('project', { ...fromDb, ...mapped })
-
-        readDocs()
-
-
-
+    async function submitItem(args: any) {
+      console.log(args)
+      let saveResult
+      if (args.id) {
+        console.log('Bereits vorhanden')
+        const bisherDocs = await store.getMasterDb.rel.find('project', args.id)
+        const mapped = mapper.map<ProjectForm, PouchProject>(args, 'ProjectForm', 'PouchProject')
+        const bisher = bisherDocs.messgeraete[0]
+        saveResult = await store.getMasterDb.rel.save('project', { ...bisher, ...mapped })
+      } else {
+        const mapped = mapper.map<ProjectForm, PouchProject>(args, 'ProjectForm', 'PouchProject')
+        mapped.id = uuidv4()
+        mapped.dbName = slugify(`${mapped.name}_${mapped.id}`)
+        saveResult = await store.getMasterDb.rel.save('project', { ...mapped, })
       }
+      console.log(saveResult)
+
+      readDocs()
+
+
 
 
     }
+
+
+
+
+
+
+
+    function slugify(title: string) {
+      return title
+        .trim()
+        .replace(/ +/g, '-')
+        .toLowerCase()
+        .replace(/[^a-z0-9-]/g, '')
+    }
+
+
 
     async function editSelected() {
       if (option.value != null) {
@@ -76,18 +98,7 @@ export default defineComponent({
     }
 
     async function createDoc() {
-      console.log('create', item.value)
-
-      const mapped = mapper.map<ProjectForm, PouchProject>(item.value, 'ProjectForm', 'PouchProject')
-
-      mapped.id = uuidv4()
-      mapped.dbName = `${mapped.name.toLocaleLowerCase()}_${mapped.id}`
-
-      const saveResult = await store.getMasterDb.rel.save('project', { ...mapped, })
-
-      console.log(await store.getMasterDb.rel.find('project', saveResult.id))
-
-      readDocs()
+      item.value = {} as any
 
     }
 
@@ -103,17 +114,15 @@ export default defineComponent({
 
     }
     return {
-      readDocs, createDoc, updateDoc, deleteDoc, editSelected,
+      readDocs, createDoc, deleteDoc, editSelected,
       options,
       option,
       item,
       deleteItem(eventArgs: unknown) {
         console.log('deleteItem')
       },
-      submitItem(eventArgs: unknown) {
-        console.log(eventArgs)
+      submitItem
 
-      }
     }
   }
 })

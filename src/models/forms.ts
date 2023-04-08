@@ -1,3 +1,5 @@
+import { boolean } from 'mathjs'
+
 export interface LuftschadstoffeForm {
   id: string
   bemerkung: string,
@@ -23,13 +25,45 @@ export interface SchallmessungForm {
   // geometrie_emittent: PouchGeometrieEmittent,
   // geometrie_messung: PouchGeometrieMessung
 
-  // messpositionen: PouchMessposition[]
-
+  messpositionen: MesswertereiheForm[]
   // auswertung: PouchAuswertung | null
 
   type: string
 
   messverfahren: string
+}
+
+
+
+export interface MesswertereiheForm {
+  fremdpegelVorhanden: boolean
+  gesamtpegel__hz31_5: number
+  gesamtpegel__hz63: number
+  gesamtpegel__hz125: number
+  gesamtpegel__hz250: number
+  gesamtpegel__hz500: number
+  gesamtpegel__hz1000: number
+  gesamtpegel__hz2000: number
+  gesamtpegel__hz4000: number
+  gesamtpegel__hz8000: number
+  gesamtpegel__messfile: string
+  gesamtpegel__messgeraet: string
+  gesamtpegel__overview: string
+
+  fremdpegel__hz31_5: number
+  fremdpegel__hz63: number
+  fremdpegel__hz125: number
+  fremdpegel__hz250: number
+  fremdpegel__hz500: number
+  fremdpegel__hz1000: number
+  fremdpegel__hz2000: number
+  fremdpegel__hz4000: number
+  fremdpegel__hz8000: number
+  fremdpegel__messfile: string
+  fremdpegel__messgeraet: string
+  fremdpegel__overview: string
+
+  id: string
 }
 
 export interface EmittentDetailsForm {

@@ -24,7 +24,7 @@ const routes: RouteRecordRaw[] = [
       }
     },
     { path: 'emittent', component: () => import('pages/EmittentDetails.vue'), name: 'emittent' },
-    { path: 'map', component: () => import('pages/MapPage.vue'), name: 'map' },
+    { path: 'map', component: () => import('pages/MapEditPage.vue'), name: 'map' },
     { path: 'mapper', component: () => import('pages/MapperPage.vue'), name: 'mapper', },
     { path: 'uebersicht', component: () => import('pages/PlantPage.vue'), name: 'uebersicht' },
     { path: 'sts', component: () => import('pages/DevelopmentSts.vue'), name: 'sts' },
@@ -38,6 +38,7 @@ const routes: RouteRecordRaw[] = [
         // auth: true
       }
     },
+    { path: 'emittent/v2/', component: () => import('pages/EmittentPageRework.vue'), name: 'emittent-details' },
     {
       path: 'fun', component: () => import('pages/PlaygroundEmittent.vue'), name: 'rollercoaster', meta: {
         // auth: true

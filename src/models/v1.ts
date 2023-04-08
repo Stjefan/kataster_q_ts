@@ -809,7 +809,7 @@ const auswertungFactory = Factory.Sync.makeFactory<AuswertungDefault>({
   anlagenpegel: Factory.each(() => anlagenpegelFactory.buildList(2)),
   mittelungspegel_gesamt: Factory.each(() => messwertereiheFactory.buildList(2)),
   mittelungspegel_fremd: Factory.each(() => messwertereiheFactory.buildList(2)),
-  id: Factory.each((i) => `A${i}`),
+  id: Factory.each((i) => uuidv4()),
   korrekturwerte: Factory.each(() => [])
 })
 

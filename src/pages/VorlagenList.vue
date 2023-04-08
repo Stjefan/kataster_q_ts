@@ -1,44 +1,8 @@
 <template>
   <q-page padding>
     <!-- content -->
-    <q-btn label="Neue Vorlage hinzufügen" @click="create" />
-    <q-btn label="Änderungen speichern" @click="saveChanges" />
-    <q-select v-model="selectedVorlage" :options="vorlagen" option-label="name" />
-    <FormKit type="form" @submit="submitVorlage" name="vorlagen" label="Messung" v-model="selectedVorlage"
-      v-if="selectedVorlage">
-      <FormKit name="id" hidden />
-      <FormKit type="list">
+    <forms-vorlage />
 
-        <FormKit type="group" name="y">
-          <FormKit label="Zeile" name="row" type="number" />
-          <FormKit label="Spalte" name="column" type="number" />
-        </FormKit>
-        <FormKit type="group" name="x">
-          <FormKit label="Zeile" name="row" type="number" />
-          <FormKit label="Spalte" name="column" type="number" />
-          <FormKit label="Länge" name="length" type="number" />
-          <FormKit label="Breite" name="width" type="number" />
-        </FormKit>
-
-      </FormKit>
-    </FormKit>
-    <FormKit type="form" name="x" @submit="submitItem" :config="{ validationVisibility: 'submit' }">
-      <FormKit type="list" v-model="values" name="fields">
-        <FormKit v-for="key in items" :key="key" :id="key" type="group" label="Group" validation="required">
-          <div class="row">
-            <FormKit label="Feld" name="field" type="select" :options="options" />
-
-            <FormKit label="Spalte" name="column" type="number" validation="required" />
-            <FormKit label="Zeile" name="row" type="number" validation="required" />
-            <q-btn class="formkit-remove" :data-key="key" href="#" @click="removeItem" label="-" />
-          </div>
-        </FormKit>
-
-      </FormKit>
-      <br />
-      <button type="button" @click.prevent="addItem">Feld hinzufügen</button>
-    </FormKit>
-    <q-btn label="Test Vorlage" @click="runTestVorlage" />
   </q-page>
 </template>
 
@@ -54,8 +18,10 @@ import { saveAs } from 'file-saver';
 import { api } from 'src/boot/axios';
 import * as _ from 'lodash'
 
+import FormsVorlage from 'src/components/FormsVorlage.vue';
+
 export default defineComponent({
-  // components: { VorlageDetails },
+  components: { FormsVorlage },
   // name: 'PageName'
   setup() {
     function submitVorlage(event: any) {

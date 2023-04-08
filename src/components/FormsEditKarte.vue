@@ -1,15 +1,27 @@
 <template>
   <button @click="read">Read</button>
+  <FormKit type="button" @click="createMap" label="Neue Karte anlegen" />
   <q-select v-model="item" :options="options" option-label="id" />
-  <button @click="editSelected">Bearbeiten</button>
+  <FormKit type="button" label="Bearbeiten" @click="editSelected" />
   <FormKit type="form" @submit="handleSubmit" id="form-karte" v-model="form">
     <FormKit type="text" name="id" :disabled="true" />
     <div class="row">
       <FormKit type="file" name="image" v-model="fileInput" @update:modelValue="handleUpdateImage" accept=".png,.bmp,.jpg"
         validation="required" />
     </div>
-    <button>Zoom zurücksetzen</button>
-    {{ positionPixelLastClick }}
+    <FormKit type="button" label="Zoom zurücksetzen" />
+    <table>
+      <tr>
+        <td>x/y</td>
+        <td>{{ positionPixelLastClick.x }}</td>
+        <td>{{ positionPixelLastClick.y }}</td>
+      </tr>
+      <tr>
+        <td>GK-Rechts/GK-Hoch</td>
+        <td>{{ positionGKLastClick.gkRechts }}</td>
+        <td>{{ positionGKLastClick.gkHoch }}</td>
+      </tr>
+    </table>
     <div style="background-color: lightgrey; overflow: hidden; height: 50vh;">
       <div id="zoomPan">
         <img :src="imagePreviewUrl" v-if="imagePreviewUrl" style="position: absolute; " position="0 0"
@@ -59,6 +71,32 @@
     <FormKit type="button" @click.prevent="deleteDoc" label="Karte löschen" />
 
   </FormKit>
+  <div></div>
+
+  <table v-if="bisherigeGeoreferenzierung">
+    <tr>
+      <td>
+        {{ bisherigeGeoreferenzierung.x00 }}
+      </td>
+      <td>
+        {{ bisherigeGeoreferenzierung.x01 }}
+      </td>
+      <td>
+        {{ bisherigeGeoreferenzierung.x02 }}
+      </td>
+    </tr>
+    <tr>
+      <td>
+        {{ bisherigeGeoreferenzierung.x10 }}
+      </td>
+      <td>
+        {{ bisherigeGeoreferenzierung.x11 }}
+      </td>
+      <td>
+        {{ bisherigeGeoreferenzierung.x12 }}
+      </td>
+    </tr>
+  </table>
   <div>Ergebnisse Georeferezierung: {{ resultsGeoreferenzierung }}</div>
 </template>
 
@@ -69,7 +107,7 @@ import { useKatasterStore } from 'src/stores/kataster-store'
 
 import panzoom from 'panzoom';
 import { getNode } from '@formkit/core';
-import { georeferenzieren, compute2PointGeoref as create2PointGeoreferenzierung, } from 'src/utility/georeferenzieren';
+import { georeferenzieren, compute2PointGeoref as create2PointGeoreferenzierung, get_gk_2_px_matrix, px_2_gk, gk_2_px, } from 'src/utility/georeferenzieren';
 import { mapper } from 'src/mappings/mapper';
 import { PouchMap } from 'src/models/pouch-api';
 export default defineComponent({
@@ -80,10 +118,10 @@ export default defineComponent({
     const store = useKatasterStore()
 
     const resultsGeoreferenzierung = ref(null as any)
-
+    const positionGKLastClick = ref({ gkRechts: NaN, gkHoch: NaN })
     const contextMenuVisible = ref(0);
     const contextMenuPosition = ref({ x: 0, y: 0 });
-
+    const bisherigeGeoreferenzierung = ref(null as any)
     function showContextMenu(e: any) {
       console.log('showContextMenu')
 
@@ -94,6 +132,14 @@ export default defineComponent({
 
     function handleClickOnMap(e: any) {
       positionPixelLastClick.value = { x: e.offsetX, y: e.offsetY };
+      if (bisherigeGeoreferenzierung.value != null) {
+        const m = get_gk_2_px_matrix(bisherigeGeoreferenzierung.value)
+        console.log(m)
+        const gk = px_2_gk({ px_x: e.offsetX, px_y: e.offsetY }, bisherigeGeoreferenzierung.value)
+        console.log('GK', gk)
+        positionGKLastClick.value = { gkRechts: Math.round(gk.gk_rechts), gkHoch: Math.round(gk.gk_hoch) }
+        console.log(gk_2_px(gk, m))
+      }
       hideContextMenu()
     }
 
@@ -122,11 +168,6 @@ export default defineComponent({
 
     }
 
-    function runGeoreferenzierung() {
-      console.log('runGeoreferenzierung')
-
-
-    }
 
     async function readDocs() {
       console.log('read')
@@ -140,7 +181,8 @@ export default defineComponent({
 
     async function editSelected() {
       console.log('editSelected')
-
+      console.log('Current', item.value.georeferenzierung)
+      bisherigeGeoreferenzierung.value = item.value.georeferenzierung
       const mapped = mapper.map<any, any>(item.value, 'KarteForm', 'KarteForm')
 
       console.log(item.value, mapped, mapped.georeferenzierung.referenzierungspunkt_set.length)
@@ -319,6 +361,22 @@ export default defineComponent({
       // update()
     }
 
+    async function createMap() {
+      form.value = {} as any
+      const node1 = getNode('form-karte');
+      await node1?.isSettled;
+      items.value = []
+      // values.value = mapped.georeferenzierung.referenzierungspunkt_set
+
+      await node1?.isSettled;
+
+      values.value = []
+
+      imagePreviewUrl.value = '' // URL.createObjectURL(imageMap as Blob);
+
+      fileInput.value = []
+    }
+
     onMounted(() => {
       console.log('On mounted');
       // Enable zooming
@@ -381,7 +439,11 @@ export default defineComponent({
       handleClickOnMap,
       resultsGeoreferenzierung,
       editSelected,
-      deleteDoc
+      deleteDoc,
+      createMap,
+      bisherigeGeoreferenzierung,
+      positionGKLastClick
+
 
     }
   }

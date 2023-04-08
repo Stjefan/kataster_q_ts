@@ -30,10 +30,11 @@
         <q-route-tab :to="{ name: 'vorlagen' }" exact label="Vorlagen" />
         <q-route-tab :to="{ name: 'messgeraete' }" exact label="Messgeräte" />
         <q-route-tab :to="{ name: 'overviews' }" exact label="Overviews" />
+        <q-route-tab :to="{ name: 'emittent-details' }" label="Emittent" />
 
         <q-route-tab :to="{ name: 'filter' }" exact label="Filter" />
 
-        <q-route-tab to="map" exact label="Karte" :disable="store.karte2edit == null" />
+        <q-route-tab to="map" exact label="Karte" />
 
         <q-route-tab to="emittent" exact label="Emittent" :disable="store.emittent == null" />
         <q-route-tab to="playground" exact label="Dev" />

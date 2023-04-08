@@ -25,6 +25,7 @@
       </q-scroll-area>
       <div class="col-8">
 
+        <map-component-rework style="height: 70vh" />
         <map-view @addEmittent="handleAddEmittent" @selectNodeRequest="handleSelectNodeRequest" v-if="store.karteMainPage"
           style="height: 70vh" />
       </div>
@@ -42,9 +43,10 @@ import PlantOverview from '../components/PlantOverview.vue'
 import { useKatasterStore } from '../stores/kataster-store'
 import MapView from 'src/components/MapView.vue'
 import { useQuasar } from 'quasar'
+import MapComponentRework from 'src/components/MapComponentRework.vue'
 export default defineComponent({
   // name: 'PageName'
-  components: { PlantOverview, MapView },
+  components: { PlantOverview, MapView, MapComponentRework },
   setup() {
 
     const $q = useQuasar()

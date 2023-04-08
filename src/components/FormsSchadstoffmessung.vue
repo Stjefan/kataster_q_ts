@@ -66,15 +66,13 @@ import { getNode } from '@formkit/core'
 import { mapper } from 'src/mappings/mapper'
 import * as _ from 'lodash'
 
-
+import { castNumber } from 'src/utility/errorHandling'
 
 
 export default defineComponent({
   // name: 'ComponentName'
   setup() {
-    const castNumber = (node: any) => {
-      node.hook.input((value: any, next: any) => next(Number(value)))
-    }
+
 
     const id = '1482a1d2-0da7-4046-877a-1f8f81ec000f'
     async function readMessung() {
@@ -265,11 +263,10 @@ export default defineComponent({
       store.saveLuftschadstoffe(luftschadstoffe.value)
     }
     const store = useKatasterStore()
-    console.log('Luftschadstoffe', store.emittent!.luftschadstoffe)
-    const luftschadstoffe = ref(store.emittent!.luftschadstoffe)
+    const luftschadstoffe = ref(luftschadstoffeFactory.build())
 
 
-    const messung = ref(store.emittent!.luftschadstoffe.messungen[0])
+    const messung = ref(luftschadstoffe.value.messungen[0])
 
     function addGenehmigung() {
       luftschadstoffe.value.genehmigungen.push(genehmigungFactory.build())
