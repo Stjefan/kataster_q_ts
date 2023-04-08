@@ -3,16 +3,22 @@
     <!-- content -->
     <create-update-project-form />
     <q-btn label="Complex File-Management" @click="foo" />
+    <br />
+    <vorlage-details />
+    <div>ABC</div>
+    <forms-again />
   </q-page>
 </template>
 
 <script lang="ts">
 import CreateUpdateProjectForm from 'src/components/CreateUpdateProjectForm.vue'
+import VorlageDetails from 'src/components/VorlageDetails.vue'
 import { uuidv4 } from 'src/models/v1'
 import { defineComponent } from 'vue'
 import * as _ from 'lodash'
+import FormsAgain from 'src/components/FormsAgain.vue'
 export default defineComponent({
-  components: { CreateUpdateProjectForm },
+  components: { CreateUpdateProjectForm, VorlageDetails, FormsAgain },
   // name: 'PageName'
   setup() {
     function foo() {

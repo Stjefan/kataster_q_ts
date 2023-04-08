@@ -1,26 +1,30 @@
 <template>
   <q-page padding>
     <!-- content -->
-    <form-kit type="form" @submit="submitHandler" id="form-1">
-      <FormKit type="list" v-model="values" name="permissions">
+    <div v-for="val in values" :key="val.id">
+      <q-input type="text" :disable="true" v-model="val.id" />
+      <q-file v-model="val.file" />
+      <q-btn label="Anzeigen" @click="showPdf(val)" />
+      <div v-if="val.bisher">
+        bisher: {{ val.filename }}
+      </div>
 
-        <FormKit v-for="key in items" :key="key" :id="key" type="group" label="Group">
-          <form-kit type="text" name="id" disabled></form-kit>
-
-          <form-kit type="file" name="blub"></form-kit>
-          <div></div>
-          <button class="formkit-remove" :data-key="key" href="#" @click="removeItem">-</button>
-        </FormKit>
-        <br />
-        <button type="button" @click.prevent="addItem">Messung hinzufügen</button>
-      </FormKit>
-    </form-kit>
+      <q-btn label="-" @click="deleteItem(val.id)" />
+    </div>
+    <q-btn label="+" @click="addItem" />
+    <br />
+    <q-btn label="Commit" @click="saveValues" />
+    <br />
     <button @click="loadEmittent">Load</button>
     <button @click="funWithEmittent">Get Attachements</button>
     <button @click="putAttachements">Put Attachements</button>
     <button @click="loadSpecificDoc">specificDoc</button>
+    <br />
     {{ values }}
     <luftschadstoffe-component v-if="false" />
+    <br />
+    <p>Eröffnen Sie eine PDF-Datei <a :href="exampleUrl">zum Beispiel</a>.</p>
+    <iframe :src="exampleUrl"></iframe>
   </q-page>
 </template>
 
@@ -38,7 +42,7 @@ export default defineComponent({
 
     const formContent = ref({})
 
-    const values = ref([{ id: uuidv4(), blub: 'Gogo', bisher: null }, { id: uuidv4(), bisher: null }] as any[])
+    const values = ref([{ id: uuidv4(), blub: 'Gogo', bisher: null, file: null }, { id: uuidv4(), bisher: null, file: null }] as any[])
     const items = ref([uuidv4(), uuidv4()])
     const name = ref('')
 
@@ -52,13 +56,17 @@ export default defineComponent({
       console.log('Push now');
 
 
-      values.value = result.permissions.map((i: any) => ({ id: i.id, correspondingFile: result.attachments[i.id] })) //[{ id: uuidv4() }, { id: uuidv4() }]
+      values.value = result.permissions.map((i: any) => ({ id: i.id, bisher: result.attachments[i.id], filename: i.filename })) //[{ id: uuidv4() }, { id: uuidv4() }]
 
 
       // console.log(result.attachments['1ef88960-e3ab-4789-bc39-727824f6a552'])
       result.permissions.forEach(async (element: any) => {
-        const a = await store.getDb.rel.getAttachment('article', article_id, element.id)
-        console.log(a)
+        try {
+          const a = await store.getDb.rel.getAttachment('article', article_id, element.id)
+          console.log(a)
+        } catch (ex) {
+          console.log(element.id, 'not found')
+        }
       });
 
       // console.log(a)
@@ -70,44 +78,50 @@ export default defineComponent({
 
     }
 
-    async function submitHandler(args: any) {
-      console.log('Args', args)
-      const result = (await store.getDb.rel.find('article', article_id)).articles[0]
-      if (false) {
-        for (const g of args.permissions) {
-          const file = g.blub[0].file
-          const result = (await store.getDb.rel.find('article', '2454aca2-386c-41d9-9079-29a6262a829d')).articles[0]
-          const updateResult = await store.getDb.rel.putAttachment('article', { ...result }, `${g.id}`, file, file.type)
-          console.log(updateResult)
-        }
-      }
-      const mapped = args.permissions.filter((i: any) => i.length > 0).map((i: any) => ({
-        [`${i.id}`]: {
-          data: i.blub[0].file,
-          content_type: i.blub[0].file.type
-        }
-      }))
 
-      const obj = args.permissions.filter((i: any) => i.blub.length > 0).reduce((o: any, i: any) => ({
+    async function saveValues() {
+      console.log(values.value)
+      const result = (await store.getDb.rel.find('article', article_id)).articles[0]
+
+
+      const obj = values.value.filter((i: any) => i.file != null).reduce((o: any, i: any) => ({
         ...o, [`${i.id}`]: {
-          data: i.blub[0].file,
-          content_type: i.blub[0].file.type
+          data: i.file,
+          content_type: i.file.type
         }
       }), {})
 
-      console.log('attachments-obj', obj)
+      console.log('biserh')
+
+      console.log('New attachments-obj', obj)
+
       // console.log(result)
 
 
 
       const base = await store.getDb.get(store.getDb.rel.makeDocID({ type: 'article', 'id': article_id }))
 
-      const data2save = { ...(base as any).data, permissions: args.permissions.map((i: any) => ({ id: i.id })) }
-      console.log('No attachments', base, '2svae', data2save)
+
+
+      const data2save = { ...(base as any).data, permissions: values.value.map((i: any) => ({ id: i.id, filename: i.file?.name ?? i.filename })) }
+      let myAttachments = obj
+      console.log('base', base, '2svae', data2save)
+      if (base._attachments != null) {
+        values.value.forEach(i => {
+          if (i.id != null && i.file == null) {
+            console.log(base._attachments![i.id])
+            myAttachments = { ...myAttachments, [i.id]: base._attachments![i.id] }
+          }
+        })
+      }
+
+      console.log(myAttachments)
+
+
       const putResult = await store.getDb.put({
         _id: base._id, //store.getDb.rel.makeDocID({ type: 'article', 'id': 'cd6e70c8-42be-411e-8c77-ed2c50b0c93d' }),
         _rev: base._rev,
-        _attachments: obj,
+        _attachments: myAttachments,
         data: data2save
       });
       console.log('putResult', putResult)
@@ -146,31 +160,50 @@ export default defineComponent({
 
     }
 
-    const addItem = () => {
-      items.value.push(uuidv4())
+    const exampleUrl = ref('')
+
+    async function showPdf(value: any) {
+      if (value.file != null) {
+        exampleUrl.value = URL.createObjectURL(value.file as Blob)
+
+      } else {
+        const a = await store.getDb.rel.getAttachment('article', article_id, value.id)
+        console.log(a)
+        exampleUrl.value = URL.createObjectURL(a as Blob)
+      }
+
+
     }
 
-    const removeItem = (e: any) => {
-      e.preventDefault()
-      const key = e.target.getAttribute('data-key')
-      console.log(items.value, key)
-      console.log([...items.value])
-      items.value = items.value.filter(item => item !== key)
-      console.log([...items.value])
+    const addItem = () => {
+      // items.value.push(uuidv4())
+      values.value.push({ id: uuidv4(), blub: 'Gogo', bisher: null, file: null })
+    }
+
+    const deleteItem = (e: any) => {
+      //e.preventDefault()
+      //const key = e.target.getAttribute('data-key')
+      //console.log(items.value, key)
+      // console.log([...items.value])
+      // items.value = items.value.filter(item => item !== key)
+      // console.log([...items.value])
+      values.value = values.value.filter(item => item.id !== e)
     }
 
     return {
+      saveValues,
       addItem,
-      removeItem,
+      deleteItem,
       putAttachements,
       funWithEmittent,
-      submitHandler,
       formContent,
       name,
       loadEmittent,
       values,
       items,
-      loadSpecificDoc
+      loadSpecificDoc,
+      showPdf,
+      exampleUrl
     }
 
 

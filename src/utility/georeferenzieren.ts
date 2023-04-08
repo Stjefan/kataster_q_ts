@@ -63,9 +63,9 @@ export function georeferenzieren(pointsOnMap: Georeferenzierungspunkt[], image: 
   const myGkHochArr = [];
   const myGkRechtsArr = [];
   for (const el of pointsOnMap) {
-    myLeastsquareArr.push([1, el.pixel_x, el.pixel_y]);
-    myGkHochArr.push(el.gk_hoch);
-    myGkRechtsArr.push(el.gk_rechts);
+    myLeastsquareArr.push([1, el.pixelX, el.pixelY]);
+    myGkHochArr.push(el.gkHoch);
+    myGkRechtsArr.push(el.gkRechts);
   }
   const myLeastsquareMatrix = matrix(myLeastsquareArr);
   const myGkHochVec = matrix(myGkHochArr);
@@ -115,21 +115,21 @@ export function georeferenzieren(pointsOnMap: Georeferenzierungspunkt[], image: 
     x10: pixel_2_gk[1][0],
     x11: pixel_2_gk[1][1],
     x12: pixel_2_gk[1][2],
-    upper_left: {
-      gk_rechts: upper_left_arr[0][0],
-      gk_hoch: upper_left_arr[1][0],
+    upperLeft: {
+      gkRechts: upper_left_arr[0][0],
+      gkHoch: upper_left_arr[1][0],
     },
-    upper_right: {
-      gk_rechts: upper_right_arr[0][0],
-      gk_hoch: upper_right_arr[1][0],
+    upperRight: {
+      gkRechts: upper_right_arr[0][0],
+      gkHoch: upper_right_arr[1][0],
     },
-    lower_right: {
-      gk_rechts: lower_right_arr[0][0],
-      gk_hoch: lower_right_arr[1][0],
+    lowerRight: {
+      gkRechts: lower_right_arr[0][0],
+      gkHoch: lower_right_arr[1][0],
     },
-    lower_left: {
-      gk_rechts: lower_left_arr[0][0],
-      gk_hoch: lower_left_arr[1][0],
+    lowerLeft: {
+      gkRechts: lower_left_arr[0][0],
+      gkHoch: lower_left_arr[1][0],
     },
   };
   console.log(georef_data_backend)
@@ -141,17 +141,17 @@ export function compute2PointGeoref(pointsOnMap: Georeferenzierungspunkt[], imag
   if (pointsOnMap.length != 2) {
     throw new Error('You need exactly 2 points')
   }
-  const p_x_a = pointsOnMap[0].pixel_x;
-  const p_y_a = pointsOnMap[0].pixel_y;
+  const p_x_a = pointsOnMap[0].pixelX;
+  const p_y_a = pointsOnMap[0].pixelY;
 
-  const p_gk_rechts_a = pointsOnMap[0].gk_rechts;
-  const p_gk_hoch_a = pointsOnMap[0].gk_hoch;
+  const p_gk_rechts_a = pointsOnMap[0].gkRechts;
+  const p_gk_hoch_a = pointsOnMap[0].gkHoch;
 
-  const p_x_b = pointsOnMap[1].pixel_x;
-  const p_y_b = pointsOnMap[1].pixel_y;
+  const p_x_b = pointsOnMap[1].pixelX;
+  const p_y_b = pointsOnMap[1].pixelY;
 
-  const p_gk_rechts_b = pointsOnMap[1].gk_rechts;
-  const p_gk_hoch_b = pointsOnMap[1].gk_hoch;
+  const p_gk_rechts_b = pointsOnMap[1].gkRechts;
+  const p_gk_hoch_b = pointsOnMap[1].gkHoch;
   const v_gk = [p_gk_rechts_b - p_gk_rechts_a, p_gk_hoch_b - p_gk_hoch_a];
   const v_px = [p_x_b - p_x_a, p_y_b - p_y_a];
 
@@ -226,21 +226,21 @@ export function compute2PointGeoref(pointsOnMap: Georeferenzierungspunkt[], imag
     x10: pixel_2_gk[1][0],
     x11: pixel_2_gk[1][1],
     x12: pixel_2_gk[1][2],
-    upper_left: {
-      gk_rechts: upper_left_arr[0][0],
-      gk_hoch: upper_left_arr[1][0],
+    upperLeft: {
+      gkRechts: upper_left_arr[0][0],
+      gkHoch: upper_left_arr[1][0],
     },
-    upper_right: {
-      gk_rechts: upper_right_arr[0][0],
-      gk_hoch: upper_right_arr[1][0],
+    upperRight: {
+      gkRechts: upper_right_arr[0][0],
+      gkHoch: upper_right_arr[1][0],
     },
-    lower_right: {
-      gk_rechts: lower_right_arr[0][0],
-      gk_hoch: lower_right_arr[1][0],
+    lowerRight: {
+      gkRechts: lower_right_arr[0][0],
+      gkHoch: lower_right_arr[1][0],
     },
-    lower_left: {
-      gk_rechts: lower_left_arr[0][0],
-      gk_hoch: lower_left_arr[1][0],
+    lowerLeft: {
+      gkRechts: lower_left_arr[0][0],
+      gkHoch: lower_left_arr[1][0],
     },
   };
 

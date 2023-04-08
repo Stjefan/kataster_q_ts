@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import { getIdFromString, mapper } from 'src/mappings/mapper';
+import { mapper } from 'src/mappings/mapper';
 import {
   luftschadstoffeFactory,
   Building, Emittent, EmittentDetails, emittentDetailsFactory,
@@ -49,6 +49,7 @@ const relMasterDb = masterDb.setSchema([
 ])
 
 function setUpDb(name: string) {
+  console.log(name)
   const db = new PouchDB(name); // mydb6
   const result = db.setSchema([
     {
@@ -155,7 +156,8 @@ export const useKatasterStore = defineStore('kataster', {
   }),
   getters: {
     doubleCount: (state) => state.counter * 2,
-    getDb: () => relDB
+    getDb: () => relDB,
+    getMasterDb: () => relMasterDb
   },
   actions: {
     async replicateDatabase() {
@@ -165,20 +167,6 @@ export const useKatasterStore = defineStore('kataster', {
         console.log(await relDB.sync(`http://admin:password@127.0.0.1:5984/${this.project?.dbName}`));
 
       }
-    },
-    async loadAllEmittentDetailsIntoStorage() {
-      const allEmittents = _.flatMap(_.flatMap(_.flatMap(this.plants, i => i.children), i => i.children), i => i.children)
-
-      console.log(allEmittents)
-      const batchSize = 2 ** 6
-      for (let i = 0; i < allEmittents.length; i += batchSize)
-        await Promise.all(allEmittents.slice(i, i + batchSize).map(i => api.get(`/emittent/details/${i.id}`).then(response => relDB.rel.save(
-          'emittent',
-          { ...response.data, id: uuidv4(), discriminator: 'emittent' }
-        )))).then(
-          docs => console.log(docs)
-
-        )
     },
 
     async loadMapFromPouch() {
@@ -447,12 +435,7 @@ export const useKatasterStore = defineStore('kataster', {
       this.project = arg
       console.log(arg)
       relDB = setUpDb(this.project!.dbName)
-      if (false) {
-        const r3 = await api.get(`/kataster/?project__id=${this.project?.id}`)
-        console.log(r3)
-        this.plants = r3.data.results.map((i: TreeNodeApi) => mapper.map<TreeNodeApi, Plant>(i, 'TreeNodeApi', 'Plant'))
-        console.log(this.plants)
-      }
+
       await this.loadUebersicht()
 
       this.karte2edit = null
@@ -487,12 +470,12 @@ export const useKatasterStore = defineStore('kataster', {
       this.projects = (await relMasterDb.rel.find('project')).projects.map((i: any) => mapper.map<PouchProject, Projekt>(i, 'PouchProject', 'Projekt'))
       console.log((await relMasterDb.rel.find('project')).projects)
       if (this.projects.length) {
-        this.project = this.projects[1]
+        this.project = this.projects[0]
         relDB = setUpDb(this.project?.dbName)
 
         await this.loadUebersicht()
         console.log('Werke', this.plants, 'Templates', this.vorlagen)
-        this.setEmittentDetailsFromEmittent((await relDB.rel.find('emittent')).emittents[0])
+        // this.setEmittentDetailsFromEmittent((await relDB.rel.find('emittent')).emittents[0])
 
       }
 
@@ -921,6 +904,7 @@ export const useKatasterStore = defineStore('kataster', {
     },
 
     updateCorrespondingNonDetailedEmittent(emittent: EmittentDetails) {
+      console.log(this.emittentSource)
       if (this.emittentSource != null) {
         this.emittentSource.name = emittent.name
         this.emittentSource.koordinaten.gk_rechts = emittent.gkrechts

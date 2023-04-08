@@ -6,6 +6,10 @@ import { GesturePlugin } from '@vueuse/gesture'
 
 
 import { plugin, defaultConfig } from '@formkit/vue'
+import { createFloatingLabelsPlugin } from '@formkit/addons'
+import '@formkit/addons/css/floatingLabels'
+
+import { createI18n } from 'vue-i18n'
 
 declare module '@vue/runtime-core' {
   interface ComponentCustomProperties {
@@ -14,8 +18,6 @@ declare module '@vue/runtime-core' {
 }
 
 import { Notify } from 'quasar'
-
-
 
 
 
@@ -40,10 +42,53 @@ export default boot(async ({ app, router }) => {
     throw err
   }
 
-  app.use(plugin, defaultConfig)
+  const numberFormats = {
+    'en-US': {
+      currency: {
+        style: 'currency', currency: 'USD', notation: 'standard'
+      },
+      decimal: {
+        style: 'decimal', minimumFractionDigits: 2, maximumFractionDigits: 2
+      },
+      percent: {
+        style: 'percent', useGrouping: false
+      }
+    },
+    'de-De': {
+      currency: {
+        style: 'currency', currency: '€', notation: 'standard'
+      },
+      decimal: {
+        style: 'decimal', minimumFractionDigits: 2, maximumFractionDigits: 4
+      },
+      percent: {
+        style: 'percent', useGrouping: false
+      }
+    },
+  }
+
+  const i18n = createI18n({
+    legacy: false,
+    number: numberFormats
+    // something vue-i18n options here ...
+  })
+  app.use(i18n)
+
+
+  app.use(plugin, defaultConfig({
+    theme: 'genesis',
+    plugins: [
+      createFloatingLabelsPlugin({
+        useAsDefault: false, // defaults to false
+      }),
+    ],
+  }))
   const store = useKatasterStore()
   await store.init()
-  app.use(GesturePlugin)
+  // app.use(GesturePlugin)
+
+
+
   app.config.globalProperties.$axios = axios;
   // ^ ^ ^ this will allow you to use this.$axios (for Vue Options API form)
   //       so you won't necessarily have to import axios in each vue file

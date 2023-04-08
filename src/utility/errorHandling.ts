@@ -11,3 +11,14 @@ export const errorHandler = (err: any) => {
 }
 
 
+export const castNumber = (node: any) => {
+  node.hook.input((value: any, next: any) => next(Number(value)))
+}
+
+export const getRandomNumber = (min = 0, max = 100) => {
+  return Math.floor(Math.random() * (max - min) * 10) / 10
+}
+
+export function createXlsxReportV1(args: any) {
+
+}

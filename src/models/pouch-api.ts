@@ -37,7 +37,7 @@ export interface PouchEmittent {
 
   bemerkung: string
   messungen: PouchMessung[]
-  picture: Blob
+  filename: Blob
 
   bearbeiter: string,
   kostenstelle: string,
@@ -142,12 +142,18 @@ export interface PouchGeometrieEmittent {
   id: string
 }
 
-export interface Georeferenzierungspunkt {
+export interface PouchGeoreferenzierungspunkt {
   gk_rechts: number
   gk_hoch: number
   pixel_x: number
   pixel_y: number
   id: string
+}
+
+export interface PouchOverview {
+  filename: string
+  id: string
+  lastModfied: number
 }
 
 export interface PouchMetainfo {
@@ -163,8 +169,8 @@ export interface GK2PxMatrix {
   matrix: number[][]
 }
 
-export interface Georeferenzierung {
-  referenzierungspunkt_set: Georeferenzierungspunkt[]
+export interface PouchGeoreferenzierung {
+  referenzierungspunkt_set: PouchGeoreferenzierungspunkt[]
   x00: number
   x01: number
   x02: number
@@ -182,8 +188,10 @@ export interface Georeferenzierung {
 
 export interface PouchMap {
   url: string
-  georeferenzierung?: Georeferenzierung
+  georeferenzierung?: PouchGeoreferenzierung
   id: string
+
+  filename: string
 
   roof: string | null,
   plant: string | null,
@@ -192,22 +200,20 @@ export interface PouchMap {
 }
 
 export interface PouchKoordinaten {
-  gkrechts: number
-  gkhoch: number
+  gkRechts: number
+  gkHoch: number
 }
 
-export interface PouchKoordinatenHoehe {
-  gkrechts: number
-  gkhoch: number
+export interface PouchKoordinatenHoehe extends PouchKoordinaten {
+
   hoehe: number
 }
 
 export interface PouchMessgeraet {
   name: string,
   id: string
-  offsetLines: number
-  seriennummer: string
-  idAtBackend: number | null
+  offsetLines: number | null
+  seriennummer: string | null
   hz31_5: number | null;
   hz63: number | null
   hz125: number | null
@@ -223,4 +229,64 @@ export interface PouchProject {
   id: string,
   name: string,
   dbName: string
+}
+
+export interface PouchFeldExcelBericht {
+  name: string
+  type: string
+
+}
+
+export interface PouchPositionFeldExcelBericht {
+  row: number
+  column: number
+  field: PouchFeldExcelBericht
+  id: string
+  multirowAbstandZeile?: number
+  multicolAbstandSpalte?: number
+
+}
+
+export interface PouchVorlageExcelbericht {
+  vorlage?: File
+
+  name: string
+  id: string
+  filename: string
+
+  fields: PouchPositionFeldExcelBericht[]
+}
+
+export interface PouchFileReference {
+  name: string,
+  referenz: string
+}
+
+export interface PouchLuftschadstoffmessung {
+  id: string
+  file: PouchFileReference,
+  grenzwert: number,
+  bemerkung: string,
+
+  abgastemperatur: number
+  ableitbedingungenErfüllt: boolean
+  abluftkonzentration: number
+  austrittsfläche: number
+  austrittsgeschwindigkeitAbluft: number
+
+  datum: number
+  gemessenerAbluftvolumenstrom: number
+  genehmigterAbluftvolumenstrom: number
+  geruchsrelevanz: boolean
+  massenstrom: number
+}
+
+export interface PouchLuftschadstoffgenehmigung {
+  id: string
+  aktenzeichen: string,
+  file: PouchFileReference
+  gueltigBis: number | null
+  gueltigAb: number | null
+  name: string | null
+  genehmigungsdatum: number | null
 }

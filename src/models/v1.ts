@@ -24,14 +24,15 @@ const USE_DEVELOPMENT_DATA = false
 export interface OverviewFile {
   id: string
   upload: string
+  filename: string
 }
 
 export interface LuftschadstoffGenehmigung {
   id: string
   name: string
-  gueltig_ab: string | null
-  gueltig_bis: string | null
-  file: Blob | null,
+  gueltigAb: string | null
+  gueltigBis: string | null
+  file: File | null,
   genehmigungsdatum: string | null
   aktenzeichen: string | null
 }
@@ -43,7 +44,7 @@ export interface LuftschadstoffMessung {
   abluftkonzentration: number | null,
   grenzwert: number | null,
   massenstrom: number | null,
-  file: Blob | null,
+  file: any | null,
   geruchsrelevanz: boolean | null
   gemessenerAbluftvolumenstrom: number | null  //"m³"),
   genehmigterAbluftvolumenstrom: number | null // "m³"),
@@ -166,6 +167,30 @@ export interface Vorlage {
   idAtBackend: number | null
 }
 
+export interface FeldExcelBericht {
+  name: string
+  type: string
+}
+
+export interface PositionFeldExcelBericht {
+  row: number
+  column: number
+  field: FeldExcelBericht
+  id: string
+  multirowAbstandZeile?: number
+  multicolAbstandSpalte?: number
+}
+
+export interface VorlageExcelbericht {
+  vorlage?: File
+
+  name: string
+  id: string
+
+  fields: PositionFeldExcelBericht[]
+}
+
+
 export interface Messgeraet {
   name: string,
   id: string
@@ -282,17 +307,17 @@ export interface EmittentSnapshot {
 }
 
 export interface Georeferenzierungspunkt {
-  gk_rechts: number
-  gk_hoch: number
-  pixel_x: number
-  pixel_y: number
+  gkRechts: number
+  gkHoch: number
+  pixelX: number
+  pixelY: number
   id: string
 }
 
 export interface Metainfo {
   name_messfile: string
   messdatum: string
-  overviewfile: string
+  overviewfile: string | null
   messgeraet: string | null | undefined
   id: string
 }
@@ -593,10 +618,10 @@ const messungFactory = _messungFactory.transform(obj => {
 })
 
 const georeferenzpunktFactory = Factory.Sync.makeFactory<Georeferenzierungspunkt>({
-  gk_hoch: 1,
-  gk_rechts: 2,
-  pixel_x: Factory.each((i) => Math.floor(Math.random() * 900)),
-  pixel_y: Factory.each((i) => Math.floor(Math.random() * 900)),
+  gkHoch: 1,
+  gkRechts: 2,
+  pixelX: Factory.each((i) => Math.floor(Math.random() * 900)),
+  pixelY: Factory.each((i) => Math.floor(Math.random() * 900)),
   id: Factory.each((i) => `${i}`),
 })
 
@@ -679,7 +704,7 @@ const metainfoFactory = Factory.Sync.makeFactory<Metainfo>({
   messgeraet: Factory.each((i) => null),
   messdatum: '2022-01-01',
   id: Factory.each((i) => `E${i}`),
-  overviewfile: 'xyz'
+  overviewfile: Factory.each((i) => null),
 
 })
 
@@ -829,8 +854,8 @@ const genehmigungFactory = Factory.Sync.makeFactory<LuftschadstoffGenehmigung>({
   name: 'X',
   genehmigungsdatum: Factory.each((i) => new Date().toISOString()),
   aktenzeichen: 'XY',
-  gueltig_ab: Factory.each((i) => new Date().toISOString()),
-  gueltig_bis: Factory.each((i) => new Date().toISOString()),
+  gueltigAb: Factory.each((i) => new Date().toISOString()),
+  gueltigBis: Factory.each((i) => new Date().toISOString()),
   file: null
 })
 
@@ -855,7 +880,14 @@ const luftschadstoffeFactory = Factory.Sync.makeFactory<Luftschadstoffe>({
   messungen: Factory.each((i) => []),
 })
 
+const excelTemplateFactory = Factory.Sync.makeFactory<VorlageExcelbericht>({
+  fields: Factory.each((i) => []),
+  id: Factory.each((i) => uuidv4()),
+  name: Factory.each((i) => 'TEST'),
+})
+
 export {
+  excelTemplateFactory,
   uuidv4,
   luftschaffMessungFactory,
   genehmigungFactory,
@@ -882,7 +914,8 @@ export {
   pointOnMapFactory,
   rectOnMapFactory,
   excelFieldImportFactory,
-  koordinatenFactory
+  koordinatenFactory,
+
 }
 
 

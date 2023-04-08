@@ -6,8 +6,8 @@
 
         <q-toolbar-title>
           <!--Kataster App-->
-        </q-toolbar-title>
 
+        </q-toolbar-title>
 
         <div v-if="false">Quasar v{{ $q.version }}</div>
       </q-toolbar>
@@ -22,9 +22,8 @@
         <q-route-tab to="pouch" label="Pouch" />
         -->
         <q-route-tab :to="{ name: 'projects' }" exact label="Projekte" />
-        <!--
+
         <q-route-tab :to="{ name: 'sts' }" exact label="STS" />
--->
         <q-route-tab :to="{ name: 'uebersicht' }" exact label="Übersicht" />
 
 
@@ -60,16 +59,14 @@ import {
 } from '../models/v1'
 import { Pegelreihe as PegelreiheAPI, MesspositionPegelreiheSerializerV2 } from '../models/api'
 
+import { useI18n } from 'vue-i18n'
+
+const { n } = useI18n()
+
 const store = useKatasterStore()
 
 // const auth = useAuth()
 
-const source = messwertereiheFactory.build()
-console.log('Mapping...', source)
-const result = mapper.map<Pegelreihe, PegelreiheAPI>(source, 'Pegelreihe', 'PegelreiheAPI')
-console.log(result)
-
-console.log('And back...', mapper.map<PegelreiheAPI, Pegelreihe>(result, 'PegelreiheAPI', 'Pegelreihe'))
 const leftDrawerOpen = ref(false)
 
 async function blabla() {

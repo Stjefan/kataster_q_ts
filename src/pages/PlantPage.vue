@@ -4,8 +4,10 @@
     <div class="row">
       <q-scroll-area style="height: 70vh;" class="col-3">
         <q-btn label="Neues Werk  " @click="init" />
+
+        <br />
         <q-btn icon="autorenew" @click="refresh" />
-        <q-btn label="Emittenten download" @click="longLastingTask" />
+        <br />
         <q-btn label="Import" @click="store.loadJson" />
         <q-btn label="Replicate" @click="store.replicateDatabase" />
         <!--
@@ -40,7 +42,6 @@ import PlantOverview from '../components/PlantOverview.vue'
 import { useKatasterStore } from '../stores/kataster-store'
 import MapView from 'src/components/MapView.vue'
 import { useQuasar } from 'quasar'
-import { getIdFromString } from 'src/mappings/mapper'
 export default defineComponent({
   // name: 'PageName'
   components: { PlantOverview, MapView },
@@ -114,10 +115,6 @@ export default defineComponent({
 
     }
 
-    function longLastingTask() {
-      store.loadAllEmittentDetailsIntoStorage()
-    }
-
     function createEntityDialog(parent: any, furtherArgs: any) {
       $q.dialog({
         title: 'Bezeichnung eingeben',
@@ -179,7 +176,6 @@ export default defineComponent({
       handleAddEmittent,
       createEntityDialog,
       store,
-      longLastingTask,
       handleSelectNodeRequest
     }
   }

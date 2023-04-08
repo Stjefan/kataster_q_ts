@@ -1,5 +1,6 @@
 <template>
   <q-page padding>
+    <!--
     <div>
       <q-select :model-value="selectedObject" @update:model-value="handleUpdate" :options="objects" option-label="name" />
       <q-btn label="Hinzufügen" @click="addOption" />
@@ -14,6 +15,9 @@
     {{ selectedObject }}
     <br />
     {{ objects }}
+    <br />
+    -->
+    <forms-schadstoffmessung />
   </q-page>
 </template>
 
@@ -31,7 +35,9 @@ interface FormPerson extends Person {
 import { defineComponent, ref, watch } from 'vue'
 import * as _ from 'lodash'
 import { options } from '@formkit/inputs'
+import FormsSchadstoffmessung from 'src/components/FormsSchadstoffmessung.vue'
 export default defineComponent({
+  components: { FormsSchadstoffmessung },
   // name: 'PageName'
 
   setup() {

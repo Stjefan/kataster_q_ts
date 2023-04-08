@@ -15,11 +15,13 @@
 import { defineComponent, computed, PropType } from 'vue'
 import { AuswertungDefault } from '../models/v1'
 import ChartComponent from './ChartComponent.vue'
+import { useI18n } from 'vue-i18n'
 export default defineComponent({
   components: { ChartComponent },
   props: { 'auswertung': { type: Object as PropType<AuswertungDefault> } },
   // name: 'ComponentName'
   setup(props) {
+    const i18n = useI18n()
     const mittelungspegel_gesamt = computed(() => props.auswertung?.mittelungspegel_gesamt != null ? props.auswertung?.mittelungspegel_gesamt : [])
     const mittelungspegel_fremd = computed(() => props.auswertung?.mittelungspegel_fremd != null ? props.auswertung?.mittelungspegel_fremd : [])
     const mittelungspegel = computed(() => mittelungspegel_gesamt.value.concat(mittelungspegel_fremd.value))
@@ -31,56 +33,59 @@ export default defineComponent({
       {
         name: 'hz31_5',
         label: '31.5 Hz',
-        field: 'hz31_5',
+        // field: 'hz31_5',
+        field: (i: any) => i18n.n(i.hz31_5),
       },
       {
         name: 'hz63',
         label: '63 Hz',
         //style: 'width: 50px',
-        field: 'hz63',
+        // field: 'hz63',
+        field: (i: any) => i18n.n(i.hz63),
       },
       {
         name: 'hz125',
         label: '125 Hz',
         // style: 'width: 50px',
-        field: 'hz125',
+        // field: 'hz125',
+        field: (i: any) => i18n.n(i.hz125),
       },
       {
         name: 'hz250',
         label: '250 Hz',
-        field: 'hz250',
+        field: (i: any) => i18n.n(i.hz250),
       },
       {
         name: 'hz500',
         label: '500 Hz',
-        field: 'hz500',
+        field: (i: any) => i18n.n(i.hz500),
       },
       {
         name: 'hz1000',
         label: '1000 Hz',
-        field: 'hz1000',
+        field: (i: any) => i18n.n(i.hz1000),
       },
       {
         name: 'hz2000',
         label: '2000 Hz',
-        field: 'hz2000',
+        field: (i: any) => i18n.n(i.hz2000),
       },
       {
         name: 'hz4000',
         label: '4000 Hz',
-        field: 'hz4000',
+        field: (i: any) => i18n.n(i.hz4000),
       },
       {
         name: 'hz8000',
         label: '8000 Hz',
-        field: 'hz8000',
-      }]
+        field: (i: any) => i18n.n(i.hz8000),
+      }] as any[]
 
     const colsAnlagenpegel = colsShared.concat([
       {
         name: 'korrektur',
         label: 'Korrektur',
-        field: 'korrektur',
+        field: (i: any) => i18n.n(i.korrektur),
       },
 
     ])
@@ -88,7 +93,7 @@ export default defineComponent({
       {
         name: 'summiert',
         label: 'Summe',
-        field: 'summiert',
+        field: (i: any) => i18n.n(i.summiert)//'summiert',
       },
     ])
 
